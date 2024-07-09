@@ -1,0 +1,17 @@
+.sidebar {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  mat-sidenav {
+    width: 250px;
+  }
+  
+  mat-sidenav-content {
+    padding: 16px;
+  }
+  .nav-item{
+      margin: 10px 0;
+    }

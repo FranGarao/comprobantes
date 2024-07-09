@@ -1,0 +1,43 @@
+<mat-sidenav-container class="sidebar">
+    <mat-sidenav #sidenav mode="side" opened>
+        <mat-nav-list>
+            <mat-expansion-panel class="nav-item">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Inicio
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item href="#">Subitem 1.1</a>
+                    <a mat-list-item href="#">Subitem 1.2</a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="nav-item">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Item 2
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item href="#">Subitem 2.1</a>
+                    <a mat-list-item href="#">Subitem 2.2</a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="nav-item">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Item 3
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item href="#">Subitem 3.1</a>
+                    <a mat-list-item href="#">Subitem 3.2</a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <!-- Aquí va el contenido principal -->
+        <button mat-button (click)="sidenav.toggle()">Toggle Sidebar</button>
+    </mat-sidenav-content>
+</mat-sidenav-container>
