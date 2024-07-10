@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InvoicesModalComponent } from '../invoices-modal/invoices-modal.component';
+import { JobModalComponent } from '../job-modal/job-modal.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,7 +20,13 @@ export class SidebarComponent {
         formulario: "Esto es un formulario de prueba"
       },
       width: '500px',
-      height: '600px',
+      height: '85vh',
+    })
+  }
+  openJob(){
+    this.dialogRef.open(JobModalComponent, {
+      width: '500px',
+      height: '300px',
     })
   }
 }

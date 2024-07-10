@@ -1,7 +1,10 @@
 <form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm">
+<button mat-icon-button class="close-icon" (click)="closeModal()">
+  <mat-icon>close</mat-icon>
+</button>
 <h3>Generar Comprobante</h3>
     <div class="input-ctn">
-    <label>Comprobante N</label>
+    <label>Comprobante N°</label>
         <input  placeholder="Codigo" formControlName="id">
     </div>   
 <div class="input-ctn">

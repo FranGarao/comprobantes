@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidebar">
+<!-- <mat-sidenav-container class="sidebar">
     <mat-sidenav #sidenav mode="side" opened>
         <mat-nav-list>
             <mat-expansion-panel class="nav-item">
@@ -7,10 +7,6 @@
                         Inicio
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <!-- <mat-nav-list>
-                    <a mat-list-item>Subitem 1.1</a>
-                    <a mat-list-item href="#">Subitem 1.2</a>
-                </mat-nav-list> -->
             </mat-expansion-panel>
             <mat-expansion-panel class="nav-item">
                 <mat-expansion-panel-header>
@@ -30,16 +26,61 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-nav-list>
-                    <a mat-list-item>Generar</a>
+                    <a mat-list-item (click)="openJob()">Generar</a>
                     <a mat-list-item>Listado</a>
                 </mat-nav-list>
             </mat-expansion-panel>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        <!-- Aquí va el contenido principal -->
         <button mat-button (click)="sidenav.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
     </mat-sidenav-content>
+</mat-sidenav-container> -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav  #sidenav  mode="side" opened>
+    <mat-toolbar>Sidebar</mat-toolbar>
+<mat-expansion-panel class="nav-item">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Inicio
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="nav-item">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Comprobantes
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item (click)="openInvoice()">Generar</a>
+                    <a mat-list-item>Listado</a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="nav-item">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Trabajos
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item (click)="openJob()">Generar</a>
+                    <a mat-list-item>Listado</a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <mat-toolbar>
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="content">
+
+      <!-- Your content goes here -->
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

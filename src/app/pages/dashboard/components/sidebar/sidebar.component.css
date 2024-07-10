@@ -1,8 +1,11 @@
 .sidebar {
     height: 100vh;
     display: flex;
+    position: relative;
     flex-direction: column;
     gap: 10px;
+    background-color: aqua;
+    z-index: 0;
   }
   
   mat-sidenav {

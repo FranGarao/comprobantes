@@ -20,6 +20,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { provideHttpClient } from '@angular/common/http';
+import { JobModalComponent } from './pages/dashboard/components/job-modal/job-modal.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +32,7 @@ import { MatInputModule } from '@angular/material/input';
     LoginComponent,
     NotFoundComponent,
     InvoicesModalComponent,
+    JobModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,9 +47,10 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,  
     MatFormFieldModule, 
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatToolbarModule
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [provideAnimationsAsync(), provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
