@@ -1,0 +1,40 @@
+<form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm">
+<h3>Generar Comprobante</h3>
+    <div class="input-ctn">
+    <label>Comprobante N</label>
+        <input  placeholder="Codigo" formControlName="id">
+    </div>   
+<div class="input-ctn">
+  <label>Trabajo</label>
+<select formControlName="job">
+    <option value="variable1">Limpieza de Zapatos</option>
+    <option selected value="variable2">Arreglo general</option>
+    <!-- Agrega más opciones aquí -->
+</select>
+</div>
+   <div class="input-ctn">
+        <label>Fecha de entrega</label>
+        <input placeholder="Fecha de Entrega" type="date" formControlName="deliveryDate">
+    </div>  
+  <div class="input-ctn">
+    <label>Nombre del Cliente</label>
+        <input  placeholder="Nombre" formControlName="name">
+    </div> 
+   <div class="input-ctn">
+    <label>Telefono</label>
+        <input  placeholder="Telefono" type="number" inputmode="numeric" value="0" formControlName="phone">
+    </div>
+   <div class="input-ctn">
+    <label>Total</label>
+        <input  placeholder="Total" type="number" inputmode="numeric" formControlName="total">
+    </div>
+   <div class="input-ctn">
+    <label>Saldo</label>
+        <input  placeholder="Saldo" type="number" inputmode="numeric" formControlName="balance">
+    </div>
+   <div class="input-ctn">
+    <label>Sena</label>
+        <input  placeholder="Sena" type="number" inputmode="numeric" formControlName="deposit">
+    </div>
+    <input class="submit" value="Generar" (click)="submit()">
+</form> 
