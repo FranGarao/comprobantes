@@ -17,6 +17,7 @@ export class InvoicesModalComponent implements OnInit {
   public jobs: Job[] = [];
   public lastInvoice: number = 0;
   public selectedJob: any;
+  public balance: number = 0;
   /**
    *
    */
@@ -35,11 +36,12 @@ export class InvoicesModalComponent implements OnInit {
     this.getLastInvoice();
   }
   buildForm() {
+    //TODO agregar required
     this.invoicesForm = this.fb.group({
-      id: ['', Validators.required],
-      total: ['', Validators.required],
-      deposit: ['', Validators.required],
-      balance: ['', Validators.required],
+      id: [''],
+      total: [''],
+      deposit: [''],
+      balance: [''],
       name: ['', Validators.required],
       phone: ['', Validators.required],
       job: ['', Validators.required],
@@ -47,6 +49,8 @@ export class InvoicesModalComponent implements OnInit {
     });
   }
   sendForm() {
+    console.log(this.invoicesForm.value);
+    
     if (this.invoicesForm.invalid) {
       Swal.fire({
         title: 'Error',
@@ -58,9 +62,9 @@ export class InvoicesModalComponent implements OnInit {
     }
     this.form = {
       Id: this.lastInvoice + 1,
-      Total: this.invoicesForm.get('total')?.value,
+      Total: this.selectedJob?.price,
       Deposit: this.invoicesForm.get('deposit')?.value,
-      Balance: this.invoicesForm.get('balance')?.value,
+      Balance: this.balance,
       DeliveryDate: this.invoicesForm.get('deliveryDate')?.value,
       Name: this.invoicesForm.get('name')?.value,
       Phone: this.invoicesForm.get('phone')?.value.toString(),
@@ -71,15 +75,35 @@ export class InvoicesModalComponent implements OnInit {
     };
 
     this.service.sendForm(this.form).subscribe({
-      next: (response) => {
-        console.log({ response });
+      next: () => {
         Swal.fire({
           title: 'Formulario enviado',
           text: 'El formulario ha sido enviado con éxito',
           icon: 'success',
           confirmButtonText: 'Aceptar',
-        });
-      },
+        }).then(() => {
+      // Redirigir a WhatsApp después de que el usuario cierre la alerta
+        const message = `*GENERACION DE ZAPATEROS*
+                      
+                      \n` + 
+                      `Compostura de Calzado\n` + 
+                      `Av. Peron 1855 - San Miguel\n` + 
+                      `11 5667 0042\n` + 
+                      `Comprobante N° ${this.form?.Id}\n` + 
+                      `Fecha de entrega: ${this.form?.DeliveryDate}\n` + 
+                      `Total $${this.form.Total}:\n` + 
+                      `Sena $${this.form.Deposit}:\n` + 
+                      `Balance $${this.form.Balance}:\n` + 
+                      `Total $${this.form.Total}:\n` + 
+                      `*HORARIOS*\n` +
+                      `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
+                      `Sabado 09 a 13 hs.\n` +
+                      `*Si la reparacion no se retira dentro de los 15 dias, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados despues de 30 dias, pierden todo derecho a reclamo.*\n`;
+        const whatsappUrl = `https://wa.me/${this.form?.Phone}?text=${message}}`;
+        console.log({whatsappUrl});
+        
+        window.open(whatsappUrl, '_blank');
+        })},
       error: (error) => {
         Swal.fire({
           title: 'Error',
@@ -96,7 +120,7 @@ export class InvoicesModalComponent implements OnInit {
   submit() {
     Swal.fire({
       title: 'Enviar formulario',
-      text: 'Estas segura de enviar el formulario?',
+      text: 'Desea enviar el formulario?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Enviar',
@@ -112,7 +136,6 @@ export class InvoicesModalComponent implements OnInit {
   getJobs() {
     this.service.getJobs().subscribe({
       next: (jobs: any) => {
-        console.log({ jobs });
         this.jobs = jobs;
       },
       error: (error) => console.error(error),
@@ -123,7 +146,6 @@ export class InvoicesModalComponent implements OnInit {
     this.service.getInvoices().subscribe({
       next: (invoices: any) => {
         this.lastInvoice = invoices.length;
-        console.log({ lastInvoice: this.lastInvoice });
       },
       error: (error) => console.error(error),
     });
@@ -131,10 +153,13 @@ export class InvoicesModalComponent implements OnInit {
 
   selectJob() {
     const jobId = Number(this.invoicesForm?.get('job')?.value);
-
     this.selectedJob = this.jobs?.find((job) => job.id === jobId);
-    console.log({ SJ: this.selectedJob });
+    this.setBalance();
     return this.selectedJob;
+  }
+
+  setBalance(){
+    this.balance = this.selectedJob?.price - this.invoicesForm.get('deposit')?.value;
   }
 }
 /*

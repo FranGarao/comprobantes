@@ -1,4 +1,4 @@
-<form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm">
+<form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm" (ngSubmit)="submit()">
     <button mat-icon-button class="close-icon" (click)="closeModal()">
         <mat-icon>close</mat-icon>
     </button>
@@ -34,12 +34,12 @@
             formControlName="total">
     </div>
     <div class="input-ctn">
-        <label>Saldo</label>
-        <input placeholder="Saldo" type="number" inputmode="numeric" formControlName="balance">
+        <label>Seña</label>
+        <input placeholder="Sena" type="number" inputmode="numeric" formControlName="deposit" (change)="setBalance()">
     </div>
     <div class="input-ctn">
-        <label>Sena</label>
-        <input placeholder="Sena" type="number" inputmode="numeric" formControlName="deposit">
+        <label>Saldo</label>
+        <input placeholder="Saldo" type="number" inputmode="numeric" [value]="balance" formControlName="balance">
     </div>
     <input class="submit" value="Generar" (click)="submit()">
 </form>
