@@ -1,28 +1,31 @@
 <!-- <app-sidebar /> -->
 <div class="main">
     <div>
-        <h1>Bienvenida!</h1>
-        <p>Este es el panel de control de tu aplicación.</p>
-        <p>¡Que disfrutes!</p>
     </div>
     <div class="options-ctn">
-        <div title="Generar Comprobante"  class="option">
+        <div title="Generar Comprobante" class="option" (click)="openInvoice()">
             <mat-icon class="icon material-symbols-outlined">
-            description
+                description
             </mat-icon>
             <p>
-                Comprobantes
+                Generar comprobante
             </p>
         </div>
-       <!-- <div  title="Generar Comprobante" class="option">
-            <mat-icon class="material-symbols-outlined">
-            note_add
-        </div>
-            </mat-icon> -->
-       <div  title="Generar Comprobante" class="option">
+        <div title="Generar Comprobante" class="option" (click)="openJob()">
             <mat-icon class="icon material-symbols-outlined">
-            work
+                work
             </mat-icon>
+            <p>
+                Crear Trabajo
+            </p>
+        </div>
+        <div title="Generar Comprobante" class="option">
+            <mat-icon class="icon material-symbols-outlined">
+                note_add
+            </mat-icon>
+            <p>
+                Listados
+            </p>
         </div>
         <!-- <div  title="Generar Comprobante" class="option">
             <mat-icon class="icon material-symbols-outlined">
@@ -30,5 +33,5 @@
             </mat-icon>
         </div> -->
     </div>
-    <router-outlet/>
+    <router-outlet />
 </div>

@@ -16,20 +16,39 @@
     flex-wrap: wrap;
 
     .option{
-        background-color: #ccc;
+        background-color: #3f51b5;
         padding: 10px 10px 0 10px;
         border-radius: 8px;
-        border: 1px solid #ccc;
-        width: 100px;
-        height: 100px;
+        border: 2px solid #fff;
+        width: 140px;
+        height: 130px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        p{
+            font-weight: 450;
+            text-align: center;
+            color: #fff;
+        }
+
         .icon{
-            color: #3f51b5; 
+            color: #fff; 
             transform: scale(2);
+            margin-top: 20px;
+        }
+    }
+    .option:hover{
+        background-color: #fff;
+        color: white;
+        border: 3px solid #3f51b5;
+        .icon{
+            color: #3f51b5;
+        }
+        p {    
+            color: #3f51b5;
         }
     }
 }

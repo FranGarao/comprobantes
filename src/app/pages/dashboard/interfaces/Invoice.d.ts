@@ -1,10 +1,11 @@
 export interface Invoice {
-    id: number,
-    name: string,
-    phone: string,
-    job: string,
-    deliveryDate: string,
-    total: number,
-    deposit: number,
-    balance: number
+  Id: number;
+  Name: string;
+  Phone: string;
+  Job?: string;
+  JobId: number;
+  DeliveryDate: string;
+  Total: number;
+  Deposit: number;
+  Balance: number;
 }

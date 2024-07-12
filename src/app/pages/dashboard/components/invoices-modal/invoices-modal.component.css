@@ -4,16 +4,13 @@
         font-weight: 500;
         margin-bottom: 10px;
     }
-    padding: 30px 10px 10px 10px;
+    padding: 0 10px 10px 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
     margin-bottom: 20px;    
-    position: relative;
-    top: 30px;
     .input-ctn{
         width: 70%;
         height: 100%;

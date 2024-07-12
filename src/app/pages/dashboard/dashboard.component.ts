@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
   /**
@@ -16,13 +15,13 @@ export class DashboardComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.service.test().subscribe({
-    next: (data: any) => {
-      console.log(data);
-    },
-    error: (err: any) => {
-      console.log(err);
-    }
-    });
+  }
+
+  openInvoice() {
+    this.service.openInvoice();
+  }
+
+  openJob() {
+    this.service.openJob();
   }
 }
