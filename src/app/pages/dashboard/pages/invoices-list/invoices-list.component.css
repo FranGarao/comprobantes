@@ -1,0 +1,21 @@
+.invoices-ctn{
+    margin-top: 30px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+
+    .invoices-card{
+        margin: 8px;
+        width: 200px;
+        height: 250px;
+        background-color: #3f51b5;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        padding: 8px;
+    }
+}

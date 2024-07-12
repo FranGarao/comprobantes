@@ -22,7 +22,11 @@ import { MatInputModule } from '@angular/material/input';
 import { provideHttpClient } from '@angular/common/http';
 import { JobModalComponent } from './pages/dashboard/components/job-modal/job-modal.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ListComponent } from './pages/dashboard/pages/list/list.component';
+import { CommonModule } from '@angular/common';
+import { CdkMenuModule } from '@angular/cdk/menu';
+import { InvoicesListComponent } from './pages/dashboard/pages/invoices-list/invoices-list.component';
+import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.component'; // Import CdkMenuModule
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +36,8 @@ import { ListComponent } from './pages/dashboard/pages/list/list.component';
     NotFoundComponent,
     InvoicesModalComponent,
     JobModalComponent,
-    ListComponent,
+    InvoicesListComponent,
+    JobsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,7 @@ import { ListComponent } from './pages/dashboard/pages/list/list.component';
     MatSelectModule,
     MatInputModule,
     MatToolbarModule,
+    CdkMenuModule,
   ],
   providers: [provideAnimationsAsync(), provideHttpClient()],
   bootstrap: [AppComponent],

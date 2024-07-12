@@ -61,17 +61,17 @@ export class InvoicesModalComponent implements OnInit {
       return;
     }
     this.form = {
-      Id: this.lastInvoice + 1,
-      Total: this.selectedJob?.price,
-      Deposit: this.invoicesForm.get('deposit')?.value,
-      Balance: this.balance,
-      DeliveryDate: this.invoicesForm.get('deliveryDate')?.value,
-      Name: this.invoicesForm.get('name')?.value,
-      Phone: this.invoicesForm.get('phone')?.value.toString(),
-      Job:
-        this.jobs?.find((j) => j?.id === this.invoicesForm?.get('job')?.value)
-          ?.name || 'null',
-      JobId: Number(this.invoicesForm.get('job')?.value),
+      id: this.lastInvoice + 1,
+      total: this.selectedJob?.price,
+      deposit: this.invoicesForm.get('deposit')?.value,
+      balance: this.balance,
+      deliveryDate: this.invoicesForm.get('deliveryDate')?.value,
+      name: this.invoicesForm.get('name')?.value,
+      phone: this.invoicesForm.get('phone')?.value.toString(),
+      job:
+      this.jobs?.find((j) => j?.id === this.invoicesForm?.get('job')?.value)
+        ?.name || 'null',
+      jobId: Number(this.invoicesForm.get('job')?.value),
     };
 
     this.service.sendForm(this.form).subscribe({
@@ -89,17 +89,16 @@ export class InvoicesModalComponent implements OnInit {
                       `Compostura de Calzado\n` + 
                       `Av. Peron 1855 - San Miguel\n` + 
                       `11 5667 0042\n` + 
-                      `Comprobante N° ${this.form?.Id}\n` + 
-                      `Fecha de entrega: ${this.form?.DeliveryDate}\n` + 
-                      `Total $${this.form.Total}:\n` + 
-                      `Sena $${this.form.Deposit}:\n` + 
-                      `Balance $${this.form.Balance}:\n` + 
-                      `Total $${this.form.Total}:\n` + 
+                      `Comprobante N° ${this.form?.id}\n` + 
+                      `Fecha de entrega: ${this.form?.deliveryDate}\n` + 
+                      `Total $${this.form.total}:\n` + 
+                      `Sena $${this.form.deposit}:\n` + 
+                      `Balance $${this.form.balance}:\n` + 
                       `*HORARIOS*\n` +
                       `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
                       `Sabado 09 a 13 hs.\n` +
                       `*Si la reparacion no se retira dentro de los 15 dias, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados despues de 30 dias, pierden todo derecho a reclamo.*\n`;
-        const whatsappUrl = `https://wa.me/${this.form?.Phone}?text=${message}}`;
+        const whatsappUrl = `https://wa.me/${this.form?.phone}?text=${message}}`;
         console.log({whatsappUrl});
         
         window.open(whatsappUrl, '_blank');

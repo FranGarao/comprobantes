@@ -1,0 +1,12 @@
+<h2 style="margin-top: 30px;">Lista de Comprobantes</h2>
+<div class="invoices-ctn">
+    <div *ngFor="let invoice of invoices" class="invoices-card">
+        <p>{{invoice?.id}}</p>
+        <p>{{invoice?.name}}</p>
+        <p>{{invoice?.job}}</p>
+        <p>{{invoice?.total}}</p>
+        <p>{{invoice?.deposit}}</p>
+        <p>{{invoice?.balance}}</p>
+        <p>{{invoice?.deliveryDate}}</p>
+    </div>
+</div>

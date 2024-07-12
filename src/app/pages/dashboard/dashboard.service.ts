@@ -43,7 +43,7 @@ export class DashboardService {
   //Obtiene las comprobantes del backend
   getInvoices() {
     const url = `${environment.API_URL}/invoices`;
-    return this.http.get(url);
+    return this.http.get<Invoice[]>(url);
   }
 
   //Obtiene comprobante por id

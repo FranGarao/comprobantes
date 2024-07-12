@@ -1,23 +1,33 @@
 <!-- <app-sidebar /> -->
 <div class="main">
-    <div>
-    </div>
     <div class="options-ctn">
-        <div title="Generar Comprobante" class="option" (click)="openInvoice()">
+        <div [cdkMenuTriggerFor]="menu" title="Generar Comprobante" class="option" >
             <mat-icon class="icon material-symbols-outlined">
                 description
             </mat-icon>
             <p>
                 Comprobantes
             </p>
+        <ng-template #menu>
+        <div class="example-menu" cdkMenu>
+            <button (click)="openInvoice()" class="example-menu-item" cdkMenuItem>Generar Comprobante</button>
+            <button routerLink="list/invoices" class="example-menu-item" cdkMenuItem>Ver Comprobantes</button>
         </div>
-        <div title="Generar Comprobante" class="option" (click)="openJob()">
+        </ng-template>
+        </div>
+        <div [cdkMenuTriggerFor]="jobMenu" title="Generar Comprobante" class="option" >
             <mat-icon class="icon material-symbols-outlined">
                 work
             </mat-icon>
             <p>
                 Trabajos
             </p>
+        <ng-template #jobMenu>
+        <div class="example-menu" cdkMenu>
+            <button (click)="openJob()" class="example-menu-item" cdkMenuItem>Nuevo Trabajo</button>
+            <button routerLink="list/jobs" class="example-menu-item" cdkMenuItem>Ver Trabajos</button>
+        </div>
+        </ng-template>
         </div>
         <!-- <div title="Generar Comprobante" class="option">
             <mat-icon class="icon material-symbols-outlined">
