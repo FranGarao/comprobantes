@@ -2,3 +2,16 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    /* Degradado lineal */
+    background: linear-gradient(135deg, #fff, #3f51b5);
+    
+    /* Textura adicional */
+    background-size: cover;
+    background-attachment: fixed;
+    background-image: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+    
+    /* Opcional: para cubrir toda la pantalla */
+    min-height: 100vh;
+    margin: 0;
+}

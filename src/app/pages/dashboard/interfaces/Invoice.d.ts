@@ -8,4 +8,5 @@ export interface Invoice {
   total: number;
   deposit: number;
   balance: number;
+  status: boolean;
 }

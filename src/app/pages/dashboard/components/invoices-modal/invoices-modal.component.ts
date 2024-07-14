@@ -50,7 +50,7 @@ export class InvoicesModalComponent implements OnInit {
   }
   sendForm() {
     console.log(this.invoicesForm.value);
-    
+
     if (this.invoicesForm.invalid) {
       Swal.fire({
         title: 'Error',
@@ -69,9 +69,10 @@ export class InvoicesModalComponent implements OnInit {
       name: this.invoicesForm.get('name')?.value,
       phone: this.invoicesForm.get('phone')?.value.toString(),
       job:
-      this.jobs?.find((j) => j?.id === this.invoicesForm?.get('job')?.value)
-        ?.name || 'null',
+        this.jobs?.find((j) => j?.id === this.invoicesForm?.get('job')?.value)
+          ?.name || 'null',
       jobId: Number(this.invoicesForm.get('job')?.value),
+      status: false,
     };
 
     this.service.sendForm(this.form).subscribe({
@@ -82,27 +83,29 @@ export class InvoicesModalComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Aceptar',
         }).then(() => {
-      // Redirigir a WhatsApp después de que el usuario cierre la alerta
-        const message = `*GENERACION DE ZAPATEROS*
+          // Redirigir a WhatsApp después de que el usuario cierre la alerta
+          const message =
+            `*GENERACION DE ZAPATEROS*
                       
-                      \n` + 
-                      `Compostura de Calzado\n` + 
-                      `Av. Peron 1855 - San Miguel\n` + 
-                      `11 5667 0042\n` + 
-                      `Comprobante N° ${this.form?.id}\n` + 
-                      `Fecha de entrega: ${this.form?.deliveryDate}\n` + 
-                      `Total $${this.form.total}:\n` + 
-                      `Sena $${this.form.deposit}:\n` + 
-                      `Balance $${this.form.balance}:\n` + 
-                      `*HORARIOS*\n` +
-                      `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
-                      `Sabado 09 a 13 hs.\n` +
-                      `*Si la reparacion no se retira dentro de los 15 dias, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados despues de 30 dias, pierden todo derecho a reclamo.*\n`;
-        const whatsappUrl = `https://wa.me/${this.form?.phone}?text=${message}}`;
-        console.log({whatsappUrl});
-        
-        window.open(whatsappUrl, '_blank');
-        })},
+                      \n` +
+            `Compostura de Calzado\n` +
+            `Av. Peron 1855 - San Miguel\n` +
+            `11 5667 0042\n` +
+            `Comprobante N° ${this.form?.id}\n` +
+            `Fecha de entrega: ${this.form?.deliveryDate}\n` +
+            `Total $${this.form.total}:\n` +
+            `Sena $${this.form.deposit}:\n` +
+            `Balance $${this.form.balance}:\n` +
+            `*HORARIOS*\n` +
+            `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
+            `Sabado 09 a 13 hs.\n` +
+            `*Si la reparacion no se retira dentro de los 15 dias, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados despues de 30 dias, pierden todo derecho a reclamo.*\n`;
+          const whatsappUrl = `https://wa.me/${this.form?.phone}?text=${message}}`;
+          console.log({ whatsappUrl });
+
+          window.open(whatsappUrl, '_blank');
+        });
+      },
       error: (error) => {
         Swal.fire({
           title: 'Error',
@@ -143,8 +146,11 @@ export class InvoicesModalComponent implements OnInit {
 
   getLastInvoice() {
     this.service.getInvoices().subscribe({
-      next: (invoices: any) => {
-        this.lastInvoice = invoices.length;
+      next: (invoices: Invoice[]) => {
+        const invoicesIds: number[] = [];
+        invoices.forEach((invoice: Invoice) => invoicesIds.push(invoice.id));
+        this.lastInvoice = Math.max(...invoicesIds) + 1;
+        console.log({ lastInvoice: this.lastInvoice });
       },
       error: (error) => console.error(error),
     });
@@ -157,8 +163,24 @@ export class InvoicesModalComponent implements OnInit {
     return this.selectedJob;
   }
 
-  setBalance(){
-    this.balance = this.selectedJob?.price - this.invoicesForm.get('deposit')?.value;
+  setBalance() {
+    this.balance =
+      this.selectedJob?.price - this.invoicesForm.get('deposit')?.value;
+  }
+
+  printInvoice() {
+    // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
+    const printContent = document.getElementById('printArea')?.innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    if (printContent) {
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+      location.reload(); // Para recargar la página y restaurar el contenido original
+    } else {
+      window.print(); // Imprime toda la página
+    }
   }
 }
 /*

@@ -1,1 +1,21 @@
-<p>jobs-list works!</p>
+<div class="table-ctn">
+    <h2>Lista de Trabajos</h2>
+    <table class="jobs-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let job of jobs">
+                <td>{{job.name}}</td>
+                <td>${{job.price}}</td>
+                <td>
+                    <button (click)="deleteJob(1)" class="delete-btn">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

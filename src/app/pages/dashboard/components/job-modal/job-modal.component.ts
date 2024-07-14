@@ -5,12 +5,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-job-modal',
   templateUrl: './job-modal.component.html',
-  styleUrl: './job-modal.component.css'
+  styleUrl: './job-modal.component.css',
 })
 export class JobModalComponent {
   public jobsForm: FormGroup = new FormGroup({});
-  constructor(public dialogRef: MatDialogRef<JobModalComponent>, 
-  private fb: FormBuilder) {}
+  constructor(
+    public dialogRef: MatDialogRef<JobModalComponent>,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -18,7 +20,7 @@ export class JobModalComponent {
     this.createForm();
   }
 
-  createForm(){
+  createForm() {
     this.jobsForm = this.fb.group({
       id: [''],
       name: [''],

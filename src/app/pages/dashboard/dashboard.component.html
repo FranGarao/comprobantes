@@ -1,33 +1,33 @@
 <!-- <app-sidebar /> -->
 <div class="main">
     <div class="options-ctn">
-        <div [cdkMenuTriggerFor]="menu" title="Generar Comprobante" class="option" >
+        <div [cdkMenuTriggerFor]="menu" title="Generar Comprobante" class="option">
             <mat-icon class="icon material-symbols-outlined">
                 description
             </mat-icon>
             <p>
                 Comprobantes
             </p>
-        <ng-template #menu>
-        <div class="example-menu" cdkMenu>
-            <button (click)="openInvoice()" class="example-menu-item" cdkMenuItem>Generar Comprobante</button>
-            <button routerLink="list/invoices" class="example-menu-item" cdkMenuItem>Ver Comprobantes</button>
+            <ng-template #menu>
+                <div class="example-menu" cdkMenu>
+                    <button (click)="openInvoice()" class="example-menu-item" cdkMenuItem>Generar Comprobante</button>
+                    <button routerLink="list/invoices" class="example-menu-item" cdkMenuItem>Ver Comprobantes</button>
+                </div>
+            </ng-template>
         </div>
-        </ng-template>
-        </div>
-        <div [cdkMenuTriggerFor]="jobMenu" title="Generar Comprobante" class="option" >
+        <div [cdkMenuTriggerFor]="jobMenu" title="Generar Comprobante" class="option">
             <mat-icon class="icon material-symbols-outlined">
                 work
             </mat-icon>
             <p>
                 Trabajos
             </p>
-        <ng-template #jobMenu>
-        <div class="example-menu" cdkMenu>
-            <button (click)="openJob()" class="example-menu-item" cdkMenuItem>Nuevo Trabajo</button>
-            <button routerLink="list/jobs" class="example-menu-item" cdkMenuItem>Ver Trabajos</button>
-        </div>
-        </ng-template>
+            <ng-template #jobMenu>
+                <div class="example-menu" cdkMenu>
+                    <button (click)="openJob()" class="example-menu-item" cdkMenuItem>Nuevo Trabajo</button>
+                    <button routerLink="list/jobs" class="example-menu-item" cdkMenuItem>Ver Trabajos</button>
+                </div>
+            </ng-template>
         </div>
         <!-- <div title="Generar Comprobante" class="option">
             <mat-icon class="icon material-symbols-outlined">
@@ -43,5 +43,5 @@
             </mat-icon>
         </div> -->
     </div>
-    <router-outlet />
 </div>
+<router-outlet />

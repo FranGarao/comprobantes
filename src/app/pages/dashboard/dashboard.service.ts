@@ -75,4 +75,10 @@ export class DashboardService {
     const url = `${environment.API_URL}/jobs`;
     return this.http.get(url);
   }
+
+  // Borra un trabajo
+  deleteJob(id: number) {
+    const url = `${environment.API_URL}/jobs/${id}`;
+    return this.http.delete(url);
+  }
 }
