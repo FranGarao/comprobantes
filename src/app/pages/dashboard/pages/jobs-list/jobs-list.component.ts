@@ -40,11 +40,30 @@ export class JobsListComponent {
       },
     });
   }
-
+  questionDelete(id: any) {
+    Swal.fire({
+      title: 'Eliminar trabajo',
+      text: '¿Estas seguro que deseas eliminar el trabajo?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        this.deleteJob(id);
+      }
+    });
+  }
   deleteJob(id: any) {
     this.service.deleteJob(id).subscribe({
       next: (res: any) => {
-        console.log({ res });
+        this.getJobs();
+        Swal.fire({
+          title: 'Trabajo eliminado',
+          text: 'El trabajo fue eliminado correctamente',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+        });
       },
       error: (err) => {
         Swal.fire({

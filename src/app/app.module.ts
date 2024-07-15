@@ -26,7 +26,8 @@ import { CommonModule } from '@angular/common';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { InvoicesListComponent } from './pages/dashboard/pages/invoices-list/invoices-list.component';
 import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.component'; // Import CdkMenuModule
-
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,4 +60,14 @@ import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.c
   providers: [provideAnimationsAsync(), provideHttpClient()],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ) {
+    this.matIconRegistry.addSvgIcon(
+      'whatsapp',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/wsp.svg')
+    );
+  }
+}

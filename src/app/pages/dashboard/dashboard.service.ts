@@ -5,6 +5,7 @@ import { environment } from '../../../environments/env.example';
 import { InvoicesModalComponent } from './components/invoices-modal/invoices-modal.component';
 import { JobModalComponent } from './components/job-modal/job-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Job } from './interfaces/Job';
 const urlBack = environment.API_URL;
 
 @Injectable({
@@ -73,12 +74,20 @@ export class DashboardService {
   //Obtiene los trabajos del backend
   getJobs() {
     const url = `${environment.API_URL}/jobs`;
-    return this.http.get(url);
+    return this.http.get<Job[]>(url);
   }
 
   // Borra un trabajo
   deleteJob(id: number) {
     const url = `${environment.API_URL}/jobs/${id}`;
     return this.http.delete(url);
+  }
+
+  createJob(job: any) {
+    const url = `${environment.API_URL}/jobs`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(url, job, { headers });
   }
 }

@@ -12,7 +12,7 @@ export class InvoicesListComponent {
   public invoices: Invoice[] = [];
   public filteredInvoices: Invoice[] = [];
   public isLoading: boolean = false;
-
+  private printContent: string = '';
   constructor(private service: DashboardService) {}
 
   ngOnInit(): void {
@@ -43,7 +43,7 @@ export class InvoicesListComponent {
     });
   }
 
-  printInvoice(invoice: any, option: number) {
+  printyInvoice(invoice: any, option: number) {
     let printContent = '';
 
     switch (option) {
@@ -153,7 +153,7 @@ export class InvoicesListComponent {
 
         break;
       case 2:
-        this.filteredInvoices = this.invoices.find((invoice) =>
+        this.filteredInvoices = this.invoices.filter((invoice) =>
           invoice.id.toString().toLowerCase().includes(therm)
         );
         break;
@@ -249,7 +249,7 @@ export class InvoicesListComponent {
     this.service.updateInvoice(invoice?.id, invoice).subscribe({
       next: () => {
         const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
-        const whatsappUrl = `https://wa.me/5498${invoice?.phone}?text=${message}}`;
+        const whatsappUrl = `https://wa.me/549${invoice?.phone}?text=${message}}`;
         window.open(whatsappUrl, '_blank');
 
         Swal.fire({
@@ -271,5 +271,121 @@ export class InvoicesListComponent {
         });
       },
     });
+  }
+
+  printInvoice(invoice: Invoice, type: number) {
+    // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
+
+    switch (type) {
+      case 0:
+        this.printContent = `
+        <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
+          <h2 style="text-align: center;">Generación de Zapateros</h2>
+          <p style="text-align: center;">Compostura de Calzado</p>
+          <p style="text-align: center;">Av. Perón 1855 - San Miguel</p>
+          <p style="text-align: center;">11 5667 0042</p>
+          <hr>
+          <p>Nº ${invoice?.id}</p>
+          <p>Trabajo: ${invoice?.job}</p>
+          <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+          <p>Total $${invoice?.total}</p>
+          <p>Seña $${invoice?.deposit}</p>
+          <p>Saldo $${invoice?.balance}</p>
+          <hr>
+          <p style="text-align: center; font-weight: bold;">HORARIOS</p>
+          <p style="text-align: center;">Lunes a Viernes : 09 a 13 hs - 16 a 19 hs</p>
+          <p style="text-align: center;">Sábado 09 a 13 hs</p>
+          <hr>
+          <p style="font-size: 12px; text-align: center;">
+            Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.
+            Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.
+          </p>
+        </div>
+      `;
+        break;
+
+      case 1:
+        this.printContent = `
+        <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
+          <p>Nº ${invoice.id}</p>
+          <p>Fecha de entrega: ${invoice.deliveryDate}</p>
+          <p>Total $${invoice?.total}</p>
+          <p>Seña $${invoice?.deposit}</p>
+          <p>Saldo $${invoice?.balance}</p>
+          <hr>
+          <p>NOMBRE: ${invoice?.name}</p>
+          <p>TELÉFONO: ${invoice?.phone}</p>
+          <p>TRABAJO: ${invoice?.job}</p>
+        </div>
+      `;
+
+        break;
+      case 2:
+        this.printContent = `
+          <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
+            <p>Nº ${invoice.id}</p>
+            <p>Trabajo: ${invoice.job}</p>
+          </div>
+        `;
+        break;
+      case 3:
+        const messagge = `
+          <p>Nº ${invoice?.id}</p>
+          <p>Trabajo: ${invoice?.job}</p>
+          <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+          <p>Total $${invoice?.total}</p>
+          <p>Seña $${invoice?.deposit}</p>
+          <p>Saldo $${invoice?.balance}</p>
+          <hr>
+          <p style="text-align: center; font-weight: bold;">HORARIOS</p>
+          <p style="text-align: center;">Lunes a Viernes : 09 a 13 hs - 16 a 19 hs</p>
+          <p style="text-align: center;">Sábado 09 a 13 hs</p>
+          <hr>
+          <p style="font-size: 12px; text-align: center;">
+            Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.
+            Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.
+          </p>
+        </div>
+      `;
+        this.sendWhatsApp(invoice.phone, messagge);
+        break;
+
+      default:
+        break;
+    }
+    if (this.printContent) this.print(this.printContent);
+  }
+
+  print(printContent: string) {
+    if (printContent) {
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.open();
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Imprimir Comprobante</title>
+              <style>
+                /* Puedes agregar tus estilos CSS aquí */
+                body {
+                  font-family: Arial, sans-serif;
+                }
+              </style>
+            </head>
+            <body onload="window.print(); window.close();">
+              ${printContent}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+      }
+    } else {
+      window.print(); // Imprime toda la página si printContent está vacío
+    }
+  }
+
+  sendWhatsApp(phone: string, message: string) {
+    const whatsappUrl = `https://wa.me/549${phone}?text=${message}}`;
+    window.open(whatsappUrl, '_blank');
   }
 }
