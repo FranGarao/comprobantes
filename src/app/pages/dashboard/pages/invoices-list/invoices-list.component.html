@@ -3,7 +3,25 @@
     <div class="search-bar">
         <div class="search-container">
             <input #searchInput type="text" class="search" placeholder="Buscar por nombre">
-            <button (click)="search(searchInput.value)" class="search-btn">
+            <button (click)="search(searchInput.value, 0)" class="search-btn">
+                <mat-icon>search</mat-icon>
+            </button>
+        </div>
+        <div class="search-container">
+            <input #searchPhone type="text" class="search" placeholder="Buscar por telefono">
+            <button (click)="search(searchPhone.value, 1)" class="search-btn">
+                <mat-icon>search</mat-icon>
+            </button>
+        </div>
+        <div class="search-container">
+            <input #searchId type="text" class="search" placeholder="Buscar por comprobante">
+            <button (click)="search(searchId.value, 2)" class="search-btn">
+                <mat-icon>search</mat-icon>
+            </button>
+        </div>
+        <div class="search-container">
+            <input #searchJob type="text" class="search" placeholder="Buscar por trabajo">
+            <button (click)="search(searchJob.value, 3)" class="search-btn">
                 <mat-icon>search</mat-icon>
             </button>
         </div>

@@ -102,7 +102,6 @@ export class InvoicesListComponent {
   }
 
   deleteInvoice(id: any) {
-
     Swal.fire({
       title: 'Eliminar factura',
       text: '¿Estas seguro de eliminar la factura?',
@@ -136,10 +135,37 @@ export class InvoicesListComponent {
       }
     });
   }
-  search(therm: any) {
-    this.filteredInvoices = this.invoices.filter((invoice) =>
-      invoice.name.toLowerCase().includes(therm)
-    );
+  search(therm: any, type: number) {
+    this.filteredInvoices = this.invoices;
+    switch (type) {
+      case 0:
+        this.filteredInvoices = this.invoices.filter((invoice) =>
+          invoice.name.toLowerCase().includes(therm)
+        );
+        break;
+      case 1:
+        console.log({ therm, invoices: this.filteredInvoices });
+
+        this.filteredInvoices = this.invoices.filter((invoice) =>
+          invoice.phone.toLowerCase().includes(therm)
+        );
+        console.log(this.filteredInvoices);
+
+        break;
+      case 2:
+        this.filteredInvoices = this.invoices.find((invoice) =>
+          invoice.id.toString().toLowerCase().includes(therm)
+        );
+        break;
+      case 3:
+        this.filteredInvoices = this.invoices.filter((invoice: Invoice) =>
+          invoice?.job?.toLowerCase().includes(therm)
+        );
+        break;
+
+      default:
+        break;
+    }
   }
 
   filter(therm: any) {
