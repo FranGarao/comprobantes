@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 })
 export class JobsListComponent {
   public jobs: Job[] = [];
+  public isLoading: boolean = false;
   /**
    *
    */
@@ -21,9 +22,10 @@ export class JobsListComponent {
   }
 
   getJobs() {
+    this.isLoading = true;
     this.service.getJobs().subscribe({
       next: (res: any) => {
-        console.log({ jobs: res });
+        this.isLoading = false;
         this.jobs = res;
       },
       error: (err) => {
@@ -39,7 +41,7 @@ export class JobsListComponent {
     });
   }
 
-  deleteJob(id: number) {
+  deleteJob(id: any) {
     this.service.deleteJob(id).subscribe({
       next: (res: any) => {
         console.log({ res });

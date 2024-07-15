@@ -13,16 +13,34 @@
                 <option value="all">Todos</option>
                 <option value="pendiente">Pendientes</option>
                 <option value="finalizado">Finalizados</option>
+                <!--TODO completar -->
+                <!-- <option value="fa">Fecha Asc.</option>
+                <option value="fd">Fecha Desc.</option>
+                <option value="ca">Comprobante Asc.</option>
+                <option value="cd">Comprobante Desc.</option> -->
             </select>
         </div>
     </div>
     <div class="invoices-ctn">
-        @if (invoices.length > 0) {
         <div *ngFor="let invoice of filteredInvoices" class="invoice-card">
             <div class="invoice-header">
                 <h3>Comprobante N°{{invoice?.id}}</h3>
                 <p>Cliente: <strong>{{invoice?.name}}</strong></p>
                 <p>Telefono: <strong>{{invoice?.phone}}</strong></p>
+                <button [cdkMenuTriggerFor]="printMenu" class="print-btn">
+                    <mat-icon>print</mat-icon>
+                </button>
+                <ng-template #printMenu>
+                    <div class="example-menu" cdkMenu>
+                        <button (click)="printInvoice(invoice, 0)" class="example-menu-item" cdkMenuItem>Imprimir
+                            General</button>
+                        <button (click)="printInvoice(invoice, 0)" class="example-menu-item" cdkMenuItem>Imprimir para
+                            Cliente</button>
+                        <button (click)="printInvoice(invoice, 2)" class="example-menu-item" cdkMenuItem>Imprimir
+                            Codigo</button>
+
+                    </div>
+                </ng-template>
             </div>
             <div class="invoice-body">
                 <p><span class="label">Trabajo:</span> {{invoice?.job}}</p>
@@ -40,8 +58,12 @@
             <div class="invoice-footer">
                 <button *ngIf="!invoice?.status" (click)="finishInvoice(invoice)"
                     class="finalize-btn">Finalizar</button>
+                <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">Eliminar</button>
             </div>
         </div>
-        }
+        <div *ngIf="isLoading" class="loading-message">
+            <div class="spinner"></div>
+            Cargando...
+        </div>
     </div>
 </div>

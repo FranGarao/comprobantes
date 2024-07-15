@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 export class InvoicesListComponent {
   public invoices: Invoice[] = [];
   public filteredInvoices: Invoice[] = [];
+  public isLoading: boolean = false;
 
   constructor(private service: DashboardService) {}
 
@@ -21,8 +22,10 @@ export class InvoicesListComponent {
   }
 
   getInvoices() {
+    this.isLoading = true;
     this.service.getInvoices().subscribe({
       next: (res: Invoice[]) => {
+        this.isLoading = false;
         this.invoices = res;
         this.filteredInvoices = res;
         console.log({ invoices: this.invoices });
@@ -40,9 +43,52 @@ export class InvoicesListComponent {
     });
   }
 
-  printInvoice() {
-    // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
-    const printContent = document.getElementById('printArea')?.innerHTML;
+  printInvoice(invoice: any, option: number) {
+    let printContent = '';
+
+    switch (option) {
+      case 0:
+        printContent = `
+          <div>
+            <h3>Comprobante N°${invoice?.id}</h3>
+            <p>Cliente: <strong>${invoice?.name}</strong></p>
+            <p>Teléfono: <strong>${invoice?.phone}</strong></p>
+            <p>Trabajo: ${invoice?.job}</p>
+            <p>Total: $${invoice?.total}</p>
+            <p>Seña: $${invoice?.deposit}</p>
+            <p>Balance: $${invoice?.balance}</p>
+            <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+            <p>Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}</p>
+          </div>
+        `;
+        break;
+      case 1:
+        printContent = `
+          <div>
+            <h3>Comprobante N°${invoice?.id}</h3>
+            <p>Cliente: <strong>${invoice?.name}</strong></p>
+            <p>Teléfono: <strong>${invoice?.phone}</strong></p>
+            <p>Trabajo: ${invoice?.job}</p>
+            <p>Total: $${invoice?.total}</p>
+            <p>Seña: $${invoice?.deposit}</p>
+            <p>Balance: $${invoice?.balance}</p>
+            <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+            <p>Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}</p>
+          </div>
+        `;
+        break;
+      case 2:
+        printContent = `
+          <div>
+            <h3>Comprobante N°${invoice?.id}</h3>
+          </div>
+        `;
+        break;
+      default:
+        printContent = '';
+        break;
+    }
+
     const originalContent = document.body.innerHTML;
 
     if (printContent) {
@@ -51,10 +97,45 @@ export class InvoicesListComponent {
       document.body.innerHTML = originalContent;
       location.reload(); // Para recargar la página y restaurar el contenido original
     } else {
-      window.print(); // Imprime toda la página
+      window.print(); // Imprime toda la página si printContent está vacío
     }
   }
 
+  deleteInvoice(id: any) {
+
+    Swal.fire({
+      title: 'Eliminar factura',
+      text: '¿Estas seguro de eliminar la factura?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteInvoice(id).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Factura eliminada',
+              text: 'La factura se ha eliminado correctamente',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+            });
+            this.getInvoices();
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Error de conexion',
+              text:
+                err?.error?.message ||
+                'Ocurrio un error al intentar eliminar la factura',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+            });
+          },
+        });
+      }
+    });
+  }
   search(therm: any) {
     this.filteredInvoices = this.invoices.filter((invoice) =>
       invoice.name.toLowerCase().includes(therm)
@@ -69,6 +150,53 @@ export class InvoicesListComponent {
         (invoice) => invoice?.status === status
       );
       return;
+    } else if (
+      therm.value === 'fa' ||
+      therm.value === 'fd' ||
+      therm.value === 'cd' ||
+      therm.value === 'ca'
+    ) {
+      console.log(therm.value);
+
+      switch (therm.value) {
+        case 'pendiente':
+          this.filteredInvoices = this.invoices.filter(
+            (invoice) => !invoice.status
+          );
+          break;
+        case 'finalizado':
+          this.filteredInvoices = this.invoices.filter(
+            (invoice) => invoice.status
+          );
+          break;
+        case 'fa':
+          this.filteredInvoices = [...this.invoices].sort(
+            (a, b) =>
+              new Date(a.deliveryDate).getTime() -
+              new Date(b.deliveryDate).getTime()
+          );
+          break;
+        case 'fd':
+          this.filteredInvoices = [...this.invoices].sort(
+            (a, b) =>
+              new Date(b.deliveryDate).getTime() -
+              new Date(a.deliveryDate).getTime()
+          );
+          break;
+        case 'ca':
+          this.filteredInvoices = [...this.invoices].sort(
+            (a, b) => a.id - b.id
+          );
+          break;
+        case 'cd':
+          this.filteredInvoices = [...this.invoices].sort(
+            (a, b) => b.id - a.id
+          );
+          break;
+        default:
+          this.filteredInvoices = [...this.invoices];
+          break;
+      }
     }
     this.filteredInvoices = this.invoices;
   }
@@ -93,13 +221,13 @@ export class InvoicesListComponent {
   }
   finishInvoiceRequest(invoice: Invoice) {
     this.service.updateInvoice(invoice?.id, invoice).subscribe({
-      next: (res: any) => {
-        const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado con exito, gracias por confiar en nosotros.`;
-        const whatsappUrl = `https://wa.me/${invoice?.phone}?text=${message}}`;
+      next: () => {
+        const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
+        const whatsappUrl = `https://wa.me/5498${invoice?.phone}?text=${message}}`;
         window.open(whatsappUrl, '_blank');
 
         Swal.fire({
-          title: 'Trabajo finalizada',
+          title: 'Trabajo finalizado',
           text: 'El Trabajo se ha finalizado correctamente',
           icon: 'success',
           confirmButtonText: 'Ok',

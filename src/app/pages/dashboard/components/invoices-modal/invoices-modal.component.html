@@ -1,6 +1,6 @@
 <form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm" (ngSubmit)="submit()">
     <h3>Generar Comprobante</h3>
-    <div class="form-ctn">
+    <div>
         <div class="input-ctn row">
             <label>N°</label>
             <input placeholder="Codigo" readonly type="number" value="{{lastInvoice}}" formControlName="id">
@@ -12,6 +12,10 @@
                     {{ job?.name }}
                 </option>
             </select>
+        </div>
+        <div class="input-ctn row" *ngIf="newJobExist">
+            <label>Nuevo Trabajo</label>
+            <input (change)="saveJob()" #newJob type="text" placeholder="Ingrese nuevo trabajo">
         </div>
         <div class="input-ctn row">
             <label>Fecha de entrega</label>
@@ -27,7 +31,7 @@
         </div>
         <div class="input-ctn row">
             <label>Total</label>
-            <input placeholder="Total" type="number" inputmode="numeric" [value]="selectedJob?.price" readonly
+            <input placeholder="Total" type="number" inputmode="numeric" [value]="selectedJob?.price"
                 formControlName="total">
         </div>
         <div class="input-ctn row">
@@ -40,5 +44,18 @@
             <input placeholder="Saldo" type="number" inputmode="numeric" [value]="balance" formControlName="balance">
         </div>
     </div>
-    <input class="submit" value="Generar" (click)="submit()">
+    <div class="form-footer">
+        <input class="submit" type="submit" value="Generar">
+        <button [cdkMenuTriggerFor]="printMenu" class="print-btn">
+            <mat-icon>print</mat-icon>
+            Imprimir
+        </button>
+        <ng-template #printMenu>
+            <div class="example-menu" cdkMenu>
+                <button (click)="printInvoice(0)" class="example-menu-item" cdkMenuItem>Comprobante Cliente</button>
+                <button (click)="printInvoice(1)" class="example-menu-item" cdkMenuItem>Comprobante Negocio</button>
+                <button (click)="printInvoice(2)" class="example-menu-item" cdkMenuItem>Comprobante Simple</button>
+            </div>
+        </ng-template>
+    </div>
 </form>
