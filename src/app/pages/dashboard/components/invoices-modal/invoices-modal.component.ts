@@ -21,6 +21,7 @@ export class InvoicesModalComponent implements OnInit {
   public invoicesForm: FormGroup = new FormGroup({});
   public form: Invoice = {} as Invoice;
   public jobs: Job[] = [];
+  public selectedJobs: any[] = [0];
   public lastInvoice: number = 0;
   public selectedJob: any;
   public balance: number = 0;
@@ -93,36 +94,20 @@ export class InvoicesModalComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Aceptar',
         }).then(() => {
-          // Redirigir a WhatsApp después de que el usuario cierre la alerta
           const message =
-            `*GENERACION DE ZAPATEROS*
-                      
-                      \n` +
-            `Compostura de Calzado\n` +
-            '         ' +
-            `Av. Peron 1855 - San Miguel\n` +
-            '         ' +
-            `11 5667 0042\n` +
-            `Comprobante N° ${this.form?.id}\n` +
-            '         ' +
-            `Fecha de entrega: ${this.form?.deliveryDate}\n` +
-            '         ' +
-            `Total $${this.form.total}:\n` +
-            '         ' +
-            `Sena $${this.form.deposit}:\n` +
-            '         ' +
-            `Balance $${this.form.balance}:\n` +
-            '         ' +
+            `*GENERACION DE ZAPATEROS*\n` +
+            `*Comprobante N°* ${this.form?.id}\n` +
+            `*Fecha de entrega:* ${this.form?.deliveryDate}\n` +
+            `*Seña:* $${this.form.deposit}\n` +
+            `*Balance:* $${this.form.balance}\n\n` +
             `*HORARIOS*\n` +
-            '         ' +
             `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
-            '         ' +
-            `Sabado 09 a 13 hs.\n` +
-            '         ' +
-            `*Si la reparacion no se retira dentro de los 15 dias, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados despues de 30 dias, pierden todo derecho a reclamo.*\n`;
-          const whatsappUrl = `https://wa.me/549${this.form?.phone}?text=${message}}`;
-          console.log({ whatsappUrl });
+            `Sábado 09 a 13 hs\n\n` +
+            `*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados después de 30 días pierden todo derecho a reclamo.*\n`;
 
+          const encodedMessage = encodeURIComponent(message);
+          const phoneNumber = this.form?.phone; // Asegúrate de que el número de teléfono esté correctamente formateado
+          const whatsappUrl = `https://wa.me/549${phoneNumber}?text=${encodedMessage}`;
           window.open(whatsappUrl, '_blank');
         });
       },
@@ -191,8 +176,13 @@ export class InvoicesModalComponent implements OnInit {
     if (jobId !== 0) {
       this.newJobExist = false;
       this.selectedJob = this.jobs?.find((job) => job.id === jobId);
-      this.invoicesForm.get('total')?.setValue(this.selectedJob?.price);
+      this.invoicesForm
+        .get('total')
+        ?.setValue(
+          this.selectedJob?.price + this.invoicesForm.get('total')?.value
+        );
       this.setBalance();
+      this.selectedJobs.push(this.selectedJob);
       return this.selectedJob;
     } else {
       this.newJobExist = true;

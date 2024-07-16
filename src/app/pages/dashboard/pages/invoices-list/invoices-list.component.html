@@ -49,19 +49,16 @@
                     <button [cdkMenuTriggerFor]="printMenu" class="icon-btn">
                         <mat-icon>print</mat-icon>
                     </button>
-                    <!-- <button (click)="sendWhatsApp(invoice)" class="icon-btn">
-                        <mat-icon svgIcon="whatsapp"></mat-icon>
-                    </button> -->
                 </div>
                 <ng-template #printMenu>
                     <div class="example-menu" cdkMenu>
-                        <button (click)="printInvoice(invoice, 0)" class="example-menu-item" cdkMenuItem>Imprimir
+                        <button (click)="printInvoice(invoice, 1)" class="example-menu-item" cdkMenuItem>Imprimir
                             General</button>
-                        <button (click)="printInvoice(invoice, 1)" class="example-menu-item" cdkMenuItem>Imprimir para
+                        <button (click)="printInvoice(invoice, 0)" class="example-menu-item" cdkMenuItem>Imprimir para
                             Cliente</button>
                         <button (click)="printInvoice(invoice, 2)" class="example-menu-item" cdkMenuItem>Imprimir
-                            Codigo</button> <button (click)="printInvoice(invoice, 3)" class="example-menu-item"
-                            cdkMenuItem>Enviar
+                            Codigo</button>
+                        <button (click)="printInvoice(invoice, 3)" class="example-menu-item" cdkMenuItem>Enviar
                             Comprobante</button>
                     </div>
                 </ng-template>

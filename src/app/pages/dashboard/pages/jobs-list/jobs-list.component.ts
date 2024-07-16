@@ -40,6 +40,11 @@ export class JobsListComponent {
       },
     });
   }
+
+  editJob(id: number) {
+    // this.service.updateJob()
+  }
+
   questionDelete(id: any) {
     Swal.fire({
       title: 'Eliminar trabajo',
@@ -54,6 +59,7 @@ export class JobsListComponent {
       }
     });
   }
+
   deleteJob(id: any) {
     this.service.deleteJob(id).subscribe({
       next: (res: any) => {

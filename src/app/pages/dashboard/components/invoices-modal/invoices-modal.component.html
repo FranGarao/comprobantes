@@ -7,11 +7,14 @@
         </div>
         <div class="input-ctn row">
             <label>Trabajo</label>
-            <select formControlName="job">
-                <option (click)="selectJob()" *ngFor="let job of jobs" [value]="job?.id" title="job?.name" id="job.id">
-                    {{ job?.name }}
-                </option>
-            </select>
+            <div *ngFor="let x of selectedJobs">
+                <select formControlName="job">
+                    <option (click)="selectJob()" *ngFor="let job of jobs" [value]="job?.id" title="job?.name"
+                        id="job.id">
+                        {{ job?.name }}
+                    </option>
+                </select>
+            </div>
         </div>
         <div class="input-ctn row" *ngIf="newJobExist">
             <label>Nuevo Trabajo</label>

@@ -384,8 +384,8 @@ export class InvoicesListComponent {
     }
   }
 
-  sendWhatsApp(phone: string, message: string) {
-    const whatsappUrl = `https://wa.me/549${phone}?text=${message}}`;
+  sendWhatsApp(phone: any, message: string) {
+    const whatsappUrl = `https://wa.me/549${phone}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   }
 }

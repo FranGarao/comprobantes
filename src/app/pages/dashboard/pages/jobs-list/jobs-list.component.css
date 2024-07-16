@@ -57,6 +57,20 @@ h2 {
 .delete-btn:hover {
     background-color: #ff1a1a;
 }
+.edit-btn {
+    background-color: #1dce1d;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #13af13;
+}
 
 .loading-message {
     display: flex;
