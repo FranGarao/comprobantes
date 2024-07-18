@@ -1,4 +1,4 @@
-<form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm" (ngSubmit)="submit()">
+<form class="form-ctn" [formGroup]="invoicesForm" *ngIf="invoicesForm">
     <h3>Generar Comprobante</h3>
     <div>
         <div class="input-ctn row">
@@ -7,18 +7,23 @@
         </div>
         <div class="input-ctn row">
             <label>Trabajo</label>
-            <div *ngFor="let x of selectedJobs">
+            <!-- <button (click)="addJob()" mat-button>Agregar + </button> -->
+            <button (click)="rmJob()" mat-button>Eliminar</button>
+            <button (click)="showSelectedJobs()" mat-button>Ver ({{selectedJobs.length}})</button>
+            <div *ngFor="let x of addJobs">
                 <select formControlName="job">
-                    <option (click)="selectJob()" *ngFor="let job of jobs" [value]="job?.id" title="job?.name"
+                    <option (click)="selectJob(job)" *ngFor="let job of jobs" [value]="job?.id" title="job?.name"
                         id="job.id">
                         {{ job?.name }}
                     </option>
                 </select>
             </div>
         </div>
-        <div class="input-ctn row" *ngIf="newJobExist">
+        <div class="input-ctn row">
             <label>Nuevo Trabajo</label>
-            <input (change)="saveJob()" #newJob type="text" placeholder="Ingrese nuevo trabajo">
+            <input #newJobName type="text" placeholder="Ingrese nuevo trabajo">
+            <input #newJobPrice  type="number" value="0" placeholder="Precio">
+            <button (click)="saveJob()" mat-button>Agregar</button>
         </div>
         <div class="input-ctn row">
             <label>Fecha de entrega</label>
@@ -28,15 +33,17 @@
             <label>Nombre</label>
             <input placeholder="Nombre" formControlName="name">
         </div> -->
-        <select formControlName="customer">
+<div class="input-ctn row">
+        <select  formControlName="customer">
             <option (click)="setCustomer(c?.name, c?.lastName, c?.phone)" *ngFor="let c of customers" [value]="c?.id">
                 {{c?.name}}
                 {{c?.lastName}}
             </option>
         </select>
+    </div>
         <div class="input-ctn row">
             <label>Telefono</label>
-            <input placeholder="Telefono" readonly type="number" inputmode="numeric" value="" formControlName="phone">
+            <input placeholder="Telefono" type="number" inputmode="numeric" value="" formControlName="phone">
         </div>
         <div class="input-ctn row">
             <label>Total</label>
@@ -54,7 +61,7 @@
         </div>
     </div>
     <div class="form-footer">
-        <input class="submit" type="submit" value="Generar">
+        <input class="submit" (click)="submit()" type="submit" value="Generar">
         <button [cdkMenuTriggerFor]="printMenu" class="print-btn">
             <mat-icon>print</mat-icon>
             Imprimir

@@ -23,14 +23,17 @@ export class InvoicesModalComponent implements OnInit {
   public form: Invoice = {} as Invoice;
   public jobs: Job[] = [];
   public customers: Customer[] = [];
-  public selectedJobs: any[] = [0];
+  public selectedJobs: Job[] = [];
+  public addJobs: any[] = [0];
   public lastInvoice: number = 0;
   public selectedJob: any;
   public balance: number = 0;
   public newJobExist: boolean = false;
   private printContent: string = '';
-  @ViewChild('newJob', { static: false })
-  newJob!: ElementRef;
+  @ViewChild('newJobName', { static: false })
+  newJobName!: ElementRef;
+  @ViewChild('newJobPrice', { static: false })
+  newJobPrice!: ElementRef;
   /**
    *
    */
@@ -168,13 +171,16 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   saveJob() {
-    if (this.newJob) {
-      const newJobValue = this.newJob.nativeElement.value;
-      this.invoicesForm.get('job')!.setValue(newJobValue);
+      const newJobName = this.newJobName.nativeElement.value;  
+      const newJobPrice = this.newJobPrice.nativeElement.value;  
       console.log({ Trabajo: this.invoicesForm.get('job')?.value });
-
-      // Aquí puedes guardar el valor del nuevo trabajo en donde necesites
-    }
+      this.invoicesForm.get('total')?.setValue(Number(this.invoicesForm.get('total')?.value) + Number(newJobPrice));
+      console.log({newJobName, newJobPrice});
+      
+      this.selectedJobs.push(newJobName);
+      console.log({ selectedJobs: this.selectedJobs });
+      
+      this.setBalance();
   }
 
   getLastInvoice() {
@@ -189,29 +195,48 @@ export class InvoicesModalComponent implements OnInit {
     });
   }
 
-  selectJob() {
-    const jobId = Number(this.invoicesForm?.get('job')?.value);
-    if (jobId !== 0) {
-      this.newJobExist = false;
-      this.selectedJob = this.jobs?.find((job) => job.id === jobId);
-      this.invoicesForm
-        .get('total')
-        ?.setValue(
-          this.selectedJob?.price + this.invoicesForm.get('total')?.value
-        );
-      this.setBalance();
-      this.selectedJobs.push(this.selectedJob);
-      return this.selectedJob;
-    } else {
+  showSelectedJobs(){
+    this.selectedJobs.forEach((job) => {
+      console.log(job?.name);
+    })
+  }
+
+  selectJob(job: Job) {
+    // const jobId = Number(this.invoicesForm?.get('job')?.value);
+    if (job?.id === 0) {
       this.newJobExist = true;
+      return;
     }
+
+    console.log({ job });
+    this.selectedJobs.push(job);
+    this.invoicesForm
+      .get('total')
+      ?.setValue(
+        Number(job?.price) + Number(this.invoicesForm.get('total')?.value)
+      );
+
+    this.setBalance();
+
+    // if (jobId !== 0) {
+    //   //todo: ver newJobExist
+    //   this.selectedJob = this.jobs?.find((job) => job.id === jobId);
+    //   this.invoicesForm
+    //     .get('total')
+    //     ?.setValue(
+    //       Number(this.selectedJob?.price) + Number(this.invoicesForm.get('total')?.value)
+    //     );
+    //   return this.selectedJob;
+    // } else {
+    //   this.newJobExist = true;
+    // }
   }
 
   setBalance() {
     this.balance =
       this.invoicesForm.get('total')?.value -
       this.invoicesForm.get('deposit')?.value;
-
+  
     console.log({
       total: this.invoicesForm.get('total')?.value,
       deposito: this.invoicesForm.get('deposit')?.value,
@@ -221,11 +246,12 @@ export class InvoicesModalComponent implements OnInit {
 
   printInvoice(type: number) {
     // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
-    const job =
-      this.jobs?.find((j) => j?.id == this.invoicesForm?.get('job')?.value) ||
-      this.invoicesForm.get('job')?.value;
-    console.log({ job });
-
+    const jobs: any[] = [];
+    this.selectedJobs.forEach((j: Job) => {
+      if (j.name) jobs.push(j.name)
+      else jobs.push(j)
+    })
+    const jobStrings = jobs.map((j: any) => `<p>Trabajo: ${j}</p>`).join('');
     switch (type) {
       case 0:
         this.printContent = `
@@ -236,7 +262,7 @@ export class InvoicesModalComponent implements OnInit {
           <p style="text-align: center;">11 5667 0042</p>
           <hr>
           <p>Nº ${this.lastInvoice}</p>
-          <p>Trabajo: ${job?.name || job}</p>
+          ${jobStrings}
           <p>Fecha de entrega: ${
             this.invoicesForm.get('deliveryDate')?.value
           }</p>
@@ -269,7 +295,7 @@ export class InvoicesModalComponent implements OnInit {
           <hr>
           <p>NOMBRE: ${this.invoicesForm.get('name')?.value}</p>
           <p>TELÉFONO: ${this.invoicesForm.get('phone')?.value}</p>
-          <p>TRABAJO: ${job?.name || job}</p>
+          ${jobStrings}
         </div>
       `;
 
@@ -278,7 +304,7 @@ export class InvoicesModalComponent implements OnInit {
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
           <p>Nº ${this.lastInvoice}</p>
-          <p>Trabajo: ${job?.name || job}</p>
+          ${jobStrings}
         </div>
       `;
         break;
@@ -315,6 +341,13 @@ export class InvoicesModalComponent implements OnInit {
     } else {
       window.print(); // Imprime toda la página si printContent está vacío
     }
+  }
+
+  addJob(){
+    this.addJobs.push("x")
+  }
+  rmJob(){
+    this.selectedJobs.pop();
   }
 }
 /*

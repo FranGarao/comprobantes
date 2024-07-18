@@ -19,12 +19,6 @@
                 <mat-icon>search</mat-icon>
             </button>
         </div>
-        <div class="search-container">
-            <input #searchJob type="text" class="search" placeholder="Buscar por trabajo">
-            <button (click)="search(searchJob.value, 3)" class="search-btn">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
         <div class="filter-container">
             <label for="status-filter">Filtrar</label>
             <select (change)="filter($event.target)" id="status-filter" class="status-filter">
