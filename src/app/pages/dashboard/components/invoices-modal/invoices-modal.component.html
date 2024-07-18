@@ -24,13 +24,19 @@
             <label>Fecha de entrega</label>
             <input placeholder="Fecha de Entrega" type="date" formControlName="deliveryDate">
         </div>
-        <div class="input-ctn row">
+        <!-- <div class="input-ctn row">
             <label>Nombre</label>
             <input placeholder="Nombre" formControlName="name">
-        </div>
+        </div> -->
+        <select formControlName="customer">
+            <option (click)="setCustomer(c?.name, c?.lastName, c?.phone)" *ngFor="let c of customers" [value]="c?.id">
+                {{c?.name}}
+                {{c?.lastName}}
+            </option>
+        </select>
         <div class="input-ctn row">
             <label>Telefono</label>
-            <input placeholder="Telefono" type="number" inputmode="numeric" value="0" formControlName="phone">
+            <input placeholder="Telefono" readonly type="number" inputmode="numeric" value="" formControlName="phone">
         </div>
         <div class="input-ctn row">
             <label>Total</label>

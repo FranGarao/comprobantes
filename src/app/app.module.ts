@@ -22,12 +22,13 @@ import { MatInputModule } from '@angular/material/input';
 import { provideHttpClient } from '@angular/common/http';
 import { JobModalComponent } from './pages/dashboard/components/job-modal/job-modal.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CommonModule } from '@angular/common';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { InvoicesListComponent } from './pages/dashboard/pages/invoices-list/invoices-list.component';
 import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.component'; // Import CdkMenuModule
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CustomerModalComponent } from './pages/dashboard/components/customer-modal/customer-modal.component';
+import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     JobModalComponent,
     InvoicesListComponent,
     JobsListComponent,
+    CustomerModalComponent,
+    CustomersListComponent,
   ],
   imports: [
     BrowserModule,

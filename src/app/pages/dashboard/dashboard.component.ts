@@ -24,4 +24,8 @@ export class DashboardComponent {
   openJob() {
     this.service.openJob();
   }
+
+  openCustomer(){
+    this.service.openCustomer();
+  }
 }

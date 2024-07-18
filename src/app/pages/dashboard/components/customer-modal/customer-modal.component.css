@@ -1,0 +1,56 @@
+.customer-form {
+  width: 400px;
+  height: 100%;
+  margin: auto;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.customer-form .modal-header {
+  color: #1c1c1c;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.customer-form .modal-title {
+  margin: 0;
+}
+
+.customer-form .modal-body {
+  padding: 20px;
+}
+
+.customer-form .form-group {
+  margin-bottom: 15px;
+}
+
+.customer-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.customer-form .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.customer-form .btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.customer-form .btn-primary {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.customer-form .btn-primary:hover {
+  background-color: #0056b3;
+}

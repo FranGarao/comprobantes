@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { DashboardService } from '../../dashboard.service';
 import { Job } from '../../interfaces/Job';
 import { Invoice } from '../../interfaces/Invoice';
+import { Customer } from '../../interfaces/Customer';
 @Component({
   selector: 'app-invoices-modal',
   templateUrl: './invoices-modal.component.html',
@@ -21,6 +22,7 @@ export class InvoicesModalComponent implements OnInit {
   public invoicesForm: FormGroup = new FormGroup({});
   public form: Invoice = {} as Invoice;
   public jobs: Job[] = [];
+  public customers: Customer[] = [];
   public selectedJobs: any[] = [0];
   public lastInvoice: number = 0;
   public selectedJob: any;
@@ -45,6 +47,7 @@ export class InvoicesModalComponent implements OnInit {
     this.getJobs();
     this.buildForm();
     this.getLastInvoice();
+    this.getCustomers();
   }
   buildForm() {
     //TODO agregar required
@@ -59,9 +62,13 @@ export class InvoicesModalComponent implements OnInit {
       deliveryDate: ['', Validators.required],
     });
   }
-  sendForm() {
-    console.log({ FORM: this.invoicesForm.value });
 
+  setCustomer(name: any, lastName: any, phone: any) {
+    this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
+    this.invoicesForm.get('phone')?.setValue(phone);
+  }
+
+  sendForm() {
     if (this.invoicesForm.invalid) {
       Swal.fire({
         title: 'Error',
@@ -85,6 +92,7 @@ export class InvoicesModalComponent implements OnInit {
       jobId: Number(this.invoicesForm.get('job')?.value) || 0,
       status: false,
     };
+    console.log({ form: this.form });
 
     this.service.sendForm(this.form).subscribe({
       next: () => {
@@ -125,6 +133,8 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   submit() {
+    console.log();
+
     Swal.fire({
       title: 'Enviar formulario',
       text: 'Desea enviar el formulario?',
@@ -144,6 +154,14 @@ export class InvoicesModalComponent implements OnInit {
     this.service.getJobs().subscribe({
       next: (jobs: any) => {
         this.jobs = jobs;
+      },
+      error: (error) => console.error(error),
+    });
+  }
+  getCustomers() {
+    this.service.getCustomers().subscribe({
+      next: (customers: Customer[]) => {
+        this.customers = customers;
       },
       error: (error) => console.error(error),
     });

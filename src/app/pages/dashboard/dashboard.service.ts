@@ -6,6 +6,8 @@ import { InvoicesModalComponent } from './components/invoices-modal/invoices-mod
 import { JobModalComponent } from './components/job-modal/job-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Job } from './interfaces/Job';
+import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
+import { Customer } from './interfaces/Customer';
 const urlBack = environment.API_URL;
 
 @Injectable({
@@ -38,6 +40,12 @@ export class DashboardService {
     this.dialogRef.open(JobModalComponent, {
       width: '500px',
       height: '300px',
+    });
+  }
+  openCustomer() {
+    this.dialogRef.open(CustomerModalComponent, {
+      width: '500px',
+      height: '85vh',
     });
   }
 
@@ -89,5 +97,18 @@ export class DashboardService {
       'Content-Type': 'application/json',
     });
     return this.http.post(url, job, { headers });
+  }
+
+  createCustomer(customer: Customer) {
+    const url = `${environment.API_URL}/customer`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<Customer>(url, customer, { headers });
+  }
+
+  getCustomers() {
+    const url = `${environment.API_URL}/customer`;
+    return this.http.get<Customer[]>(url);
   }
 }

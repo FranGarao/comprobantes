@@ -31,6 +31,20 @@
                 </div>
             </ng-template>
         </div>
+        <div [cdkMenuTriggerFor]="customerMenu" title="Generar Comprobante" class="option">
+            <mat-icon class="icon material-symbols-outlined">
+                person
+            </mat-icon>
+            <p>
+                Cliente
+            </p>
+            <ng-template #customerMenu>
+                <div class="example-menu" cdkMenu>
+                    <button (click)="openCustomer()" class="example-menu-item" cdkMenuItem>Nuevo Cliente</button>
+                    <button routerLink="list/customers" class="example-menu-item" cdkMenuItem>Ver Clientes</button>
+                </div>
+            </ng-template>
+        </div>
         <!-- <div title="Generar Comprobante" class="option">
             <mat-icon class="icon material-symbols-outlined">
                 note_add
