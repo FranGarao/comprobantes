@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { InvoicesListComponent } from './pages/dashboard/pages/invoices-list/invoices-list.component';
 import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.component';
+import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'list/jobs',
         component: JobsListComponent,
+      },
+      {
+        path: 'list/customers',
+        component: CustomersListComponent,
       },
     ],
   },

@@ -13,7 +13,7 @@
                 <td>{{job.name}}</td>
                 <td>${{job.price}}</td>
                 <td>
-                    <button *ngIf="job?.id !== 0" class="edit-btn">Editar</button>
+                    <button (click)="editJob(job)" *ngIf="job?.id !== 0" class="edit-btn">Editar</button>
                     <button *ngIf="job?.id !== 0" (click)="questionDelete(job?.id)" class="delete-btn">Eliminar</button>
                 </td>
             </tr>

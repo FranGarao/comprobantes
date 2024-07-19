@@ -13,7 +13,7 @@ export class JobsListComponent {
   /**
    *
    */
-  constructor(private service: DashboardService) {}
+  constructor(private service: DashboardService) { }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -41,8 +41,9 @@ export class JobsListComponent {
     });
   }
 
-  editJob(id: number) {
-    // this.service.updateJob()
+  editJob(job: Job) {
+    this.service.setJob(job);
+    this.service.openJob(1);
   }
 
   questionDelete(id: any) {

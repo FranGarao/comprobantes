@@ -23,12 +23,13 @@ export class InvoicesModalComponent implements OnInit {
   public form: Invoice = {} as Invoice;
   public jobs: Job[] = [];
   public customers: Customer[] = [];
-  public selectedJobs: Job[] = [];
+  public selectedJobs: any[] = [];
   public addJobs: any[] = [0];
   public lastInvoice: number = 0;
   public selectedJob: any;
   public balance: number = 0;
   public newJobExist: boolean = false;
+  private jobId: number = 0;
   private printContent: string = '';
   @ViewChild('newJobName', { static: false })
   newJobName!: ElementRef;
@@ -81,6 +82,19 @@ export class InvoicesModalComponent implements OnInit {
       });
       return;
     }
+
+    const jobs: any[] = [];
+
+    this.selectedJobs.forEach((j: any) => {
+      if (j.name) jobs.push(j.name);
+      else jobs.push(j);
+    });
+
+    const jobStrings = jobs.map((j: any) => j).join(', ');
+    if (this.selectedJobs.length === 1) {
+      this.jobId = Number(this.invoicesForm.get('job')?.value);
+    }
+
     this.form = {
       id: this.lastInvoice,
       total: this.invoicesForm.get('total')?.value,
@@ -89,16 +103,14 @@ export class InvoicesModalComponent implements OnInit {
       deliveryDate: this.invoicesForm.get('deliveryDate')?.value,
       name: this.invoicesForm.get('name')?.value,
       phone: this.invoicesForm.get('phone')?.value.toString(),
-      job:
-        this.jobs?.find((j) => j?.id === this.invoicesForm?.get('job')?.value)
-          ?.name || 'null',
-      jobId: Number(this.invoicesForm.get('job')?.value) || 0,
+      job: jobStrings,
+      jobId: this.jobId || 0,
       status: false,
     };
-    console.log({ form: this.form });
-
+    console.log(this.form);
     this.service.sendForm(this.form).subscribe({
       next: () => {
+        this.closeModal();
         Swal.fire({
           title: 'Formulario enviado',
           text: 'El formulario ha sido enviado con éxito',
@@ -136,8 +148,6 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   submit() {
-    console.log();
-
     Swal.fire({
       title: 'Enviar formulario',
       text: 'Desea enviar el formulario?',
@@ -171,16 +181,15 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   saveJob() {
-      const newJobName = this.newJobName.nativeElement.value;  
-      const newJobPrice = this.newJobPrice.nativeElement.value;  
-      console.log({ Trabajo: this.invoicesForm.get('job')?.value });
-      this.invoicesForm.get('total')?.setValue(Number(this.invoicesForm.get('total')?.value) + Number(newJobPrice));
-      console.log({newJobName, newJobPrice});
-      
-      this.selectedJobs.push(newJobName);
-      console.log({ selectedJobs: this.selectedJobs });
-      
-      this.setBalance();
+    const newJobName = this.newJobName.nativeElement.value;
+    const newJobPrice = this.newJobPrice.nativeElement.value;
+    this.invoicesForm
+      .get('total')
+      ?.setValue(
+        Number(this.invoicesForm.get('total')?.value) + Number(newJobPrice)
+      );
+    this.selectedJobs.push(newJobName);
+    this.setBalance();
   }
 
   getLastInvoice() {
@@ -188,17 +197,18 @@ export class InvoicesModalComponent implements OnInit {
       next: (invoices: Invoice[]) => {
         const invoicesIds: number[] = [];
         invoices.forEach((invoice: Invoice) => invoicesIds.push(invoice.id));
-        this.lastInvoice = Math.max(...invoicesIds) + 1;
-        console.log({ lastInvoice: this.lastInvoice });
+        if (invoicesIds.length > 0) {
+          this.lastInvoice = Math.max(...invoicesIds) + 1;
+        } else this.lastInvoice = 1;
       },
       error: (error) => console.error(error),
     });
   }
 
-  showSelectedJobs(){
+  showSelectedJobs() {
     this.selectedJobs.forEach((job) => {
       console.log(job?.name);
-    })
+    });
   }
 
   selectJob(job: Job) {
@@ -208,7 +218,6 @@ export class InvoicesModalComponent implements OnInit {
       return;
     }
 
-    console.log({ job });
     this.selectedJobs.push(job);
     this.invoicesForm
       .get('total')
@@ -236,21 +245,15 @@ export class InvoicesModalComponent implements OnInit {
     this.balance =
       this.invoicesForm.get('total')?.value -
       this.invoicesForm.get('deposit')?.value;
-  
-    console.log({
-      total: this.invoicesForm.get('total')?.value,
-      deposito: this.invoicesForm.get('deposit')?.value,
-      balance: this.balance,
-    });
   }
 
   printInvoice(type: number) {
     // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
     const jobs: any[] = [];
     this.selectedJobs.forEach((j: Job) => {
-      if (j.name) jobs.push(j.name)
-      else jobs.push(j)
-    })
+      if (j.name) jobs.push(j.name);
+      else jobs.push(j);
+    });
     const jobStrings = jobs.map((j: any) => `<p>Trabajo: ${j}</p>`).join('');
     switch (type) {
       case 0:
@@ -343,10 +346,10 @@ export class InvoicesModalComponent implements OnInit {
     }
   }
 
-  addJob(){
-    this.addJobs.push("x")
+  addJob() {
+    this.addJobs.push('x');
   }
-  rmJob(){
+  rmJob() {
     this.selectedJobs.pop();
   }
 }

@@ -21,8 +21,8 @@ export class DashboardComponent {
     this.service.openInvoice();
   }
 
-  openJob() {
-    this.service.openJob();
+  openJob(x: number) {
+    this.service.openJob(x);
   }
 
   openCustomer(){

@@ -1,18 +1,31 @@
-<form [formGroup]="jobsForm" (submit)="createJob()">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Agregar Trabajo</h5>
+<form [formGroup]="jobsForm">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Agregar Trabajo</h5>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="jobName">Trabajo</label>
+      <input
+        type="text"
+        class="form-control"
+        id="jobName"
+        [placeholder]="job?.name || 'Nombre del trabajo'"
+        formControlName="name"
+      />
     </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="jobName">Trabajo</label>
-            <input type="text" class="form-control" id="jobName" formControlName="name">
-        </div>
-        <div class="form-group">
-            <label for="jobPrice">Precio</label>
-            <input type="number" class="form-control" id="jobPrice" formControlName="price">
-        </div>
-        <input type="submit" value="Agregar">
-        <!-- 
+    <div class="form-group">
+      <label for="jobPrice">Precio</label>
+      <input
+        type="number"
+        class="form-control"
+        id="jobPrice"
+        [placeholder]="job?.price || 'Precio'"
+        formControlName="price"
+      />
+    </div>
+    <input (click)="createJob()" *ngIf="!job" type="submit" value="Agregar" />
+    <input (click)="updateJob()" *ngIf="job" type="submit" value="Editar" />
+    <!-- 
         <div class="form-group">
             <label for="jobStatus">Job Status</label>
             <select class="form-control" id="jobStatus" formControlName="jobStatus">
@@ -20,5 +33,5 @@
                 <option value="1">Completed</option>
             </select>
         </div> -->
-    </div>
+  </div>
 </form>

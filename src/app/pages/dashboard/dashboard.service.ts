@@ -14,6 +14,7 @@ const urlBack = environment.API_URL;
   providedIn: 'root',
 })
 export class DashboardService {
+  public job: Job = {} as Job;
   constructor(private http: HttpClient, private dialogRef: MatDialog) {}
 
   //Postea el formulario al backend
@@ -36,10 +37,13 @@ export class DashboardService {
       height: '85vh',
     });
   }
-  openJob() {
+  openJob(x: number) {
     this.dialogRef.open(JobModalComponent, {
       width: '500px',
       height: '300px',
+      data: {
+        id: x,
+      },
     });
   }
   openCustomer() {
@@ -48,7 +52,9 @@ export class DashboardService {
       height: '85vh',
     });
   }
-
+  setJob(job: Job) {
+    this.job = job;
+  }
   //Obtiene las comprobantes del backend
   getInvoices() {
     const url = `${environment.API_URL}/invoices`;
@@ -97,6 +103,15 @@ export class DashboardService {
       'Content-Type': 'application/json',
     });
     return this.http.post(url, job, { headers });
+  }
+
+  //Actualiza un trabajo
+  updateJob(job: any) {
+    const url = `${environment.API_URL}/jobs/${job.Id}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put(url, job, { headers });
   }
 
   createCustomer(customer: Customer) {

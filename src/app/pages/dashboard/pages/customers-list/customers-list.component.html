@@ -1,1 +1,32 @@
-ppp
+<div class="table-ctn">
+  <h2>Lista de Trabajos</h2>
+  <table class="jobs-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Telefono</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.name }} {{ customer.lastName }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.email }}</td>
+        <td>
+          <button (click)="editCustomer(customer)" class="edit-btn">
+            Editar
+          </button>
+          <button (click)="questionDelete(customer?.id)" class="delete-btn">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="isLoading" class="loading-message">
+    <div class="spinner"></div>
+    Cargando...
+  </div>
+</div>
