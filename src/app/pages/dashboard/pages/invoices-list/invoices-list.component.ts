@@ -278,7 +278,7 @@ export class InvoicesListComponent {
 
   printInvoice(invoice: Invoice, type: number) {
     // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
-
+    let messagge = '';
     switch (type) {
       case 0:
         this.printContent = `
@@ -305,6 +305,8 @@ export class InvoicesListComponent {
           </p>
         </div>
       `;
+        this.print(this.printContent);
+
         break;
 
       case 1:
@@ -321,6 +323,7 @@ export class InvoicesListComponent {
           <p>TRABAJO: ${invoice?.job}</p>
         </div>
       `;
+        this.print(this.printContent);
 
         break;
       case 2:
@@ -330,33 +333,21 @@ export class InvoicesListComponent {
             <p>Trabajo: ${invoice.job}</p>
           </div>
         `;
+        this.print(this.printContent);
+
         break;
       case 3:
-        const messagge = `
-          <p>Nº ${invoice?.id}</p>
-          <p>Trabajo: ${invoice?.job}</p>
-          <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
-          <p>Total $${invoice?.total}</p>
-          <p>Seña $${invoice?.deposit}</p>
-          <p>Saldo $${invoice?.balance}</p>
-          <hr>
-          <p style="text-align: center; font-weight: bold;">HORARIOS</p>
-          <p style="text-align: center;">Lunes a Viernes : 09 a 13 hs - 16 a 19 hs</p>
-          <p style="text-align: center;">Sábado 09 a 13 hs</p>
-          <hr>
-          <p style="font-size: 12px; text-align: center;">
-            Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.
-            Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.
-          </p>
-        </div>
-      `;
+        messagge = `*Nº* ${invoice?.id}\n*Trabajo:* ${invoice?.job}\n*Fecha de entrega:* ${invoice?.deliveryDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*HORARIOS*\nLunes a Viernes : 09 a 13 hs - 16 a 19 hsSábado 09 a 13 hs\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
+        `;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
-
+      case 4:
+        messagge = `*Hola ${invoice?.name}!*\n*Su trabajo ya esta listo para retirar*`;
+        this.sendWhatsApp(invoice.phone, messagge);
+        break;
       default:
         break;
     }
-    if (this.printContent) this.print(this.printContent);
   }
 
   print(printContent: string) {
@@ -388,7 +379,9 @@ export class InvoicesListComponent {
   }
 
   sendWhatsApp(phone: any, message: string) {
-    const whatsappUrl = `https://wa.me/549${phone}?text=${message}`;
+    const encodedMessage = encodeURIComponent(message);
+    console.log({ encodedMessage });
+    const whatsappUrl = `https://wa.me/549${phone}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   }
 
@@ -408,5 +401,17 @@ export class InvoicesListComponent {
       return deliveryDate >= start && deliveryDate <= end;
     });
     console.log({ startDate, endDate, invoices: this.filteredInvoices });
+  }
+
+  sendWsp(invoice: Invoice, type: number) {
+    switch (type) {
+      case 0:
+        break;
+      case 1:
+        break;
+
+      default:
+        break;
+    }
   }
 }

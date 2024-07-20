@@ -22,7 +22,7 @@ export class InvoicesModalComponent implements OnInit {
   public invoicesForm: FormGroup = new FormGroup({});
   public form: Invoice = {} as Invoice;
   public jobs: Job[] = [];
-  public customers: Customer[] = [];
+  public customers: any[] = [];
   public selectedJobs: any[] = [];
   public addJobs: any[] = [0];
   public lastInvoice: number = 0;
@@ -40,12 +40,9 @@ export class InvoicesModalComponent implements OnInit {
    */
   constructor(
     public dialogRef: MatDialogRef<InvoicesModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private service: DashboardService
-  ) {
-    this.firstName = data.formulario;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getJobs();
@@ -107,7 +104,6 @@ export class InvoicesModalComponent implements OnInit {
       jobId: this.jobId || 0,
       status: false,
     };
-    console.log(this.form);
     this.service.sendForm(this.form).subscribe({
       next: () => {
         this.closeModal();
@@ -206,8 +202,15 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   showSelectedJobs() {
-    this.selectedJobs.forEach((job) => {
-      console.log(job?.name);
+    const jobsStrings = this.selectedJobs
+      .map((j: Job) => (j.name ? j.name : j))
+      .join(', ');
+
+    Swal.fire({
+      title: 'Trabajos seleccionados',
+      text: jobsStrings,
+      icon: 'info',
+      confirmButtonText: 'Aceptar',
     });
   }
 
@@ -350,7 +353,12 @@ export class InvoicesModalComponent implements OnInit {
     this.addJobs.push('x');
   }
   rmJob() {
-    this.selectedJobs.pop();
+    const lastJob = this.selectedJobs.pop();
+    console.log(lastJob);
+    this.invoicesForm
+      .get('total')
+      ?.setValue(Number(this.invoicesForm.get('total')?.value) - lastJob.price);
+    this.setBalance();
   }
 }
 /*

@@ -53,12 +53,12 @@
     <div class="input-ctn row">
       <select>
         <option
-          (click)="setCustomer(c?.Name, c?.LastName, c?.Phone)"
+          (click)="setCustomer(c?.name, c?.lastName, c?.phone)"
           *ngFor="let c of customers"
-          [value]="c?.Id"
+          [value]="c?.id"
         >
-          {{ c?.Name }}
-          {{ c?.LastName }}
+          {{ c?.name }}
+          {{ c?.lastName }}
         </option>
       </select>
     </div>
@@ -68,7 +68,6 @@
         placeholder="Telefono"
         type="number"
         inputmode="numeric"
-        value=""
         formControlName="phone"
       />
     </div>
