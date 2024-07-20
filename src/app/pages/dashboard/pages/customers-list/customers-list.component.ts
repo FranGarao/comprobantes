@@ -9,23 +9,22 @@ import Swal from 'sweetalert2';
   styleUrl: './customers-list.component.css',
 })
 export class CustomersListComponent {
-  public customers: Customer[] = [];
+  public customers: any[] = [];
   public isLoading: boolean = false;
 
   constructor(private service: DashboardService) {}
 
   ngOnInit(): void {
     this.getCustomers();
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
   }
 
   getCustomers() {
     this.isLoading = true;
     this.service.getCustomers().subscribe({
-      next: (res: Customer[]) => {
+      next: (res: any[]) => {
         this.isLoading = false;
         this.customers = res;
+        console.log({ res });
       },
       error: (err) => {
         Swal.fire({
@@ -40,9 +39,9 @@ export class CustomersListComponent {
     });
   }
 
-  editCustomer(customer: Customer) {
-    // this.service.setJob(customer);
-    // this.service.openJob(1);
+  editCustomer(customer: any) {
+    this.service.setCustomer(customer);
+    this.service.openCustomer(1);
   }
 
   questionDelete(id: any) {
@@ -61,7 +60,7 @@ export class CustomersListComponent {
   }
 
   deleteCustomer(id: any) {
-    this.service.deleteJob(id).subscribe({
+    this.service.deleteCustomer(id).subscribe({
       next: (res: any) => {
         this.getCustomers();
         Swal.fire({

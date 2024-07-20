@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DashboardService } from '../../dashboard.service';
 import { Invoice } from '../../interfaces/Invoice';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-invoices-list',
@@ -12,13 +13,15 @@ export class InvoicesListComponent {
   public invoices: Invoice[] = [];
   public filteredInvoices: Invoice[] = [];
   public isLoading: boolean = false;
+  public dateFilter: FormGroup = new FormGroup({});
   private printContent: string = '';
-  constructor(private service: DashboardService) {}
+  constructor(private service: DashboardService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getInvoices();
+    this.createDateForm();
   }
 
   getInvoices() {
@@ -387,5 +390,23 @@ export class InvoicesListComponent {
   sendWhatsApp(phone: any, message: string) {
     const whatsappUrl = `https://wa.me/549${phone}?text=${message}`;
     window.open(whatsappUrl, '_blank');
+  }
+
+  createDateForm() {
+    this.dateFilter = this.fb.group({
+      startDate: [''],
+      endDate: [''],
+    });
+  }
+
+  submitFilterDate() {
+    const { startDate, endDate } = this.dateFilter.value;
+    this.filteredInvoices = this.invoices.filter((invoice) => {
+      const deliveryDate = new Date(invoice.deliveryDate).getTime();
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+      return deliveryDate >= start && deliveryDate <= end;
+    });
+    console.log({ startDate, endDate, invoices: this.filteredInvoices });
   }
 }

@@ -15,12 +15,11 @@ const urlBack = environment.API_URL;
 })
 export class DashboardService {
   public job: Job = {} as Job;
+  public customer: any;
   constructor(private http: HttpClient, private dialogRef: MatDialog) {}
 
   //Postea el formulario al backend
   sendForm(form: Invoice) {
-    console.log({ XXXXXXXX: form });
-
     const url = `${environment.API_URL}/invoices`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -30,9 +29,9 @@ export class DashboardService {
 
   openInvoice() {
     this.dialogRef.open(InvoicesModalComponent, {
-      data: {
-        formulario: 'Esto es un formulario de prueba',
-      },
+      // data: {
+      //   formulario: 'Esto es un formulario de prueba',
+      // },
       width: '500px',
       height: '85vh',
     });
@@ -46,14 +45,20 @@ export class DashboardService {
       },
     });
   }
-  openCustomer() {
+  openCustomer(x: number) {
     this.dialogRef.open(CustomerModalComponent, {
       width: '500px',
-      height: '85vh',
+      height: '55vh',
+      data: {
+        id: x,
+      },
     });
   }
   setJob(job: Job) {
     this.job = job;
+  }
+  setCustomer(c: any) {
+    this.customer = c;
   }
   //Obtiene las comprobantes del backend
   getInvoices() {
@@ -120,6 +125,19 @@ export class DashboardService {
       'Content-Type': 'application/json',
     });
     return this.http.post<Customer>(url, customer, { headers });
+  }
+
+  updateCustomer(customer: any) {
+    const url = `${environment.API_URL}/customer/${customer.Id}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put(url, customer, { headers });
+  }
+
+  deleteCustomer(id: number) {
+    const url = `${environment.API_URL}/customer/${id}`;
+    return this.http.delete(url);
   }
 
   getCustomers() {

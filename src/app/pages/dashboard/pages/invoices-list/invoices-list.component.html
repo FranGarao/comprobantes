@@ -1,84 +1,156 @@
 <div class="list-ctn">
-    <h2>Lista de Comprobantes</h2>
-    <div class="search-bar">
-        <div class="search-container">
-            <input #searchInput type="text" class="search" placeholder="Buscar por nombre">
-            <button (click)="search(searchInput.value, 0)" class="search-btn">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
-        <div class="search-container">
-            <input #searchPhone type="text" class="search" placeholder="Buscar por telefono">
-            <button (click)="search(searchPhone.value, 1)" class="search-btn">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
-        <div class="search-container">
-            <input #searchId type="text" class="search" placeholder="Buscar por comprobante">
-            <button (click)="search(searchId.value, 2)" class="search-btn">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
-        <div class="filter-container">
-            <label for="status-filter">Filtrar</label>
-            <select (change)="filter($event.target)" id="status-filter" class="status-filter">
-                <option value="all">Todos</option>
-                <option value="pendiente">Pendientes</option>
-                <option value="finalizado">Finalizados</option>
-                <!--TODO completar -->
-                <!-- <option value="fa">Fecha Asc.</option>
+  <h2>Lista de Comprobantes</h2>
+  <div class="search-bar">
+    <div class="search-container">
+      <input
+        #searchInput
+        type="text"
+        class="search"
+        placeholder="Buscar por nombre"
+      />
+      <button (click)="search(searchInput.value, 0)" class="search-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <form
+      [formGroup]="dateFilter"
+      class="search-container"
+      (ngSubmit)="submitFilterDate()"
+    >
+      <div>
+        <label for="startDate">Desde</label>
+        <input
+          formControlName="startDate"
+          type="date"
+          class="search"
+          placeholder="Buscar por telefono"
+        />
+      </div>
+      <div>
+        <label for="endDate">Hasta</label>
+        <input
+          formControlName="endDate"
+          type="date"
+          class="search"
+          placeholder="Buscar por telefono"
+        />
+      </div>
+      <button class="search-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
+    <div class="search-container">
+      <input
+        #searchId
+        type="text"
+        class="search"
+        placeholder="Buscar por comprobante"
+      />
+      <button (click)="search(searchId.value, 2)" class="search-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <div class="filter-container">
+      <label for="status-filter">Filtrar</label>
+      <select
+        (change)="filter($event.target)"
+        id="status-filter"
+        class="status-filter"
+      >
+        <option value="all">Todos</option>
+        <option value="pendiente">Pendientes</option>
+        <option value="finalizado">Finalizados</option>
+        <!--TODO completar -->
+        <!-- <option value="fa">Fecha Asc.</option>
                 <option value="fd">Fecha Desc.</option>
                 <option value="ca">Comprobante Asc.</option>
                 <option value="cd">Comprobante Desc.</option> -->
-            </select>
-        </div>
+      </select>
     </div>
-    <div class="invoices-ctn">
-        <div *ngFor="let invoice of filteredInvoices" class="invoice-card">
-            <div class="invoice-header">
-                <h3>Comprobante N°{{invoice?.id}}</h3>
-                <p>Cliente: <strong>{{invoice?.name}}</strong></p>
-                <p>Telefono: <strong>{{invoice?.phone}}</strong></p>
-                <div class="icon-buttons">
-                    <button [cdkMenuTriggerFor]="printMenu" class="icon-btn">
-                        <mat-icon>print</mat-icon>
-                    </button>
-                </div>
-                <ng-template #printMenu>
-                    <div class="example-menu" cdkMenu>
-                        <button (click)="printInvoice(invoice, 1)" class="example-menu-item" cdkMenuItem>Imprimir
-                            General</button>
-                        <button (click)="printInvoice(invoice, 0)" class="example-menu-item" cdkMenuItem>Imprimir para
-                            Cliente</button>
-                        <button (click)="printInvoice(invoice, 2)" class="example-menu-item" cdkMenuItem>Imprimir
-                            Codigo</button>
-                        <button (click)="printInvoice(invoice, 3)" class="example-menu-item" cdkMenuItem>Enviar
-                            Comprobante</button>
-                    </div>
-                </ng-template>
-            </div>
-            <div class="invoice-body">
-                <p><span class="label">Trabajo:</span> {{invoice?.job}}</p>
-                <p><span class="label">Total:</span> ${{invoice?.total}}</p>
-                <p><span class="label">Seña:</span> ${{invoice?.deposit}}</p>
-                <p><span class="label">Balance:</span> ${{invoice?.balance}}</p>
-                <p><span class="label">Fecha de entrega:</span> {{invoice?.deliveryDate}}</p>
-                <p>
-                    <span class="label">Estado:</span>
-                    <span class="status" [ngClass]="{'pending': !invoice?.status, 'finish': invoice?.status}">
-                        {{ invoice?.status ? 'Terminado' : 'Pendiente' }}
-                    </span>
-                </p>
-            </div>
-            <div class="invoice-footer">
-                <button *ngIf="!invoice?.status" (click)="finishInvoice(invoice)"
-                    class="finalize-btn">Finalizar</button>
-                <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">Eliminar</button>
-            </div>
+  </div>
+  <div class="invoices-ctn">
+    <div *ngFor="let invoice of filteredInvoices" class="invoice-card">
+      <div class="invoice-header">
+        <h3>Comprobante N°{{ invoice?.id }}</h3>
+        <p>
+          Cliente: <strong>{{ invoice?.name }}</strong>
+        </p>
+        <p>
+          Telefono: <strong>{{ invoice?.phone }}</strong>
+        </p>
+        <div class="icon-buttons">
+          <button [cdkMenuTriggerFor]="printMenu" class="icon-btn">
+            <mat-icon>print</mat-icon>
+          </button>
         </div>
-        <div *ngIf="isLoading" class="loading-message">
-            <div class="spinner"></div>
-            Cargando...
-        </div>
+        <ng-template #printMenu>
+          <div class="example-menu" cdkMenu>
+            <button
+              (click)="printInvoice(invoice, 1)"
+              class="example-menu-item"
+              cdkMenuItem
+            >
+              Imprimir General
+            </button>
+            <button
+              (click)="printInvoice(invoice, 0)"
+              class="example-menu-item"
+              cdkMenuItem
+            >
+              Imprimir para Cliente
+            </button>
+            <button
+              (click)="printInvoice(invoice, 2)"
+              class="example-menu-item"
+              cdkMenuItem
+            >
+              Imprimir Codigo
+            </button>
+            <button
+              (click)="printInvoice(invoice, 3)"
+              class="example-menu-item"
+              cdkMenuItem
+            >
+              Enviar Comprobante
+            </button>
+          </div>
+        </ng-template>
+      </div>
+      <div class="invoice-body">
+        <p><span class="label">Trabajo:</span> {{ invoice?.job }}</p>
+        <p><span class="label">Total:</span> ${{ invoice?.total }}</p>
+        <p><span class="label">Seña:</span> ${{ invoice?.deposit }}</p>
+        <p><span class="label">Balance:</span> ${{ invoice?.balance }}</p>
+        <p>
+          <span class="label">Fecha de entrega:</span>
+          {{ invoice?.deliveryDate | date : "dd/MM/yyyy" }}
+        </p>
+        <p>
+          <span class="label">Estado:</span>
+          <span
+            class="status"
+            [ngClass]="{ pending: !invoice?.status, finish: invoice?.status }"
+          >
+            {{ invoice?.status ? "Terminado" : "Pendiente" }}
+          </span>
+        </p>
+      </div>
+      <div class="invoice-footer">
+        <button
+          *ngIf="!invoice?.status"
+          (click)="finishInvoice(invoice)"
+          class="finalize-btn"
+        >
+          Finalizar
+        </button>
+        <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">
+          Eliminar
+        </button>
+      </div>
     </div>
+    <div *ngIf="isLoading" class="loading-message">
+      <div class="spinner"></div>
+      Cargando...
+    </div>
+  </div>
 </div>

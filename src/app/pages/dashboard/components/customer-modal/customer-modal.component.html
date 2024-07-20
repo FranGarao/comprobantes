@@ -1,24 +1,61 @@
-<form [formGroup]="customerForm" (submit)="addCustomer()" class="customer-form">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+<form [formGroup]="customerForm" class="customer-form">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+        [placeholder]="customer?.name || 'Nombre del cliente'"
+      />
     </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" class="form-control" id="name" formControlName="name">
-        </div>
-        <div class="form-group">
-            <label for="lastName">Apellido</label>
-            <input type="text" class="form-control" id="lastName" formControlName="lastName">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" formControlName="email">
-        </div>
-        <div class="form-group">
-            <label for="phone">Telefono</label>
-            <input type="number" class="form-control" id="phone" formControlName="phone">
-        </div>
-        <input type="submit" value="Agregar" class="btn btn-primary btn-block">
+    <div class="form-group">
+      <label for="lastName">Apellido</label>
+      <input
+        type="text"
+        class="form-control"
+        id="lastName"
+        formControlName="lastName"
+        [placeholder]="customer?.lastName || 'Apellido del cliente'"
+      />
     </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        [placeholder]="customer?.email || 'Email del cliente'"
+      />
+    </div>
+    <div class="form-group">
+      <label for="phone">Telefono</label>
+      <input
+        type="number"
+        class="form-control"
+        id="phone"
+        formControlName="phone"
+        [placeholder]="customer?.phone || 'Telefono del cliente'"
+      />
+    </div>
+    <input
+      *ngIf="!customer"
+      (click)="addCustomer()"
+      type="submit"
+      value="Agregar"
+      class="btn btn-primary btn-block"
+    />
+    <input
+      *ngIf="customer"
+      (click)="editCustomer(customer?.id)"
+      type="submit"
+      value="Editar"
+      class="btn btn-primary btn-block"
+    />
+  </div>
 </form>

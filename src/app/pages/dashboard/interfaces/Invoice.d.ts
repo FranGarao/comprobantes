@@ -4,7 +4,7 @@ export interface Invoice {
   phone: string;
   job: string;
   jobId?: number;
-  deliveryDate: string;
+  deliveryDate: Date;
   total: number;
   deposit: number;
   balance: number;
