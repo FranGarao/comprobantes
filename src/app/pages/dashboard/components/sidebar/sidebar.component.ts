@@ -6,27 +6,27 @@ import { JobModalComponent } from '../job-modal/job-modal.component';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
   /**
    *
    */
-  constructor(private dialogRef : MatDialog) {}
+  constructor(private dialogRef: MatDialog) {}
 
-  openInvoice(){
+  openInvoice() {
     this.dialogRef.open(InvoicesModalComponent, {
       data: {
-        formulario: "Esto es un formulario de prueba"
+        formulario: 'Esto es un formulario de prueba',
       },
       width: '500px',
       height: '85vh',
-    })
+    });
   }
-  openJob(){
+  openJob() {
     this.dialogRef.open(JobModalComponent, {
       width: '500px',
       height: '300px',
-    })
+    });
   }
 }

@@ -82,6 +82,9 @@
           <button [cdkMenuTriggerFor]="printMenu" class="icon-btn">
             <mat-icon>print</mat-icon>
           </button>
+          <button (click)="edit(invoice, 1)">
+            <mat-icon>edit</mat-icon>
+          </button>
         </div>
         <ng-template #printMenu>
           <div class="example-menu" cdkMenu>
@@ -134,6 +137,8 @@
         </p>
         <p>
           <span class="label">Estado:</span>
+          <button (click)="generatePDF(invoice)">Generate PDF</button>
+
           <span
             class="status"
             [ngClass]="{ pending: !invoice?.status, finish: invoice?.status }"

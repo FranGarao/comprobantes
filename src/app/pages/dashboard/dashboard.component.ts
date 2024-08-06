@@ -17,8 +17,8 @@ export class DashboardComponent {
     //Add 'implements OnInit' to the class.
   }
 
-  openInvoice() {
-    this.service.openInvoice();
+  openInvoice(x: number) {
+    this.service.openInvoice(x);
   }
 
   openJob(x: number) {

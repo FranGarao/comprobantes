@@ -3,6 +3,7 @@ import { DashboardService } from '../../dashboard.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertsService } from '../../alerts.service';
 
 @Component({
   selector: 'app-customer-modal',
@@ -18,7 +19,8 @@ export class CustomerModalComponent {
     public dialogRef: MatDialogRef<CustomerModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
     public fb: FormBuilder,
-    private service: DashboardService
+    private service: DashboardService,
+    private alertService: AlertsService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,8 @@ export class CustomerModalComponent {
   }
 
   addCustomer() {
+    this.alertService.loading('Creando cliente', 'Por favor espere...');
+
     const lastCustomer = this.customers[this.customers.length - 1];
     const newCustomer = {
       Id: lastCustomer.id + 1,
@@ -82,6 +86,8 @@ export class CustomerModalComponent {
   }
 
   editCustomer(Id: number) {
+    this.alertService.loading('Editando cliente', 'Por favor espere...');
+
     const newCustomer = {
       Id,
       Name: this.customerForm.value.name,

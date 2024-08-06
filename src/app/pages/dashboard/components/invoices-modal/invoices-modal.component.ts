@@ -12,6 +12,9 @@ import { DashboardService } from '../../dashboard.service';
 import { Job } from '../../interfaces/Job';
 import { Invoice } from '../../interfaces/Invoice';
 import { Customer } from '../../interfaces/Customer';
+import { AlertsService } from '../../alerts.service';
+import { jsPDF } from 'jspdf';
+
 @Component({
   selector: 'app-invoices-modal',
   templateUrl: './invoices-modal.component.html',
@@ -27,8 +30,10 @@ export class InvoicesModalComponent implements OnInit {
   public addJobs: any[] = [0];
   public lastInvoice: number = 0;
   public selectedJob: any;
+  public invoice: Invoice | null = null;
   public balance: number = 0;
   public newJobExist: boolean = false;
+  private newJob: any;
   private jobId: number = 0;
   private printContent: string = '';
   @ViewChild('newJobName', { static: false })
@@ -38,15 +43,43 @@ export class InvoicesModalComponent implements OnInit {
   /**
    *
    */
+
+  title = 'pdf-generation';
+
+  generatePDF() {
+    const doc = new jsPDF();
+    doc.text('Hello world!', 10, 10);
+    doc.save('example.pdf');
+  }
   constructor(
     public dialogRef: MatDialogRef<InvoicesModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { x: number },
     private fb: FormBuilder,
+    private alertService: AlertsService,
     private service: DashboardService
   ) {}
 
   ngOnInit(): void {
+    if (this.data?.x === 0) {
+      this.invoice = null;
+      this.buildForm();
+    } else {
+      this.invoice = this.service.invoice;
+      console.log({ invoice: this.invoice });
+
+      this.invoicesForm = this.fb.group({
+        id: [this.invoice.id],
+        total: [this.invoice.total],
+        deposit: [this.invoice.deposit],
+        balance: [this.invoice.balance],
+        name: [this.invoice.name, Validators.required],
+        phone: [this.invoice.phone, Validators.required],
+        job: [this.invoice.job, Validators.required],
+        deliveryDate: [this.invoice.deliveryDate, Validators.required],
+      });
+    }
+
     this.getJobs();
-    this.buildForm();
     this.getLastInvoice();
     this.getCustomers();
   }
@@ -79,6 +112,7 @@ export class InvoicesModalComponent implements OnInit {
       });
       return;
     }
+    this.alertService.loading('Creando comprobante', 'Por favor espere...');
 
     const jobs: any[] = [];
 
@@ -142,7 +176,72 @@ export class InvoicesModalComponent implements OnInit {
       },
     });
   }
+  edit() {
+    if (this.invoicesForm.invalid) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Por favor complete los campos requeridos',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+      });
+      return;
+    }
 
+    this.form = {
+      id: this.invoice?.id || this.invoicesForm.get('id')?.value,
+      total: this.invoicesForm.get('total')?.value,
+      deposit: this.invoicesForm.get('deposit')?.value,
+      balance: this.balance,
+      deliveryDate: this.invoicesForm.get('deliveryDate')?.value,
+      name: this.invoicesForm.get('name')?.value,
+      phone: this.invoicesForm.get('phone')?.value.toString(),
+      job: this.invoice?.job || '',
+      jobId: this.invoice?.jobId || 0,
+      status: this.invoice?.status || false,
+    };
+
+    this.submitUpdated(this.form);
+  }
+
+  submitUpdated(form: any) {
+    Swal.fire({
+      title: 'Editar formulario',
+      text: 'Desea Editar el formulario?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Enviar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.alertService.loading(
+          'Editando comprobante',
+          'Por favor espere...'
+        );
+
+        this.service.updateInvoice(this.form.id, form).subscribe({
+          next: () => {
+            this.closeModal();
+            Swal.fire({
+              title: 'Formulario editado',
+              text: 'El formulario ha sido editado con éxito',
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+            });
+          },
+          error: (error) => {
+            Swal.fire({
+              title: 'Error',
+              text:
+                error?.error?.message ||
+                'Ha ocurrido un error al enviar el formulario',
+              icon: 'error',
+              confirmButtonText: 'Aceptar',
+            });
+          },
+        });
+      }
+    });
+  }
   submit() {
     Swal.fire({
       title: 'Enviar formulario',
@@ -179,12 +278,13 @@ export class InvoicesModalComponent implements OnInit {
   saveJob() {
     const newJobName = this.newJobName.nativeElement.value;
     const newJobPrice = this.newJobPrice.nativeElement.value;
+    this.newJob = { name: newJobName, price: newJobPrice };
     this.invoicesForm
       .get('total')
       ?.setValue(
         Number(this.invoicesForm.get('total')?.value) + Number(newJobPrice)
       );
-    this.selectedJobs.push(newJobName);
+    this.selectedJobs.push(this.newJob);
     this.setBalance();
   }
 
@@ -215,7 +315,6 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   selectJob(job: Job) {
-    // const jobId = Number(this.invoicesForm?.get('job')?.value);
     if (job?.id === 0) {
       this.newJobExist = true;
       return;
@@ -229,19 +328,6 @@ export class InvoicesModalComponent implements OnInit {
       );
 
     this.setBalance();
-
-    // if (jobId !== 0) {
-    //   //todo: ver newJobExist
-    //   this.selectedJob = this.jobs?.find((job) => job.id === jobId);
-    //   this.invoicesForm
-    //     .get('total')
-    //     ?.setValue(
-    //       Number(this.selectedJob?.price) + Number(this.invoicesForm.get('total')?.value)
-    //     );
-    //   return this.selectedJob;
-    // } else {
-    //   this.newJobExist = true;
-    // }
   }
 
   setBalance() {
@@ -257,7 +343,7 @@ export class InvoicesModalComponent implements OnInit {
       if (j.name) jobs.push(j.name);
       else jobs.push(j);
     });
-    const jobStrings = jobs.map((j: any) => `<p>Trabajo: ${j}</p>`).join('');
+    const jobStrings = jobs.map((j: any) => j).join(', ');
     switch (type) {
       case 0:
         this.printContent = `
@@ -268,7 +354,7 @@ export class InvoicesModalComponent implements OnInit {
           <p style="text-align: center;">11 5667 0042</p>
           <hr>
           <p>Nº ${this.lastInvoice}</p>
-          ${jobStrings}
+          <p>Trabajo:${jobStrings}</p>
           <p>Fecha de entrega: ${
             this.invoicesForm.get('deliveryDate')?.value
           }</p>
@@ -301,7 +387,7 @@ export class InvoicesModalComponent implements OnInit {
           <hr>
           <p>NOMBRE: ${this.invoicesForm.get('name')?.value}</p>
           <p>TELÉFONO: ${this.invoicesForm.get('phone')?.value}</p>
-          ${jobStrings}
+          <p>TRABAJO: ${jobStrings}</p>
         </div>
       `;
 
@@ -310,7 +396,7 @@ export class InvoicesModalComponent implements OnInit {
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
           <p>Nº ${this.lastInvoice}</p>
-          ${jobStrings}
+          <p>Trabajo: ${jobStrings}</p>
         </div>
       `;
         break;
@@ -348,13 +434,8 @@ export class InvoicesModalComponent implements OnInit {
       window.print(); // Imprime toda la página si printContent está vacío
     }
   }
-
-  addJob() {
-    this.addJobs.push('x');
-  }
   rmJob() {
     const lastJob = this.selectedJobs.pop();
-    console.log(lastJob);
     this.invoicesForm
       .get('total')
       ?.setValue(Number(this.invoicesForm.get('total')?.value) - lastJob.price);

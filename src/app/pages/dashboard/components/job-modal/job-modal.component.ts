@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { Job } from '../../interfaces/Job';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertsService } from '../../alerts.service';
 @Component({
   selector: 'app-job-modal',
   templateUrl: './job-modal.component.html',
@@ -17,7 +18,8 @@ export class JobModalComponent {
     public dialogRef: MatDialogRef<JobModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
     private fb: FormBuilder,
-    private service: DashboardService
+    private service: DashboardService,
+    private alertService: AlertsService
   ) {}
 
   ngOnInit(): void {
@@ -64,12 +66,12 @@ export class JobModalComponent {
       price: this.jobsForm.value.price,
       //status: this.jobsForm.value.status,
     };
-
+    this.alertService.loading('Creando trabajo', 'Por favor espere...');
     this.service.createJob(this.job).subscribe({
       next: () => {
-        this.dialogRef.close();
         Swal.fire('Trabajo creado', '', 'success');
         this.getJobs();
+        this.dialogRef.close();
       },
       error: (error) => {
         console.log({ error });
@@ -79,6 +81,8 @@ export class JobModalComponent {
   }
 
   updateJob() {
+    this.alertService.loading('Editando trabajo', 'Por favor espere...');
+
     const updatedJob = {
       Id: this.job?.id,
       Name: this.jobsForm.value.name,

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../../app.service';
 import { Router } from '@angular/router';
+import { AlertsService } from '../dashboard/alerts.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private service: AppService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertsService
   ) {}
 
   ngOnInit(): void {
@@ -36,8 +38,12 @@ export class LoginComponent {
       };
 
       this.service.login(user).subscribe({
-        next: () => this.router.navigate(['/dashboard']),
+        next: (r: any) => {
+          localStorage.setItem('AuthToken', r._token);
+          this.router.navigate(['/dashboard']);
+        },
         error: (error) => {
+          this.alertService.error('Error', 'Usuario o contraseña incorrectos');
           console.log({ error });
         },
       });

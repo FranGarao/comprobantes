@@ -3,6 +3,9 @@ import { DashboardService } from '../../dashboard.service';
 import { Invoice } from '../../interfaces/Invoice';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AlertsService } from '../../alerts.service';
+import { format } from 'date-fns';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-invoices-list',
@@ -15,8 +18,36 @@ export class InvoicesListComponent {
   public isLoading: boolean = false;
   public dateFilter: FormGroup = new FormGroup({});
   private printContent: string = '';
-  constructor(private service: DashboardService, private fb: FormBuilder) {}
+  constructor(
+    private service: DashboardService,
+    private fb: FormBuilder,
+    private alertService: AlertsService
+  ) {}
+  title = 'pdf-generation';
 
+  generatePDF(invoice: Invoice) {
+    console.log('hola');
+
+    const date = new Date(invoice?.deliveryDate);
+    const formattedDate = format(date, 'dd-MM-yyyy');
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(`Comprobante N°${invoice?.id}`, 10, 10);
+
+    doc.setFontSize(12);
+    doc.text(`Cliente: ${invoice?.name}`, 10, 20);
+    doc.text(`Teléfono: ${invoice?.phone}`, 10, 30);
+    doc.text(`Trabajo: ${invoice?.job}`, 10, 40);
+    doc.text(`Total: $${invoice?.total}`, 10, 50);
+    doc.text(`Seña: $${invoice?.deposit}`, 10, 60);
+    doc.text(`Balance: $${invoice?.balance}`, 10, 70);
+    doc.text(`Fecha de entrega: ${formattedDate}`, 10, 80);
+    doc.text(`Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}`, 10, 90);
+    // const lines = doc.splitTextToSize(msg, 180);
+
+    // doc.text(lines, 10, 10);
+    doc.save('example.pdf');
+  }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -48,6 +79,8 @@ export class InvoicesListComponent {
 
   printyInvoice(invoice: any, option: number) {
     let printContent = '';
+    const date = new Date(invoice?.deliveryDate);
+    const formattedDate = format(date, 'dd-MM-yyyy');
 
     switch (option) {
       case 0:
@@ -60,7 +93,7 @@ export class InvoicesListComponent {
             <p>Total: $${invoice?.total}</p>
             <p>Seña: $${invoice?.deposit}</p>
             <p>Balance: $${invoice?.balance}</p>
-            <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+            <p>Fecha de entrega: ${formattedDate}</p>
             <p>Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}</p>
           </div>
         `;
@@ -75,7 +108,7 @@ export class InvoicesListComponent {
             <p>Total: $${invoice?.total}</p>
             <p>Seña: $${invoice?.deposit}</p>
             <p>Balance: $${invoice?.balance}</p>
-            <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+            <p>Fecha de entrega: ${formattedDate}</p>
             <p>Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}</p>
           </div>
         `;
@@ -104,6 +137,11 @@ export class InvoicesListComponent {
     }
   }
 
+  edit(i: Invoice, x: number) {
+    this.service.setInvoice(i);
+    this.service.openInvoice(x);
+  }
+
   deleteInvoice(id: any) {
     Swal.fire({
       title: 'Eliminar factura',
@@ -114,10 +152,15 @@ export class InvoicesListComponent {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
+        this.alertService.loading(
+          'Eliminando comprobante',
+          'Por favor espere...'
+        );
+
         this.service.deleteInvoice(id).subscribe({
           next: () => {
             Swal.fire({
-              title: 'Factura eliminada',
+              title: 'Comprobante eliminado',
               text: 'La factura se ha eliminado correctamente',
               icon: 'success',
               confirmButtonText: 'Ok',
@@ -232,8 +275,8 @@ export class InvoicesListComponent {
 
   finishInvoice(invoice: Invoice) {
     Swal.fire({
-      title: 'Finalizar factura',
-      text: '¿Estas seguro de finalizar la factura?',
+      title: '¿Finalizar factura?',
+      text: 'Su estado cambiara a finalizado.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si',
@@ -248,7 +291,10 @@ export class InvoicesListComponent {
       }
     });
   }
+  //TODO Revisar
   finishInvoiceRequest(invoice: Invoice) {
+    this.alertService.loading('Enviando comprobante', 'Por favor espere...');
+
     this.service.updateInvoice(invoice?.id, invoice).subscribe({
       next: () => {
         const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
@@ -279,6 +325,8 @@ export class InvoicesListComponent {
   printInvoice(invoice: Invoice, type: number) {
     // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
     let messagge = '';
+    const date = new Date(invoice?.deliveryDate);
+    const formattedDate = format(date, 'dd-MM-yyyy');
     switch (type) {
       case 0:
         this.printContent = `
@@ -290,7 +338,7 @@ export class InvoicesListComponent {
           <hr>
           <p>Nº ${invoice?.id}</p>
           <p>Trabajo: ${invoice?.job}</p>
-          <p>Fecha de entrega: ${invoice?.deliveryDate}</p>
+          <p>Fecha de entrega: ${formattedDate}</p>
           <p>Total $${invoice?.total}</p>
           <p>Seña $${invoice?.deposit}</p>
           <p>Saldo $${invoice?.balance}</p>
@@ -313,7 +361,7 @@ export class InvoicesListComponent {
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
           <p>Nº ${invoice.id}</p>
-          <p>Fecha de entrega: ${invoice.deliveryDate}</p>
+          <p>Fecha de entrega: ${formattedDate}</p>
           <p>Total $${invoice?.total}</p>
           <p>Seña $${invoice?.deposit}</p>
           <p>Saldo $${invoice?.balance}</p>
@@ -337,7 +385,7 @@ export class InvoicesListComponent {
 
         break;
       case 3:
-        messagge = `*Nº* ${invoice?.id}\n*Trabajo:* ${invoice?.job}\n*Fecha de entrega:* ${invoice?.deliveryDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*HORARIOS*\nLunes a Viernes : 09 a 13 hs - 16 a 19 hsSábado 09 a 13 hs\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
+        messagge = `*Nº* ${invoice?.id}\n*Trabajo:* ${invoice?.job}\n*Fecha de entrega:* ${formattedDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*HORARIOS*\nLunes a Viernes : 09 a 13 hs - 16 a 19 hsSábado 09 a 13 hs\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
         `;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
@@ -400,18 +448,5 @@ export class InvoicesListComponent {
       const end = new Date(endDate).getTime();
       return deliveryDate >= start && deliveryDate <= end;
     });
-    console.log({ startDate, endDate, invoices: this.filteredInvoices });
-  }
-
-  sendWsp(invoice: Invoice, type: number) {
-    switch (type) {
-      case 0:
-        break;
-      case 1:
-        break;
-
-      default:
-        break;
-    }
   }
 }

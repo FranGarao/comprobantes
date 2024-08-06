@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Customer } from '../../interfaces/Customer';
 import { DashboardService } from '../../dashboard.service';
 import Swal from 'sweetalert2';
+import { AlertsService } from '../../alerts.service';
 
 @Component({
   selector: 'app-customers-list',
@@ -12,7 +13,10 @@ export class CustomersListComponent {
   public customers: any[] = [];
   public isLoading: boolean = false;
 
-  constructor(private service: DashboardService) {}
+  constructor(
+    private service: DashboardService,
+    private alertService: AlertsService
+  ) {}
 
   ngOnInit(): void {
     this.getCustomers();
@@ -60,6 +64,8 @@ export class CustomersListComponent {
   }
 
   deleteCustomer(id: any) {
+    this.alertService.loading('Eliminando cliente', 'Por favor espere...');
+
     this.service.deleteCustomer(id).subscribe({
       next: (res: any) => {
         this.getCustomers();

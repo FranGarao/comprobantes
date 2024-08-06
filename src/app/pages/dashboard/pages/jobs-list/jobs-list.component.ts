@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DashboardService } from '../../dashboard.service';
 import { Job } from '../../interfaces/Job';
 import Swal from 'sweetalert2';
+import { AlertsService } from '../../alerts.service';
 @Component({
   selector: 'app-jobs-list',
   templateUrl: './jobs-list.component.html',
@@ -13,7 +14,10 @@ export class JobsListComponent {
   /**
    *
    */
-  constructor(private service: DashboardService) { }
+  constructor(
+    private service: DashboardService,
+    private alertService: AlertsService
+  ) {}
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -62,6 +66,8 @@ export class JobsListComponent {
   }
 
   deleteJob(id: any) {
+    this.alertService.loading('Eliminando trabajo', 'Por favor espere...');
+
     this.service.deleteJob(id).subscribe({
       next: (res: any) => {
         this.getJobs();

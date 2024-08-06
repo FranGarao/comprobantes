@@ -16,6 +16,12 @@ const urlBack = environment.API_URL;
 export class DashboardService {
   public job: Job = {} as Job;
   public customer: any;
+  public invoice: Invoice = {} as Invoice;
+  private token: string = localStorage.getItem('AuthToken') || '';
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${this.token}`,
+  });
   constructor(private http: HttpClient, private dialogRef: MatDialog) {}
 
   //Postea el formulario al backend
@@ -23,15 +29,16 @@ export class DashboardService {
     const url = `${environment.API_URL}/invoices`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      // Authorization: `Bearer ${this.token}`,
     });
-    return this.http.post(url, form, { headers });
+    return this.http.post(url, form, { headers: this.headers });
   }
 
-  openInvoice() {
+  openInvoice(x: number) {
     this.dialogRef.open(InvoicesModalComponent, {
-      // data: {
-      //   formulario: 'Esto es un formulario de prueba',
-      // },
+      data: {
+        x,
+      },
       width: '500px',
       height: '85vh',
     });
@@ -60,10 +67,15 @@ export class DashboardService {
   setCustomer(c: any) {
     this.customer = c;
   }
+  setInvoice(i: Invoice) {
+    this.invoice = i;
+  }
   //Obtiene las comprobantes del backend
   getInvoices() {
     const url = `${environment.API_URL}/invoices`;
-    return this.http.get<Invoice[]>(url);
+    console.log({ tok: this.token });
+
+    return this.http.get<Invoice[]>(url, { headers: this.headers });
   }
 
   //Obtiene comprobante por id
@@ -75,31 +87,31 @@ export class DashboardService {
   //Actualiza la comprobante
   updateInvoice(id: number, invoice: Invoice) {
     const url = `${environment.API_URL}/invoices/${id}`;
-    return this.http.put(url, invoice);
+    return this.http.put(url, invoice, { headers: this.headers });
   }
 
   //Elimina la comprobante
   deleteInvoice(id: number) {
     const url = `${environment.API_URL}/invoices/${id}`;
-    return this.http.delete(url);
+    return this.http.delete(url, { headers: this.headers });
   }
 
   //Crea un comprobante nuevo
   createInvoice(invoice: Invoice) {
     const url = `${environment.API_URL}/invoices`;
-    return this.http.post(url, invoice);
+    return this.http.post(url, invoice, { headers: this.headers });
   }
 
   //Obtiene los trabajos del backend
   getJobs() {
     const url = `${environment.API_URL}/jobs`;
-    return this.http.get<Job[]>(url);
+    return this.http.get<Job[]>(url, { headers: this.headers });
   }
 
   // Borra un trabajo
   deleteJob(id: number) {
     const url = `${environment.API_URL}/jobs/${id}`;
-    return this.http.delete(url);
+    return this.http.delete(url, { headers: this.headers });
   }
 
   createJob(job: any) {
@@ -107,7 +119,7 @@ export class DashboardService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post(url, job, { headers });
+    return this.http.post(url, job, { headers: this.headers });
   }
 
   //Actualiza un trabajo
@@ -116,7 +128,7 @@ export class DashboardService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.put(url, job, { headers });
+    return this.http.put(url, job, { headers: this.headers });
   }
 
   createCustomer(customer: Customer) {
@@ -124,7 +136,7 @@ export class DashboardService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post<Customer>(url, customer, { headers });
+    return this.http.post<Customer>(url, customer, { headers: this.headers });
   }
 
   updateCustomer(customer: any) {
@@ -132,16 +144,16 @@ export class DashboardService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.put(url, customer, { headers });
+    return this.http.put(url, customer, { headers: this.headers });
   }
 
   deleteCustomer(id: number) {
     const url = `${environment.API_URL}/customer/${id}`;
-    return this.http.delete(url);
+    return this.http.delete(url, { headers: this.headers });
   }
 
   getCustomers() {
     const url = `${environment.API_URL}/customer`;
-    return this.http.get<Customer[]>(url);
+    return this.http.get<Customer[]>(url, { headers: this.headers });
   }
 }
