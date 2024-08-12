@@ -1,8 +1,10 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Inject,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -21,6 +23,8 @@ import { jsPDF } from 'jspdf';
   styleUrl: './invoices-modal.component.css',
 })
 export class InvoicesModalComponent implements OnInit {
+  @Output() comprobanteCreated = new EventEmitter<any>();
+
   public firstName: string = '';
   public invoicesForm: FormGroup = new FormGroup({});
   public form: Invoice = {} as Invoice;
@@ -140,6 +144,7 @@ export class InvoicesModalComponent implements OnInit {
     };
     this.service.sendForm(this.form).subscribe({
       next: () => {
+        this.service.addInvoice(this.form);
         this.closeModal();
         Swal.fire({
           title: 'Formulario enviado',
@@ -152,7 +157,7 @@ export class InvoicesModalComponent implements OnInit {
             `*Comprobante N°* ${this.form?.id}\n` +
             `*Fecha de entrega:* ${this.form?.deliveryDate}\n` +
             `*Seña:* $${this.form.deposit}\n` +
-            `*Balance:* $${this.form.balance}\n\n` +
+            `*Saldo:* $${this.form.balance}\n\n` +
             `*HORARIOS*\n` +
             `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
             `Sábado 09 a 13 hs\n\n` +
@@ -396,7 +401,7 @@ export class InvoicesModalComponent implements OnInit {
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
           <p>Nº ${this.lastInvoice}</p>
-          <p>Trabajo: ${jobStrings}</p>
+          <p>Trabajo:</p>
         </div>
       `;
         break;

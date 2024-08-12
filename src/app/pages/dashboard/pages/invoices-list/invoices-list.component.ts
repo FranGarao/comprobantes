@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertsService } from '../../alerts.service';
 import { format } from 'date-fns';
-import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-invoices-list',
@@ -23,36 +22,13 @@ export class InvoicesListComponent {
     private fb: FormBuilder,
     private alertService: AlertsService
   ) {}
-  title = 'pdf-generation';
 
-  generatePDF(invoice: Invoice) {
-    console.log('hola');
-
-    const date = new Date(invoice?.deliveryDate);
-    const formattedDate = format(date, 'dd-MM-yyyy');
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text(`Comprobante N°${invoice?.id}`, 10, 10);
-
-    doc.setFontSize(12);
-    doc.text(`Cliente: ${invoice?.name}`, 10, 20);
-    doc.text(`Teléfono: ${invoice?.phone}`, 10, 30);
-    doc.text(`Trabajo: ${invoice?.job}`, 10, 40);
-    doc.text(`Total: $${invoice?.total}`, 10, 50);
-    doc.text(`Seña: $${invoice?.deposit}`, 10, 60);
-    doc.text(`Balance: $${invoice?.balance}`, 10, 70);
-    doc.text(`Fecha de entrega: ${formattedDate}`, 10, 80);
-    doc.text(`Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}`, 10, 90);
-    // const lines = doc.splitTextToSize(msg, 180);
-
-    // doc.text(lines, 10, 10);
-    doc.save('example.pdf');
-  }
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     this.getInvoices();
     this.createDateForm();
+    this.service.comprobantes$.subscribe((comprobantes) => {
+      this.invoices = comprobantes;
+    });
   }
 
   getInvoices() {
@@ -92,7 +68,7 @@ export class InvoicesListComponent {
             <p>Trabajo: ${invoice?.job}</p>
             <p>Total: $${invoice?.total}</p>
             <p>Seña: $${invoice?.deposit}</p>
-            <p>Balance: $${invoice?.balance}</p>
+            <p>Saldo: $${invoice?.balance}</p>
             <p>Fecha de entrega: ${formattedDate}</p>
             <p>Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}</p>
           </div>
@@ -107,7 +83,7 @@ export class InvoicesListComponent {
             <p>Trabajo: ${invoice?.job}</p>
             <p>Total: $${invoice?.total}</p>
             <p>Seña: $${invoice?.deposit}</p>
-            <p>Balance: $${invoice?.balance}</p>
+            <p>Saldo: $${invoice?.balance}</p>
             <p>Fecha de entrega: ${formattedDate}</p>
             <p>Estado: ${invoice?.status ? 'Terminado' : 'Pendiente'}</p>
           </div>
@@ -378,7 +354,7 @@ export class InvoicesListComponent {
         this.printContent = `
           <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
             <p>Nº ${invoice.id}</p>
-            <p>Trabajo: ${invoice.job}</p>
+            <p>Trabajo: </p>
           </div>
         `;
         this.print(this.printContent);

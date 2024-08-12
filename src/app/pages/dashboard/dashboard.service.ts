@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Job } from './interfaces/Job';
 import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
 import { Customer } from './interfaces/Customer';
+import { BehaviorSubject } from 'rxjs';
 const urlBack = environment.API_URL;
 
 @Injectable({
@@ -18,11 +19,18 @@ export class DashboardService {
   public customer: any;
   public invoice: Invoice = {} as Invoice;
   private token: string = localStorage.getItem('AuthToken') || '';
+  private invoicesSource = new BehaviorSubject<any[]>([]);
+  comprobantes$ = this.invoicesSource.asObservable();
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${this.token}`,
   });
   constructor(private http: HttpClient, private dialogRef: MatDialog) {}
+
+  addInvoice(newComprobante: any) {
+    const currentInvoices = this.invoicesSource.value;
+    this.invoicesSource.next([...currentInvoices, newComprobante]);
+  }
 
   //Postea el formulario al backend
   sendForm(form: Invoice) {
@@ -61,6 +69,7 @@ export class DashboardService {
       },
     });
   }
+
   setJob(job: Job) {
     this.job = job;
   }

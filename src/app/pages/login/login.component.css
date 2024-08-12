@@ -1,54 +1,58 @@
+/* Estilos para el formulario */
+body {
+  background-color: #3f51b5; /* Color de fondo */
+}
+form {
+  max-width: 400px; /* Ancho máximo del formulario */
+  position: relative;
+  top: 200px;
+  margin: auto; /* Centrar el formulario horizontalmente */
+  padding: 20px; /* Espacio interno del formulario */
+  border: 1px solid #3f51b5; /* Borde del formulario */
+  border-radius: 8px; /* Bordes redondeados */
+  background-color: #f9f9f9; /* Color de fondo */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
 
-    /* Estilos para el formulario */
-    form {
-        max-width: 400px; /* Ancho máximo del formulario */
-        margin: auto; /* Centrar el formulario horizontalmente */
-        padding: 20px; /* Espacio interno del formulario */
-        border: 1px solid #ccc; /* Borde del formulario */
-        border-radius: 8px; /* Bordes redondeados */
-        background-color: #f9f9f9; /* Color de fondo */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    }
+/* Estilos para los campos de entrada */
+.form-group {
+  margin-bottom: 20px; /* Espacio entre grupos de campos */
+}
 
-    /* Estilos para los campos de entrada */
-    .form-group {
-        margin-bottom: 20px; /* Espacio entre grupos de campos */
-    }
+label {
+  font-weight: bold; /* Texto del label en negrita */
+  display: block; /* Mostrar el label como bloque */
+  margin-bottom: 5px; /* Espacio inferior del label */
+}
 
-    label {
-        font-weight: bold; /* Texto del label en negrita */
-        display: block; /* Mostrar el label como bloque */
-        margin-bottom: 5px; /* Espacio inferior del label */
-    }
+input[type="email"],
+input[type="password"] {
+  width: 100%; /* Ancho completo del campo de entrada */
+  padding: 10px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de fuente */
+  border: 1px solid #ccc; /* Borde del campo de entrada */
+  border-radius: 4px; /* Bordes redondeados */
+  box-sizing: border-box; /* Incluir el borde en el ancho total */
+}
 
-    input[type="email"],
-    input[type="password"] {
-        width: 100%; /* Ancho completo del campo de entrada */
-        padding: 10px; /* Espaciado interno */
-        font-size: 16px; /* Tamaño de fuente */
-        border: 1px solid #ccc; /* Borde del campo de entrada */
-        border-radius: 4px; /* Bordes redondeados */
-        box-sizing: border-box; /* Incluir el borde en el ancho total */
-    }
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none; /* Eliminar el contorno al enfocar */
+  border-color: #6cb2eb; /* Color del borde al enfocar */
+  box-shadow: 0 0 5px rgba(108, 178, 235, 0.5); /* Sombra al enfocar */
+}
 
-    input[type="email"]:focus,
-    input[type="password"]:focus {
-        outline: none; /* Eliminar el contorno al enfocar */
-        border-color: #6cb2eb; /* Color del borde al enfocar */
-        box-shadow: 0 0 5px rgba(108, 178, 235, 0.5); /* Sombra al enfocar */
-    }
+/* Estilo para el botón */
+.btn-primary {
+  background-color: #007bff; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de fuente */
+  cursor: pointer; /* Cursor de apuntador */
+  border-radius: 4px; /* Bordes redondeados */
+}
 
-    /* Estilo para el botón */
-    .btn-primary {
-        background-color: #007bff; /* Color de fondo del botón */
-        color: #fff; /* Color del texto del botón */
-        border: none; /* Sin borde */
-        padding: 10px 20px; /* Espaciado interno */
-        font-size: 16px; /* Tamaño de fuente */
-        cursor: pointer; /* Cursor de apuntador */
-        border-radius: 4px; /* Bordes redondeados */
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3; /* Color de fondo al pasar el ratón */
-    }
+.btn-primary:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el ratón */
+}

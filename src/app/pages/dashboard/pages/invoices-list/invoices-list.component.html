@@ -130,21 +130,14 @@
         <p><span class="label">Trabajo:</span> {{ invoice?.job }}</p>
         <p><span class="label">Total:</span> ${{ invoice?.total }}</p>
         <p><span class="label">Seña:</span> ${{ invoice?.deposit }}</p>
-        <p><span class="label">Balance:</span> ${{ invoice?.balance }}</p>
+        <p><span class="label">Saldo:</span> ${{ invoice?.balance }}</p>
         <p>
           <span class="label">Fecha de entrega:</span>
           {{ invoice?.deliveryDate | date : "dd/MM/yyyy" }}
         </p>
         <p>
           <span class="label">Estado:</span>
-          <button (click)="generatePDF(invoice)">Generate PDF</button>
-
-          <span
-            class="status"
-            [ngClass]="{ pending: !invoice?.status, finish: invoice?.status }"
-          >
-            {{ invoice?.status ? "Terminado" : "Pendiente" }}
-          </span>
+          <span class="label">{{ invoice?.status }}</span>
         </p>
       </div>
       <div class="invoice-footer">
