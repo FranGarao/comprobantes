@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
 import Swal from 'sweetalert2';
 import { Job } from '../../interfaces/Job';
@@ -44,16 +44,20 @@ export class JobModalComponent {
     });
   }
 
+  /**
+   * crea el formulario de trabajos
+   * @return {void}
+   */
   createForm() {
     this.jobsForm = this.fb.group({
-      id: [''],
-      name: [''],
+      id: [this.job?.id || '', Validators.required],
+      name: [this.job?.name || '', Validators.required],
       //description: [''],
-      price: [''],
+      price: [this.job?.price || '', Validators.required],
       //status: ['']
     });
   }
-
+  
   closeModal(): void {
     this.dialogRef.close();
   }

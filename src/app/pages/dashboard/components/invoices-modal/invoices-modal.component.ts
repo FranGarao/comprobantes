@@ -259,6 +259,14 @@ export class InvoicesModalComponent implements OnInit {
       result.isConfirmed ? this.sendForm() : null;
     });
   }
+  /**
+   * abre el modal para crear cliente
+   * @param {number} x 
+   */
+  openCustomer(x: number) {
+    this.service.openCustomer(x);
+  }
+  
   closeModal(): void {
     this.dialogRef.close();
   }
