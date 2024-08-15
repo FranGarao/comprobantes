@@ -44,7 +44,7 @@
       <label>Nuevo Trabajo</label>
       <input #newJobName type="text" placeholder="Ingrese nuevo trabajo" />
       <input #newJobPrice type="number" value="0" placeholder="Precio" />
-      <button (click)="saveJob()" mat-button>Agregar</button>
+      <button (click)="saveJob()" mat-button>Agregar trabajo</button>
     </div>
     <div class="input-ctn row">
       <label>Fecha de entrega</label>
@@ -83,7 +83,8 @@
         [value]="invoice.name"
         formControlName="name"
       />
-      <button (click)="openCustomer(0)" > Nuevo Cliente </button>
+      <button (click)="openCustomer(0)" mat-button>Nuevo Cliente</button>
+      <mat-icon (click)="getCustomers()">refresh</mat-icon>
     </div>
     <div class="input-ctn row">
       <label>Telefono</label>

@@ -137,12 +137,16 @@ h2 {
   font-weight: bold;
 }
 
-.status.pending {
+.pending {
   color: #ff9800;
   font-weight: bold;
 }
+.deliver {
+  color: #c82333;
+  font-weight: bold;
+}
 
-.status.finish {
+.finish {
   color: #4caf50;
   font-weight: bold;
 }
@@ -158,6 +162,17 @@ h2 {
 
 .finalize-btn {
   background-color: #4caf50;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.final-btn {
+  background-color: #ff9800;
   border: none;
   border-radius: 4px;
   color: white;

@@ -67,7 +67,11 @@
                 <option value="cd">Comprobante Desc.</option> -->
       </select>
     </div>
+    <div class="filter-container">
+      <mat-icon (click)="getInvoices()">refresh</mat-icon>
+    </div>
   </div>
+
   <div class="invoices-ctn">
     <div *ngFor="let invoice of filteredInvoices" class="invoice-card">
       <div class="invoice-header">
@@ -81,6 +85,9 @@
         <div class="icon-buttons">
           <button [cdkMenuTriggerFor]="printMenu" class="icon-btn">
             <mat-icon>print</mat-icon>
+          </button>
+          <button [cdkMenuTriggerFor]="notify" class="icon-btn">
+            <mat-icon>notifications</mat-icon>
           </button>
           <button (click)="edit(invoice, 1)">
             <mat-icon>edit</mat-icon>
@@ -109,6 +116,10 @@
             >
               Imprimir Codigo
             </button>
+          </div>
+        </ng-template>
+        <ng-template #notify>
+          <div class="example-menu" cdkMenu>
             <button
               (click)="printInvoice(invoice, 3)"
               class="example-menu-item"
@@ -121,7 +132,14 @@
               class="example-menu-item"
               cdkMenuItem
             >
-              Enviar Notificacion
+              Notificar como Terminado
+            </button>
+            <button
+              (click)="printInvoice(invoice, 5)"
+              class="example-menu-item"
+              cdkMenuItem
+            >
+              Notificar como Entregado
             </button>
           </div>
         </ng-template>
@@ -137,16 +155,31 @@
         </p>
         <p>
           <span class="label">Estado:</span>
-          <span class="label">{{ invoice?.status }}</span>
+          <span
+            [ngClass]="{
+              pending: invoice?.status === 'Pendiente',
+              deliver: invoice?.status === 'Entregado',
+              finish: invoice?.status === 'Finalizado'
+            }"
+            class="label"
+            >{{ invoice?.status }}</span
+          >
         </p>
       </div>
       <div class="invoice-footer">
         <button
-          *ngIf="!invoice?.status"
+          *ngIf="invoice?.status === 'Pendiente'"
           (click)="finishInvoice(invoice)"
           class="finalize-btn"
         >
           Finalizar
+        </button>
+        <button
+          *ngIf="invoice?.status !== 'Entregado'"
+          (click)="deliverInvoice(invoice)"
+          class="final-btn"
+        >
+          Terminar
         </button>
         <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">
           Eliminar

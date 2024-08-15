@@ -26,7 +26,6 @@ export class JobModalComponent {
     if (this.data?.id === 0) {
       this.job = null;
     } else this.job = this.service.job;
-
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class
     this.getJobs();
@@ -57,7 +56,7 @@ export class JobModalComponent {
       //status: ['']
     });
   }
-  
+
   closeModal(): void {
     this.dialogRef.close();
   }

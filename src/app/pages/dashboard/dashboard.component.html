@@ -1,5 +1,10 @@
 <!-- <app-sidebar /> -->
 <div class="main">
+  <div class="login">
+    <mat-icon (click)="goToLogin()" class="icon material-symbols-outlined">
+      login
+    </mat-icon>
+  </div>
   <div class="options-ctn">
     <div [cdkMenuTriggerFor]="menu" title="Generar Comprobante" class="option">
       <mat-icon class="icon material-symbols-outlined"> description </mat-icon>

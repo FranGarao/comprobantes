@@ -125,34 +125,26 @@ export class DashboardService {
 
   createJob(job: any) {
     const url = `${environment.API_URL}/jobs`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+
     return this.http.post(url, job, { headers: this.headers });
   }
 
   //Actualiza un trabajo
   updateJob(job: any) {
     const url = `${environment.API_URL}/jobs/${job.Id}`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+
     return this.http.put(url, job, { headers: this.headers });
   }
 
   createCustomer(customer: Customer) {
     const url = `${environment.API_URL}/customer`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+
     return this.http.post<Customer>(url, customer, { headers: this.headers });
   }
 
   updateCustomer(customer: any) {
     const url = `${environment.API_URL}/customer/${customer.Id}`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+
     return this.http.put(url, customer, { headers: this.headers });
   }
 
@@ -164,5 +156,9 @@ export class DashboardService {
   getCustomers() {
     const url = `${environment.API_URL}/customer`;
     return this.http.get<Customer[]>(url, { headers: this.headers });
+  }
+
+  logout() {
+    localStorage.removeItem('AuthToken');
   }
 }

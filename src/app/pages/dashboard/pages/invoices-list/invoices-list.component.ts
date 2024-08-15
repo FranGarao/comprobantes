@@ -118,6 +118,42 @@ export class InvoicesListComponent {
     this.service.openInvoice(x);
   }
 
+  deliverInvoice(invoice: Invoice) {
+    Swal.fire({
+      title: '¿Marcar como entregado?',
+      text: 'Esta accion eliminara el comprobante de la lista.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        invoice.status = 'Entregado';
+        this.service.updateInvoice(invoice.id, invoice).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Comprobante editado.',
+              text: 'El comprobante se ha editado correctamente',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+            });
+            this.getInvoices();
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Error de conexion',
+              text:
+                err?.error?.message ||
+                'Ocurrio un error al intentar editar el comprobante',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+            });
+          },
+        });
+      }
+    });
+  }
+
   deleteInvoice(id: any) {
     Swal.fire({
       title: 'Eliminar factura',
@@ -195,7 +231,7 @@ export class InvoicesListComponent {
     if (therm.value === 'finalizado' || therm.value === 'pendiente') {
       therm.value === 'finalizado' ? (status = true) : (status = false);
       this.filteredInvoices = this.invoices?.filter(
-        (invoice) => invoice?.status === status
+        (invoice) => invoice?.status === 'Pendiente'
       );
       return;
     } else if (
@@ -261,13 +297,13 @@ export class InvoicesListComponent {
       if (result.isConfirmed) {
         const finishInvoice = {
           ...invoice,
-          status: true,
+          status: 'Finalizado',
         };
         this.finishInvoiceRequest(finishInvoice);
       }
     });
   }
-  //TODO Revisar
+
   finishInvoiceRequest(invoice: Invoice) {
     this.alertService.loading('Enviando comprobante', 'Por favor espere...');
 
@@ -366,7 +402,11 @@ export class InvoicesListComponent {
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 4:
-        messagge = `*Hola ${invoice?.name}!*\n*Su trabajo ya esta listo para retirar*`;
+        messagge = `*Hola ${invoice?.name}. Tu trabajo está listo para ser retirado*`;
+        this.sendWhatsApp(invoice.phone, messagge);
+        break;
+      case 5:
+        messagge = `*Tu trabajo ya fue entregado*`;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       default:

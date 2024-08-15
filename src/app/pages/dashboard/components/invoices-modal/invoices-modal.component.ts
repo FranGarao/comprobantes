@@ -140,8 +140,10 @@ export class InvoicesModalComponent implements OnInit {
       phone: this.invoicesForm.get('phone')?.value.toString(),
       job: jobStrings,
       jobId: this.jobId || 0,
-      status: false,
+      status: 'Pendiente',
     };
+    console.log(this.form);
+
     this.service.sendForm(this.form).subscribe({
       next: () => {
         this.service.addInvoice(this.form);
@@ -202,7 +204,7 @@ export class InvoicesModalComponent implements OnInit {
       phone: this.invoicesForm.get('phone')?.value.toString(),
       job: this.invoice?.job || '',
       jobId: this.invoice?.jobId || 0,
-      status: this.invoice?.status || false,
+      status: this.invoice?.status || 'Pendiente',
     };
 
     this.submitUpdated(this.form);
@@ -261,12 +263,12 @@ export class InvoicesModalComponent implements OnInit {
   }
   /**
    * abre el modal para crear cliente
-   * @param {number} x 
+   * @param {number} x
    */
   openCustomer(x: number) {
     this.service.openCustomer(x);
   }
-  
+
   closeModal(): void {
     this.dialogRef.close();
   }
