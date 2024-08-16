@@ -15,7 +15,6 @@ import { Job } from '../../interfaces/Job';
 import { Invoice } from '../../interfaces/Invoice';
 import { Customer } from '../../interfaces/Customer';
 import { AlertsService } from '../../alerts.service';
-import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-invoices-modal',
@@ -48,13 +47,6 @@ export class InvoicesModalComponent implements OnInit {
    *
    */
 
-  title = 'pdf-generation';
-
-  generatePDF() {
-    const doc = new jsPDF();
-    doc.text('Hello world!', 10, 10);
-    doc.save('example.pdf');
-  }
   constructor(
     public dialogRef: MatDialogRef<InvoicesModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { x: number },
