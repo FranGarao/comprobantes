@@ -58,7 +58,7 @@
         *ngIf="invoice"
         placeholder="Fecha de Entrega"
         type="date"
-        value="{{ invoice.deliveryDate | date : 'yyyy-MM-dd' }}"
+        [value]="invoice.deliveryDate"
         formControlName="deliveryDate"
       />
     </div>
@@ -83,8 +83,10 @@
         [value]="invoice.name"
         formControlName="name"
       />
-      <button (click)="openCustomer(0)" mat-button>Nuevo Cliente</button>
-      <mat-icon (click)="getCustomers()">refresh</mat-icon>
+      <button *ngIf="!invoice" (click)="openCustomer(0)" mat-button>
+        Nuevo Cliente
+      </button>
+      <mat-icon *ngIf="!invoice" (click)="getCustomers()">refresh</mat-icon>
     </div>
     <div class="input-ctn row">
       <label>Telefono</label>

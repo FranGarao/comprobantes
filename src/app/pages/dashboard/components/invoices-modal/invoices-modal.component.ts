@@ -69,8 +69,6 @@ export class InvoicesModalComponent implements OnInit {
       this.buildForm();
     } else {
       this.invoice = this.service.invoice;
-      console.log({ invoice: this.invoice });
-
       this.invoicesForm = this.fb.group({
         id: [this.invoice.id],
         total: [this.invoice.total],
