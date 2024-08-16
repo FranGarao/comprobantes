@@ -38,7 +38,6 @@ export class InvoicesListComponent {
         this.isLoading = false;
         this.invoices = res;
         this.filteredInvoices = res;
-        console.log({ invoices: this.invoices });
       },
       error: (err) => {
         Swal.fire({
@@ -202,13 +201,9 @@ export class InvoicesListComponent {
         );
         break;
       case 1:
-        console.log({ therm, invoices: this.filteredInvoices });
-
         this.filteredInvoices = this.invoices.filter((invoice) =>
           invoice.phone.toLowerCase().includes(therm)
         );
-        console.log(this.filteredInvoices);
-
         break;
       case 2:
         this.filteredInvoices = this.invoices.filter((invoice) =>
@@ -240,8 +235,6 @@ export class InvoicesListComponent {
       therm.value === 'cd' ||
       therm.value === 'ca'
     ) {
-      console.log(therm.value);
-
       switch (therm.value) {
         case 'pendiente':
           this.filteredInvoices = this.invoices.filter(
@@ -444,7 +437,6 @@ export class InvoicesListComponent {
 
   sendWhatsApp(phone: any, message: string) {
     const encodedMessage = encodeURIComponent(message);
-    console.log({ encodedMessage });
     const whatsappUrl = `https://wa.me/549${phone}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   }

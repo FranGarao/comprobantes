@@ -38,6 +38,7 @@ export class JobModalComponent {
         this.jobs = data;
       },
       error: (error) => {
+        Swal.fire('Error', 'No se pudo obtener el trabajo', 'error');
         console.log({ error });
       },
     });

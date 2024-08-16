@@ -28,10 +28,7 @@ export class CustomerModalComponent {
       this.customer = null;
     } else {
       this.customer = this.service.customer;
-      console.log({ customer: this.customer });
     }
-
-    console.log({ customer: this.customer, data: this.data.id });
 
     this.createForm();
     this.getCustomers();
@@ -43,6 +40,7 @@ export class CustomerModalComponent {
         this.customers = data;
       },
       error: (error: any) => {
+        Swal.fire('Error', 'No se pudo obtener el cliente', 'error');
         console.log({ error });
       },
     });
@@ -71,7 +69,6 @@ export class CustomerModalComponent {
       Phone: this.customerForm.value.phone.toString(),
       //status: this.jobsForm.value.status,
     };
-    console.log({ newCustomer });
     this.service.createCustomer(newCustomer).subscribe({
       next: () => {
         this.dialogRef.close();
@@ -79,8 +76,7 @@ export class CustomerModalComponent {
         this.getCustomers();
       },
       error: (error) => {
-        console.log({ error });
-        Swal.fire('Error', 'No se pudo crear el trabajo', 'error');
+        Swal.fire('Error', 'No se pudo crear el cliente', 'error');
       },
     });
   }
@@ -103,7 +99,7 @@ export class CustomerModalComponent {
       },
       error: (error) => {
         console.log({ error });
-        Swal.fire('Error', 'No se pudo crear el trabajo', 'error');
+        Swal.fire('Error', 'No se pudo crear el Cliente', 'error');
       },
     });
   }

@@ -82,7 +82,6 @@ export class DashboardService {
   //Obtiene las comprobantes del backend
   getInvoices() {
     const url = `${environment.API_URL}/invoices`;
-    console.log({ tok: this.token });
 
     return this.http.get<Invoice[]>(url, { headers: this.headers });
   }

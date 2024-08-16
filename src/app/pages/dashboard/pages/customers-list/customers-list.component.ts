@@ -28,7 +28,6 @@ export class CustomersListComponent {
       next: (res: any[]) => {
         this.isLoading = false;
         this.customers = res;
-        console.log({ res });
       },
       error: (err) => {
         Swal.fire({

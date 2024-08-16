@@ -44,7 +44,6 @@ export class LoginComponent {
         },
         error: (error) => {
           this.alertService.error('Error', 'Usuario o contraseña incorrectos');
-          console.log({ error });
         },
       });
     }

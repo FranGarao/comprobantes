@@ -140,7 +140,6 @@ export class InvoicesModalComponent implements OnInit {
       jobId: this.jobId || 0,
       status: 'Pendiente',
     };
-    console.log(this.form);
 
     this.service.sendForm(this.form).subscribe({
       next: () => {
@@ -284,7 +283,8 @@ export class InvoicesModalComponent implements OnInit {
       next: (customers: Customer[]) => {
         this.customers = customers;
       },
-      error: (error) => console.error(error),
+      error: (error) =>
+        Swal.fire('Error', 'No se pudieron obtener los clientes', 'error'),
     });
   }
 
@@ -310,7 +310,8 @@ export class InvoicesModalComponent implements OnInit {
           this.lastInvoice = Math.max(...invoicesIds) + 1;
         } else this.lastInvoice = 1;
       },
-      error: (error) => console.error(error),
+      error: (error) =>
+        Swal.fire('Error', 'No se pudieron obtener los comprobantes', 'error'),
     });
   }
 
