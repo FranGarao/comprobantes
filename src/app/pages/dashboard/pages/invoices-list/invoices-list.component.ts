@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 @Component({
   selector: 'app-invoices-list',
   templateUrl: './invoices-list.component.html',
-  styleUrl: './invoices-list.component.css',
+  styleUrls: ['./invoices-list.component.css', '../../../../app.component.css'],
 })
 export class InvoicesListComponent {
   public invoices: Invoice[] = [];

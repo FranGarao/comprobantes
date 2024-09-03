@@ -1,0 +1,109 @@
+.print-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.print-btn mat-icon {
+  font-size: 24px;
+}
+
+.example-menu {
+  background-color: white;
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 0;
+}
+
+.example-menu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.example-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.no-outline:focus {
+  outline: none;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.invoice-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.icon-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.icon-buttons button:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.icon-buttons mat-icon {
+  font-size: 24px;
+  color: #333;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.refresh-icon {
+  color: #3f51b5;
+  cursor: pointer;
+}
+
+/* Estilo para el select */
+#status-filter {
+  background-color: #f0f4f8; /* Fondo suave en un tono azul claro */
+  color: #333; /* Texto en un gris oscuro */
+  border: 1px solid #ccc; /* Borde en gris claro */
+  border-radius: 4px; /* Bordes redondeados */
+  padding: 8px 12px; /* Espaciado interno */
+  font-size: 14px; /* Tamaño de fuente */
+  width: 170px; /* Ancho del select */
+  cursor: pointer; /* Cursor de mano al pasar */
+  transition: border-color 0.3s ease; /* Transición suave para cambios de borde */
+}
+
+/* Estilo para el hover y el foco */
+#status-filter:hover,
+#status-filter:focus {
+  border-color: #007acc; /* Cambia el color del borde a azul cuando se pasa el mouse o está enfocado */
+  outline: none; /* Elimina el contorno predeterminado del navegador */
+}
