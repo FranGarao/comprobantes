@@ -51,7 +51,6 @@
       </button>
     </div>
     <div class="filter-container">
-      <label for="status-filter">Filtrar</label>
       <select
         (change)="filter($event.target)"
         id="status-filter"
@@ -60,15 +59,11 @@
         <option value="all">Todos</option>
         <option value="pendiente">Pendientes</option>
         <option value="finalizado">Finalizados</option>
-        <!--TODO completar -->
-        <!-- <option value="fa">Fecha Asc.</option>
-                <option value="fd">Fecha Desc.</option>
-                <option value="ca">Comprobante Asc.</option>
-                <option value="cd">Comprobante Desc.</option> -->
+        <option value="entregado">Entregados</option>
       </select>
     </div>
     <div class="filter-container">
-      <mat-icon (click)="getInvoices()">refresh</mat-icon>
+      <mat-icon class="refresh-icon" (click)="getInvoices()">refresh</mat-icon>
     </div>
   </div>
 

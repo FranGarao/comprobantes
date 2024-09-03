@@ -299,3 +299,62 @@ h2 {
   color: #4caf50;
   transform: scale(1.2);
 }
+
+.refresh-icon {
+  color: #3f51b5;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.refresh-icon:hover {
+  transform: scale(1.2);
+}
+/* Estilo para el select */
+#status-filter {
+  background-color: #f0f4f8; /* Fondo suave en un tono azul claro */
+  color: #333; /* Texto en un gris oscuro */
+  border: 1px solid #ccc; /* Borde en gris claro */
+  border-radius: 4px; /* Bordes redondeados */
+  padding: 8px 12px; /* Espaciado interno */
+  font-size: 14px; /* Tamaño de fuente */
+  width: 170px; /* Ancho del select */
+  cursor: pointer; /* Cursor de mano al pasar */
+  transition: border-color 0.3s ease; /* Transición suave para cambios de borde */
+}
+
+/* Estilo para el hover y el foco */
+#status-filter:hover,
+#status-filter:focus {
+  border-color: #007acc; /* Cambia el color del borde a azul cuando se pasa el mouse o está enfocado */
+  outline: none; /* Elimina el contorno predeterminado del navegador */
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column; /* Cambia la dirección a columna en pantallas pequeñas */
+    min-height: 250px;
+    align-items: stretch; /* Alinea los elementos al ancho total */
+  }
+
+  .search-container,
+  .filter-container {
+    width: 100%; /* Hace que cada contenedor ocupe todo el ancho */
+    justify-content: center; /* Centra los elementos dentro de cada contenedor */
+  }
+
+  .search,
+  .status-filter {
+    max-width: 100%; /* Permite que los campos de búsqueda y el select ocupen todo el ancho */
+  }
+
+  .search-btn {
+    width: 30px; /* Botón ocupa todo el ancho en pantallas pequeñas */
+    margin-top: 5px; /* Margen superior para separarlo del campo de búsqueda */
+  }
+
+  .refresh-icon {
+    font-size: 24px; /* Aumenta el tamaño del ícono de refrescar */
+    margin-left: 10px; /* Margen izquierdo para separar del resto de los elementos */
+  }
+}

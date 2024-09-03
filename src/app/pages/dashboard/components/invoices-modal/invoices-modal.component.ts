@@ -15,6 +15,7 @@ import { Job } from '../../interfaces/Job';
 import { Invoice } from '../../interfaces/Invoice';
 import { Customer } from '../../interfaces/Customer';
 import { AlertsService } from '../../alerts.service';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-invoices-modal',
@@ -31,7 +32,7 @@ export class InvoicesModalComponent implements OnInit {
   public customers: any[] = [];
   public selectedJobs: any[] = [];
   public addJobs: any[] = [0];
-  public lastInvoice: number = 0;
+  public lastInvoice: number = 7299;
   public selectedJob: any;
   public invoice: Invoice | null = null;
   public balance: number = 0;
@@ -96,6 +97,23 @@ export class InvoicesModalComponent implements OnInit {
     this.invoicesForm.get('phone')?.setValue(phone);
   }
 
+  onChangeSetCustomer(event: any) {
+    console.log(event);
+
+    const selectedId = event.target.value;
+    const selectedCustomer = this.customers.find(
+      (c) => c.id === Number(selectedId)
+    );
+    console.log(selectedCustomer);
+    if (selectedCustomer) {
+      this.setCustomer(
+        selectedCustomer.name,
+        selectedCustomer.lastName,
+        selectedCustomer.phone
+      );
+    }
+  }
+
   sendForm() {
     if (this.invoicesForm.invalid) {
       Swal.fire({
@@ -143,14 +161,15 @@ export class InvoicesModalComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Aceptar',
         }).then(() => {
+          const date = new Date(this.form?.deliveryDate);
+          const formattedDate = format(date, 'dd-MM-yyyy');
           const message =
             `*GENERACION DE ZAPATEROS*\n` +
             `*Comprobante N°* ${this.form?.id}\n` +
-            `*Fecha de entrega:* ${this.form?.deliveryDate}\n` +
+            `*Fecha de entrega:* ${formattedDate}\n` +
+            `*Total:* $${this.form.total}\n` +
             `*Seña:* $${this.form.deposit}\n` +
             `*Saldo:* $${this.form.balance}\n\n` +
-            `*HORARIOS*\n` +
-            `Lunes a Viernes 09 a 13 hs - 16 a 19 hs\n` +
             `Sábado 09 a 13 hs\n\n` +
             `*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados después de 30 días pierden todo derecho a reclamo.*\n`;
 
@@ -297,10 +316,13 @@ export class InvoicesModalComponent implements OnInit {
     this.service.getInvoices().subscribe({
       next: (invoices: Invoice[]) => {
         const invoicesIds: number[] = [];
-        invoices.forEach((invoice: Invoice) => invoicesIds.push(invoice.id));
-        if (invoicesIds.length > 0) {
-          this.lastInvoice = Math.max(...invoicesIds) + 1;
-        } else this.lastInvoice = 1;
+        // Ordena los invoices por id de mayor a menor
+        invoices.sort((a: Invoice, b: Invoice) => b.id - a.id);
+
+        // Si hay elementos en invoices, asigna el id más grande a this.lastInvoice
+        if (invoices.length > 0) {
+          this.lastInvoice = invoices[0].id + 1; // El id más grande estará en el primer elemento después de ordenar
+        } else this.lastInvoice = 7300;
       },
       error: (error) =>
         Swal.fire('Error', 'No se pudieron obtener los comprobantes', 'error'),
@@ -368,9 +390,6 @@ export class InvoicesModalComponent implements OnInit {
           <p>Seña $${this.invoicesForm.get('deposit')?.value}</p>
           <p>Saldo $${this.balance}</p>
           <hr>
-          <p style="text-align: center; font-weight: bold;">HORARIOS</p>
-          <p style="text-align: center;">Lunes a Viernes : 09 a 13 hs - 16 a 19 hs</p>
-          <p style="text-align: center;">Sábado 09 a 13 hs</p>
           <hr>
           <p style="font-size: 12px; text-align: center;">
             Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.

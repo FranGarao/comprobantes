@@ -67,12 +67,8 @@
             <input placeholder="Nombre" formControlName="name">
         </div> -->
     <div class="input-ctn row">
-      <select *ngIf="!invoice">
-        <option
-          (click)="setCustomer(c?.name, c?.lastName, c?.phone)"
-          *ngFor="let c of customers"
-          [value]="c?.id"
-        >
+      <select *ngIf="!invoice" (change)="onChangeSetCustomer($event)">
+        <option *ngFor="let c of customers" [value]="c?.id">
           {{ c?.name }}
           {{ c?.lastName }}
         </option>
@@ -86,7 +82,9 @@
       <button *ngIf="!invoice" (click)="openCustomer(0)" mat-button>
         Nuevo Cliente
       </button>
-      <mat-icon *ngIf="!invoice" (click)="getCustomers()">refresh</mat-icon>
+      <button mat-button *ngIf="!invoice" (click)="getCustomers()">
+        Refrescar
+      </button>
     </div>
     <div class="input-ctn row">
       <label>Telefono</label>

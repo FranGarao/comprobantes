@@ -223,59 +223,32 @@ export class InvoicesListComponent {
 
   filter(therm: any) {
     let status = false;
-    if (therm.value === 'finalizado' || therm.value === 'pendiente') {
-      therm.value === 'finalizado' ? (status = true) : (status = false);
-      this.filteredInvoices = this.invoices?.filter(
-        (invoice) => invoice?.status === 'Pendiente'
-      );
-      return;
-    } else if (
-      therm.value === 'fa' ||
-      therm.value === 'fd' ||
-      therm.value === 'cd' ||
-      therm.value === 'ca'
-    ) {
-      switch (therm.value) {
-        case 'pendiente':
-          this.filteredInvoices = this.invoices.filter(
-            (invoice) => !invoice.status
-          );
-          break;
-        case 'finalizado':
-          this.filteredInvoices = this.invoices.filter(
-            (invoice) => invoice.status
-          );
-          break;
-        case 'fa':
-          this.filteredInvoices = [...this.invoices].sort(
-            (a, b) =>
-              new Date(a.deliveryDate).getTime() -
-              new Date(b.deliveryDate).getTime()
-          );
-          break;
-        case 'fd':
-          this.filteredInvoices = [...this.invoices].sort(
-            (a, b) =>
-              new Date(b.deliveryDate).getTime() -
-              new Date(a.deliveryDate).getTime()
-          );
-          break;
-        case 'ca':
-          this.filteredInvoices = [...this.invoices].sort(
-            (a, b) => a.id - b.id
-          );
-          break;
-        case 'cd':
-          this.filteredInvoices = [...this.invoices].sort(
-            (a, b) => b.id - a.id
-          );
-          break;
-        default:
-          this.filteredInvoices = [...this.invoices];
-          break;
-      }
+    switch (therm?.value) {
+      case 'pendiente':
+        this.filteredInvoices = this.invoices?.filter((invoice) => {
+          return invoice.status === 'Pendiente';
+        });
+        break;
+      case 'finalizado':
+        this.filteredInvoices = this.invoices?.filter((invoice) => {
+          return invoice.status === 'Finalizado';
+        });
+
+        break;
+      case 'entregado':
+        console.log(therm.value);
+
+        this.filteredInvoices = this.invoices?.filter((invoice) => {
+          return invoice.status === 'Entregado';
+        });
+        break;
+      default:
+        this.filteredInvoices = this.invoices?.filter((invoice) => {
+          return invoice.status != null;
+        });
+        break;
     }
-    this.filteredInvoices = this.invoices;
+    return;
   }
 
   finishInvoice(invoice: Invoice) {
@@ -348,9 +321,6 @@ export class InvoicesListComponent {
           <p>Seña $${invoice?.deposit}</p>
           <p>Saldo $${invoice?.balance}</p>
           <hr>
-          <p style="text-align: center; font-weight: bold;">HORARIOS</p>
-          <p style="text-align: center;">Lunes a Viernes : 09 a 13 hs - 16 a 19 hs</p>
-          <p style="text-align: center;">Sábado 09 a 13 hs</p>
           <hr>
           <p style="font-size: 12px; text-align: center;">
             Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.
@@ -390,7 +360,7 @@ export class InvoicesListComponent {
 
         break;
       case 3:
-        messagge = `*Nº* ${invoice?.id}\n*Trabajo:* ${invoice?.job}\n*Fecha de entrega:* ${formattedDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*HORARIOS*\nLunes a Viernes : 09 a 13 hs - 16 a 19 hsSábado 09 a 13 hs\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
+        messagge = `*Nº* ${invoice?.id}\n*Trabajo:* ${invoice?.job}\n*Fecha de entrega:* ${formattedDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
         `;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
