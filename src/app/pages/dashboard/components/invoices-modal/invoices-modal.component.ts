@@ -170,7 +170,6 @@ export class InvoicesModalComponent implements OnInit {
             `*Total:* $${this.form.total}\n` +
             `*Seña:* $${this.form.deposit}\n` +
             `*Saldo:* $${this.form.balance}\n\n` +
-            `Sábado 09 a 13 hs\n\n` +
             `*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso. Los trabajos no retirados después de 30 días pierden todo derecho a reclamo.*\n`;
 
           const encodedMessage = encodeURIComponent(message);
