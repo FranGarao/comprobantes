@@ -115,15 +115,15 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   sendForm() {
-    if (this.invoicesForm.invalid) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Por favor complete los campos requeridos',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-      });
-      return;
-    }
+    // if (this.invoicesForm.invalid) {
+    //   Swal.fire({
+    //     title: 'Error',
+    //     text: 'Por favor complete los campos requeridos',
+    //     icon: 'error',
+    //     confirmButtonText: 'Aceptar',
+    //   });
+    //   return;
+    // }
     this.alertService.loading('Creando comprobante', 'Por favor espere...');
 
     const jobs: any[] = [];
@@ -150,6 +150,7 @@ export class InvoicesModalComponent implements OnInit {
       jobId: this.jobId || 0,
       status: 'Pendiente',
     };
+    !this.form.deposit ? (this.form.deposit = 0) : null;
 
     this.service.sendForm(this.form).subscribe({
       next: () => {
@@ -161,7 +162,7 @@ export class InvoicesModalComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Aceptar',
         }).then(() => {
-          const date = new Date(this.form?.deliveryDate);
+          const date = new Date(this.form?.deliveryDate + 'T00:00:00');
           const formattedDate = format(date, 'dd-MM-yyyy');
           const message =
             `*GENERACION DE ZAPATEROS*\n` +
