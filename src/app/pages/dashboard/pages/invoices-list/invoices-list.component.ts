@@ -365,7 +365,7 @@ export class InvoicesListComponent {
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 4:
-        messagge = `*Hola ${invoice?.name}. Tu trabajo está listo para ser retirado*`;
+        messagge = `*Hola ${invoice?.name}. Tu trabajo está listo para ser retirado*\nHorarios: Lun a Vier. 9 a 13/16 a 19 hs\nSábados 9 a 13 hs`;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 5:
