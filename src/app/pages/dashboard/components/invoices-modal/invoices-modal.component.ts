@@ -54,7 +54,7 @@ export class InvoicesModalComponent implements OnInit {
     private fb: FormBuilder,
     private alertService: AlertsService,
     private service: DashboardService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.data?.x === 0) {
@@ -165,7 +165,7 @@ export class InvoicesModalComponent implements OnInit {
           const date = new Date(this.form?.deliveryDate + 'T00:00:00');
           const formattedDate = format(date, 'dd-MM-yyyy');
           const message =
-            `*GENERACION DE ZAPATEROS*\n` +
+            `*PISADAS RENOVADAS*\n` +
             `*Comprobante N°* ${this.form?.id}\n` +
             `*Fecha de entrega:* ${formattedDate}\n` +
             `*Total:* $${this.form.total}\n` +
@@ -376,15 +376,14 @@ export class InvoicesModalComponent implements OnInit {
       case 0:
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
-          <h2 style="text-align: center;">Generación de Zapateros</h2>
+          <h2 style="text-align: center;">Pisadas Renovadas</h2>
           <p style="text-align: center;">Compostura de Calzado</p>
           <p style="text-align: center;">Av. Perón 1855 - San Miguel</p>
           <p style="text-align: center;">11 5667 0042</p>
           <hr>
           <p>Nº ${this.lastInvoice}</p>
           <p>Trabajo:${jobStrings}</p>
-          <p>Fecha de entrega: ${
-            this.invoicesForm.get('deliveryDate')?.value
+          <p>Fecha de entrega: ${this.invoicesForm.get('deliveryDate')?.value
           }</p>
           <p>Total $${this.invoicesForm.get('total')?.value}</p>
           <p>Seña $${this.invoicesForm.get('deposit')?.value}</p>
@@ -403,8 +402,7 @@ export class InvoicesModalComponent implements OnInit {
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
           <p>Nº ${this.lastInvoice}</p>
-          <p>Fecha de entrega: ${
-            this.invoicesForm.get('deliveryDate')?.value
+          <p>Fecha de entrega: ${this.invoicesForm.get('deliveryDate')?.value
           }</p>
           <p>Total $${this.invoicesForm.get('total')?.value}</p>
           <p>Seña $${this.invoicesForm.get('deposit')?.value}</p>

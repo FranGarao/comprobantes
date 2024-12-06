@@ -21,7 +21,7 @@ export class InvoicesListComponent {
     private service: DashboardService,
     private fb: FormBuilder,
     private alertService: AlertsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getInvoices();
@@ -309,7 +309,7 @@ export class InvoicesListComponent {
       case 0:
         this.printContent = `
         <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
-          <h2 style="text-align: center;">Generación de Zapateros</h2>
+          <h2 style="text-align: center;">Pisadas Renovadas</h2>
           <p style="text-align: center;">Compostura de Calzado</p>
           <p style="text-align: center;">Av. Perón 1855 - San Miguel</p>
           <p style="text-align: center;">11 5667 0042</p>
