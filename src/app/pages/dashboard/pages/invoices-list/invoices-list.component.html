@@ -2,60 +2,32 @@
   <h2>Lista de Comprobantes</h2>
   <div class="search-bar">
     <div class="search-container">
-      <input
-        #searchInput
-        type="text"
-        class="search"
-        placeholder="Buscar por nombre"
-      />
+      <input #searchInput type="text" class="search" placeholder="Buscar por nombre" />
       <button (click)="search(searchInput.value, 0)" class="search-btn">
         <mat-icon>search</mat-icon>
       </button>
     </div>
-    <form
-      [formGroup]="dateFilter"
-      class="search-container"
-      (ngSubmit)="submitFilterDate()"
-    >
+    <form [formGroup]="dateFilter" class="search-container" (ngSubmit)="submitFilterDate()">
       <div>
         <label for="startDate">Desde</label>
-        <input
-          formControlName="startDate"
-          type="date"
-          class="search"
-          placeholder="Buscar por telefono"
-        />
+        <input formControlName="startDate" type="date" class="search" placeholder="Buscar por telefono" />
       </div>
       <div>
         <label for="endDate">Hasta</label>
-        <input
-          formControlName="endDate"
-          type="date"
-          class="search"
-          placeholder="Buscar por telefono"
-        />
+        <input formControlName="endDate" type="date" class="search" placeholder="Buscar por telefono" />
       </div>
       <button class="search-btn">
         <mat-icon>search</mat-icon>
       </button>
     </form>
     <div class="search-container">
-      <input
-        #searchId
-        type="text"
-        class="search"
-        placeholder="Buscar por comprobante"
-      />
+      <input #searchId type="text" class="search" placeholder="Buscar por comprobante" />
       <button (click)="search(searchId.value, 2)" class="search-btn">
         <mat-icon>search</mat-icon>
       </button>
     </div>
     <div class="filter-container">
-      <select
-        (change)="filter($event.target)"
-        id="status-filter"
-        class="status-filter"
-      >
+      <select (change)="filter($event.target)" id="status-filter" class="status-filter">
         <option value="all">Todos</option>
         <option value="pendiente">Pendientes</option>
         <option value="finalizado">Finalizados</option>
@@ -90,50 +62,26 @@
         </div>
         <ng-template #printMenu>
           <div class="example-menu" cdkMenu>
-            <button
-              (click)="printInvoice(invoice, 1)"
-              class="example-menu-item"
-              cdkMenuItem
-            >
+            <button (click)="printInvoice(invoice, 1)" class="example-menu-item" cdkMenuItem>
               Imprimir General
             </button>
-            <button
-              (click)="printInvoice(invoice, 0)"
-              class="example-menu-item"
-              cdkMenuItem
-            >
+            <button (click)="printInvoice(invoice, 0)" class="example-menu-item" cdkMenuItem>
               Imprimir para Cliente
             </button>
-            <button
-              (click)="printInvoice(invoice, 2)"
-              class="example-menu-item"
-              cdkMenuItem
-            >
+            <button (click)="printInvoice(invoice, 2)" class="example-menu-item" cdkMenuItem>
               Imprimir Codigo
             </button>
           </div>
         </ng-template>
         <ng-template #notify>
           <div class="example-menu" cdkMenu>
-            <button
-              (click)="printInvoice(invoice, 3)"
-              class="example-menu-item"
-              cdkMenuItem
-            >
+            <button (click)="printInvoice(invoice, 3)" class="example-menu-item" cdkMenuItem>
               Enviar Comprobante
             </button>
-            <button
-              (click)="printInvoice(invoice, 4)"
-              class="example-menu-item"
-              cdkMenuItem
-            >
+            <button (click)="printInvoice(invoice, 4)" class="example-menu-item" cdkMenuItem>
               Notificar como Terminado
             </button>
-            <button
-              (click)="printInvoice(invoice, 5)"
-              class="example-menu-item"
-              cdkMenuItem
-            >
+            <button (click)="printInvoice(invoice, 5)" class="example-menu-item" cdkMenuItem>
               Notificar como Entregado
             </button>
           </div>
@@ -143,37 +91,25 @@
         <p><span class="label">Trabajo:</span> {{ invoice?.job }}</p>
         <p><span class="label">Total:</span> ${{ invoice?.total }}</p>
         <p><span class="label">Seña:</span> ${{ invoice?.deposit }}</p>
-        <p><span class="label">Saldo:</span> ${{ invoice?.balance }}</p>
+        <p><span class="label">Saldo:</span>${{ invoice?.balance }} </p>
         <p>
           <span class="label">Fecha de entrega:</span>
           {{ invoice?.deliveryDate | date : "dd/MM/yyyy" }}
         </p>
         <p>
           <span class="label">Estado:</span>
-          <span
-            [ngClass]="{
+          <span [ngClass]="{
               pending: invoice?.status === 'Pendiente',
               deliver: invoice?.status === 'Entregado',
               finish: invoice?.status === 'Finalizado'
-            }"
-            class="label"
-            >{{ invoice?.status }}</span
-          >
+            }" class="label">{{ invoice?.status }}</span>
         </p>
       </div>
       <div class="invoice-footer">
-        <button
-          *ngIf="invoice?.status === 'Pendiente'"
-          (click)="finishInvoice(invoice)"
-          class="finalize-btn"
-        >
+        <button *ngIf="invoice?.status === 'Pendiente'" (click)="finishInvoice(invoice)" class="finalize-btn">
           Finalizar
         </button>
-        <button
-          *ngIf="invoice?.status !== 'Entregado'"
-          (click)="deliverInvoice(invoice)"
-          class="final-btn"
-        >
+        <button *ngIf="invoice?.status !== 'Entregado'" (click)="deliverInvoice(invoice)" class="final-btn">
           Terminar
         </button>
         <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">

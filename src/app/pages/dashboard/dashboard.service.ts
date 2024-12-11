@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Invoice } from './interfaces/Invoice';
-import { environment } from '../../../environments/env.example';
+import { Invoice, InvoicesResponse } from './interfaces/Invoice';
+import { environment } from '../../../environments/env';
 import { InvoicesModalComponent } from './components/invoices-modal/invoices-modal.component';
 import { JobModalComponent } from './components/job-modal/job-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Job } from './interfaces/Job';
 import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
 import { Customer } from './interfaces/Customer';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 const urlBack = environment.API_URL;
 
 @Injectable({
@@ -25,7 +25,7 @@ export class DashboardService {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${this.token}`,
   });
-  constructor(private http: HttpClient, private dialogRef: MatDialog) {}
+  constructor(private http: HttpClient, private dialogRef: MatDialog) { }
 
   addInvoice(newComprobante: any) {
     const currentInvoices = this.invoicesSource.value;
@@ -34,7 +34,7 @@ export class DashboardService {
 
   //Postea el formulario al backend
   sendForm(form: Invoice) {
-    const url = `${environment.API_URL}/invoices`;
+    const url = `${environment.API_URL}/invoice`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       // Authorization: `Bearer ${this.token}`,
@@ -81,56 +81,61 @@ export class DashboardService {
   }
   //Obtiene las comprobantes del backend
   getInvoices() {
-    const url = `${environment.API_URL}/invoices`;
+    const url = `${environment.API_URL}/invoice`;
 
-    return this.http.get<Invoice[]>(url, { headers: this.headers });
+    return this.http.get<InvoicesResponse>(url, { headers: this.headers })
+      .pipe(
+        map(res => {
+          return res.invoices;
+        })
+      );
   }
 
   //Obtiene comprobante por id
   getInvoice(id: number) {
-    const url = `${environment.API_URL}/invoices/${id}`;
+    const url = `${environment.API_URL}/invoice/${id}`;
     return this.http.get(url);
   }
 
   //Actualiza la comprobante
   updateInvoice(id: number, invoice: Invoice) {
-    const url = `${environment.API_URL}/invoices/${id}`;
+    const url = `${environment.API_URL}/invoice/${id}`;
     return this.http.put(url, invoice, { headers: this.headers });
   }
 
   //Elimina la comprobante
   deleteInvoice(id: number) {
-    const url = `${environment.API_URL}/invoices/${id}`;
+    const url = `${environment.API_URL}/invoice/${id}`;
     return this.http.delete(url, { headers: this.headers });
   }
 
   //Crea un comprobante nuevo
   createInvoice(invoice: Invoice) {
-    const url = `${environment.API_URL}/invoices`;
+    const url = `${environment.API_URL}/invoice`;
     return this.http.post(url, invoice, { headers: this.headers });
   }
 
   //Obtiene los trabajos del backend
   getJobs() {
-    const url = `${environment.API_URL}/jobs`;
+    const url = `${environment.API_URL}/job`;
     return this.http.get<Job[]>(url, { headers: this.headers });
   }
 
   // Borra un trabajo
   deleteJob(id: number) {
-    const url = `${environment.API_URL}/jobs/${id}`;
+    const url = `${environment.API_URL}/job/${id}`;
     return this.http.delete(url, { headers: this.headers });
   }
 
   createJob(job: any) {
-    const url = `${environment.API_URL}/jobs`;
+    const url = `${environment.API_URL}/job`;
 
     return this.http.post(url, job, { headers: this.headers });
   }
 
   //Actualiza un trabajo
   updateJob(job: any) {
-    const url = `${environment.API_URL}/jobs/${job.Id}`;
+    const url = `${environment.API_URL}/job/${job.Id}`;
 
     return this.http.put(url, job, { headers: this.headers });
   }
@@ -159,5 +164,7 @@ export class DashboardService {
 
   logout() {
     localStorage.removeItem('AuthToken');
+    const url = `${environment.API_URL}/user/logout`;
+    return this.http.get(url);
   }
 }

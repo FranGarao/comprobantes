@@ -17,6 +17,7 @@ export class InvoicesListComponent {
   public isLoading: boolean = false;
   public dateFilter: FormGroup = new FormGroup({});
   private printContent: string = '';
+  public balance: number = 0;
   constructor(
     private service: DashboardService,
     private fb: FormBuilder,
@@ -36,6 +37,13 @@ export class InvoicesListComponent {
     this.service.getInvoices().subscribe({
       next: (res: Invoice[]) => {
         this.isLoading = false;
+        res.map(i => {
+          i.balance = i.total - i.deposit;
+          i.name = "pepe";
+          i.job = "paseo";
+        });
+        console.log(res);
+
         this.invoices = res;
         this.filteredInvoices = res;
       },

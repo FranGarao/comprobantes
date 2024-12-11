@@ -10,3 +10,8 @@ export interface Invoice {
   balance: number;
   status: string;
 }
+
+export interface InvoicesResponse {
+  message: string;
+  invoices: Invoice[]
+}
