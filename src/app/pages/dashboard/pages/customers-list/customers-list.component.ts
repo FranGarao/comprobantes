@@ -16,7 +16,7 @@ export class CustomersListComponent {
   constructor(
     private service: DashboardService,
     private alertService: AlertsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getCustomers();
@@ -25,7 +25,7 @@ export class CustomersListComponent {
   getCustomers() {
     this.isLoading = true;
     this.service.getCustomers().subscribe({
-      next: (res: any[]) => {
+      next: (res) => {
         this.isLoading = false;
         this.customers = res;
       },

@@ -5,3 +5,13 @@ export interface Customer {
   Email: string;
   Phone: string;
 }
+
+export interface CustomerResponse {
+  message: string;
+  customer: Customer;
+};
+
+export interface CustomersResponse {
+  message: string;
+  customers: Customer[];
+};

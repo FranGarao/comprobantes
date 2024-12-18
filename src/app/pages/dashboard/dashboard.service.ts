@@ -7,7 +7,7 @@ import { JobModalComponent } from './components/job-modal/job-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Job } from './interfaces/Job';
 import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
-import { Customer } from './interfaces/Customer';
+import { Customer, CustomersResponse } from './interfaces/Customer';
 import { BehaviorSubject, map } from 'rxjs';
 const urlBack = environment.API_URL;
 
@@ -159,7 +159,12 @@ export class DashboardService {
 
   getCustomers() {
     const url = `${environment.API_URL}/customer`;
-    return this.http.get<Customer[]>(url, { headers: this.headers });
+    return this.http.get<CustomersResponse>(url, { headers: this.headers })
+      .pipe(
+        map(res => {
+          return res.customers;
+        })
+      );
   }
 
   logout() {
