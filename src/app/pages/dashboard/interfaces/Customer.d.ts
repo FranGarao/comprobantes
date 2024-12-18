@@ -1,9 +1,9 @@
 export interface Customer {
-  Id: number;
-  Name: string;
-  LastName: string;
-  Email: string;
-  Phone: string;
+  id?: number;
+  name: string;
+  LastName?: string;
+  email: string;
+  phone: string;
 }
 
 export interface CustomerResponse {

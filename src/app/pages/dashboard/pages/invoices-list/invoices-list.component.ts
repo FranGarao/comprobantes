@@ -37,11 +37,11 @@ export class InvoicesListComponent {
     this.service.getInvoices().subscribe({
       next: (res: Invoice[]) => {
         this.isLoading = false;
-        res.map(i => {
-          i.balance = i.total - i.deposit;
-          i.name = "pepe";
-          i.job = "paseo";
-        });
+        // res.map(i => {
+        //   i.balance = i.total - i.deposit;
+        //   i.name = "pepe";
+        //   i.job = "paseo";
+        // });
         console.log(res);
 
         this.invoices = res;

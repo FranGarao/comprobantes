@@ -99,10 +99,10 @@
         <p>
           <span class="label">Estado:</span>
           <span [ngClass]="{
-              pending: invoice?.status === 'Pendiente',
-              deliver: invoice?.status === 'Entregado',
-              finish: invoice?.status === 'Finalizado'
-            }" class="label">{{ invoice?.status }}</span>
+              pending: invoice?.status === 'PENDIENTE',
+              deliver: invoice?.status === 'ENTREGADO',
+              finish: invoice?.status === 'FINALIZADO'
+            }" class="label"> {{ invoice?.status }}</span>
         </p>
       </div>
       <div class="invoice-footer">

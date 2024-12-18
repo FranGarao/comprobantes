@@ -20,7 +20,7 @@ export class JobModalComponent {
     private fb: FormBuilder,
     private service: DashboardService,
     private alertService: AlertsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.data?.id === 0) {
@@ -84,15 +84,14 @@ export class JobModalComponent {
     });
   }
 
-  updateJob() {
+  updateJob(id: number) {
     this.alertService.loading('Editando trabajo', 'Por favor espere...');
-
+    // const id = this.job?.id;
     const updatedJob = {
-      Id: this.job?.id,
-      Name: this.jobsForm.value.name,
-      Price: this.jobsForm.value.price,
+      name: this.jobsForm.value.name,
+      price: this.jobsForm.value.price,
     };
-    this.service.updateJob(updatedJob).subscribe({
+    this.service.updateJob(id, updatedJob).subscribe({
       next: () => {
         this.dialogRef.close();
         Swal.fire('Trabajo actualizado', '', 'success');

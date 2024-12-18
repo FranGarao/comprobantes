@@ -5,7 +5,7 @@ import { environment } from '../../../environments/env';
 import { InvoicesModalComponent } from './components/invoices-modal/invoices-modal.component';
 import { JobModalComponent } from './components/job-modal/job-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Job } from './interfaces/Job';
+import { Job, JobsResponse } from './interfaces/Job';
 import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
 import { Customer, CustomersResponse } from './interfaces/Customer';
 import { BehaviorSubject, map } from 'rxjs';
@@ -82,7 +82,6 @@ export class DashboardService {
   //Obtiene las comprobantes del backend
   getInvoices() {
     const url = `${environment.API_URL}/invoice`;
-
     return this.http.get<InvoicesResponse>(url, { headers: this.headers })
       .pipe(
         map(res => {
@@ -118,7 +117,12 @@ export class DashboardService {
   //Obtiene los trabajos del backend
   getJobs() {
     const url = `${environment.API_URL}/job`;
-    return this.http.get<Job[]>(url, { headers: this.headers });
+    return this.http.get<JobsResponse>(url, { headers: this.headers })
+      .pipe(
+        map(res => {
+          return res.jobs;
+        })
+      );
   }
 
   // Borra un trabajo
@@ -134,8 +138,8 @@ export class DashboardService {
   }
 
   //Actualiza un trabajo
-  updateJob(job: any) {
-    const url = `${environment.API_URL}/job/${job.Id}`;
+  updateJob(id: number, job: any) {
+    const url = `${environment.API_URL}/job/${id}`;
 
     return this.http.put(url, job, { headers: this.headers });
   }
@@ -146,8 +150,8 @@ export class DashboardService {
     return this.http.post<Customer>(url, customer, { headers: this.headers });
   }
 
-  updateCustomer(customer: any) {
-    const url = `${environment.API_URL}/customer/${customer.Id}`;
+  updateCustomer(id: number, customer: any) {
+    const url = `${environment.API_URL}/customer/${id}`;
 
     return this.http.put(url, customer, { headers: this.headers });
   }
