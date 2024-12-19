@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Invoice } from './interfaces/Invoice';
-import { environment } from '../../../environments/env.example';
+import { environment } from '../../../environments/env';
 import { InvoicesModalComponent } from './components/invoices-modal/invoices-modal.component';
 import { JobModalComponent } from './components/job-modal/job-modal.component';
 import { MatDialog } from '@angular/material/dialog';

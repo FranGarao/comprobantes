@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../environments/env.example';
+import { environment } from '../environments/env';
 const urlBack = environment.API_URL;
 
 @Injectable({
