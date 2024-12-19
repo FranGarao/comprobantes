@@ -29,6 +29,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CustomerModalComponent } from './pages/dashboard/components/customer-modal/customer-modal.component';
 import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
+import { NewInvoiceComponent } from './pages/dashboard/pages/new-invoice/new-invoice.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { CustomersListComponent } from './pages/dashboard/pages/customers-list/c
     JobsListComponent,
     CustomerModalComponent,
     CustomersListComponent,
+    NewInvoiceComponent,
   ],
   imports: [
     BrowserModule,

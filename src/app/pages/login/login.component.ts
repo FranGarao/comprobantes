@@ -17,7 +17,7 @@ export class LoginComponent {
     private service: AppService,
     private router: Router,
     private alertService: AlertsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -25,7 +25,7 @@ export class LoginComponent {
 
   buildForm() {
     this.loginForm = this.fb.group({
-      userName: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
@@ -33,8 +33,8 @@ export class LoginComponent {
   login() {
     if (this.loginForm.valid) {
       const user = {
-        UserName: this.loginForm.value.userName,
-        Password: this.loginForm.value.password,
+        username: this.loginForm?.value?.username,
+        password: this.loginForm?.value?.password,
       };
 
       this.service.login(user).subscribe({

@@ -21,7 +21,7 @@ export class CustomerModalComponent {
     public fb: FormBuilder,
     private service: DashboardService,
     private alertService: AlertsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.data?.id === 0) {
@@ -59,21 +59,21 @@ export class CustomerModalComponent {
   addCustomer() {
     this.alertService.loading('Creando cliente', 'Por favor espere...');
 
-    const lastCustomer = this.customers[this.customers.length - 1];
+    // const lastCustomer = this.customers[this.customers.length - 1];
     const newCustomer = {
-      Id: lastCustomer.id + 1,
+      // Id: lastCustomer.id + 1,
       //description: this.jobsForm.value.description,
-      Name: this.customerForm.value.name,
-      LastName: this.customerForm.value.lastName,
-      Email: this.customerForm.value.email,
-      Phone: this.customerForm.value.phone.toString(),
+      name: this.customerForm.value.name,
+      // LastName: this.customerForm.value.lastName,
+      email: this.customerForm.value.email,
+      phone: this.customerForm.value.phone.toString(),
       //status: this.jobsForm.value.status,
     };
     this.service.createCustomer(newCustomer).subscribe({
       next: () => {
         this.dialogRef.close();
         Swal.fire('Cliente creado', '', 'success');
-        this.getCustomers();
+
       },
       error: (error) => {
         Swal.fire('Error', 'No se pudo crear el cliente', 'error');
@@ -81,20 +81,19 @@ export class CustomerModalComponent {
     });
   }
 
-  editCustomer(Id: number) {
+  editCustomer(id: number) {
     this.alertService.loading('Editando cliente', 'Por favor espere...');
-
     const newCustomer = {
-      Id,
-      Name: this.customerForm.value.name,
-      LastName: this.customerForm.value.lastName,
-      Email: this.customerForm.value.email,
-      Phone: this.customerForm.value.phone.toString(),
+      name: this.customerForm.value.name,
+      // LastName: this.customerForm.value.lastName,
+      email: this.customerForm.value.email,
+      phone: this.customerForm.value.phone.toString(),
     };
-    this.service.updateCustomer(newCustomer).subscribe({
+    this.service.updateCustomer(id, newCustomer).subscribe({
       next: () => {
         this.dialogRef.close();
         Swal.fire('Cliente editado', '', 'success');
+        this.customers = [];
         this.getCustomers();
       },
       error: (error) => {

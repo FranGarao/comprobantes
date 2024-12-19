@@ -11,7 +11,7 @@ export class DashboardComponent {
   /**
    *
    */
-  constructor(private service: DashboardService, private router: Router) {}
+  constructor(private service: DashboardService, private router: Router) { }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -37,5 +37,9 @@ export class DashboardComponent {
 
   logout() {
     // this.service.logout();
+  }
+  createInvoice() {
+    this.router.navigate(['dashboard/invoices/create']);
+    // this.service.openInvoice(0);
   }
 }

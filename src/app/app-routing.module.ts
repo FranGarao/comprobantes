@@ -5,6 +5,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { InvoicesListComponent } from './pages/dashboard/pages/invoices-list/invoices-list.component';
 import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.component';
 import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
+import { NewInvoiceComponent } from './pages/dashboard/pages/new-invoice/new-invoice.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,11 @@ const routes: Routes = [
         path: 'list/customers',
         component: CustomersListComponent,
       },
+      {
+        path: 'invoices/create',
+        // pathMatch: 'full',
+        component: NewInvoiceComponent
+      },
     ],
   },
 ];
@@ -35,4 +41,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

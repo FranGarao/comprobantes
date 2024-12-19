@@ -17,6 +17,7 @@ export class InvoicesListComponent {
   public isLoading: boolean = false;
   public dateFilter: FormGroup = new FormGroup({});
   private printContent: string = '';
+  public balance: number = 0;
   constructor(
     private service: DashboardService,
     private fb: FormBuilder,
@@ -36,6 +37,13 @@ export class InvoicesListComponent {
     this.service.getInvoices().subscribe({
       next: (res: Invoice[]) => {
         this.isLoading = false;
+        // res.map(i => {
+        //   i.balance = i.total - i.deposit;
+        //   i.name = "pepe";
+        //   i.job = "paseo";
+        // });
+        console.log(res);
+
         this.invoices = res;
         this.filteredInvoices = res;
       },
@@ -365,7 +373,7 @@ export class InvoicesListComponent {
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 4:
-        messagge = `*Hola ${invoice?.name}. Tu trabajo está listo para ser retirado*\nHorarios: Lun a Vier. 9 a 13/16 a 19 hs\nSábados 9 a 13 hs`;
+        messagge = `*Hola ${invoice?.name}. Tu trabajo está listo para ser retirado*\nHorarios: Lunes a Viernes. 9 a 13/15.40 a 18.50 hs\nSábados 9 a 13 hs`;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 5:

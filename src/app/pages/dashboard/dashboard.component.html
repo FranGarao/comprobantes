@@ -11,28 +11,16 @@
       <p>Comprobantes</p>
       <ng-template #menu>
         <div class="example-menu" cdkMenu>
-          <button
-            (click)="openInvoice(0)"
-            class="example-menu-item no-outline"
-            cdkMenuItem
-          >
+          <button (click)="openInvoice(0)" class="example-menu-item no-outline" cdkMenuItem>
             Generar Comprobante
           </button>
-          <button
-            routerLink="list/invoices"
-            class="example-menu-item no-outline"
-            cdkMenuItem
-          >
+          <button routerLink="list/invoices" class="example-menu-item no-outline" cdkMenuItem>
             Ver Comprobantes
           </button>
         </div>
       </ng-template>
     </div>
-    <div
-      [cdkMenuTriggerFor]="jobMenu"
-      title="Generar Comprobante"
-      class="option"
-    >
+    <div [cdkMenuTriggerFor]="jobMenu" title="Generar Comprobante" class="option">
       <mat-icon class="icon material-symbols-outlined"> work </mat-icon>
       <p>Trabajos</p>
       <ng-template #jobMenu>
@@ -46,27 +34,15 @@
         </div>
       </ng-template>
     </div>
-    <div
-      [cdkMenuTriggerFor]="customerMenu"
-      title="Generar Comprobante"
-      class="option"
-    >
+    <div [cdkMenuTriggerFor]="customerMenu" title="Generar Comprobante" class="option">
       <mat-icon class="icon material-symbols-outlined"> person </mat-icon>
       <p>Cliente</p>
       <ng-template #customerMenu>
         <div class="example-menu" cdkMenu>
-          <button
-            (click)="openCustomer(0)"
-            class="example-menu-item"
-            cdkMenuItem
-          >
+          <button (click)="openCustomer(0)" class="example-menu-item" cdkMenuItem>
             Nuevo Cliente
           </button>
-          <button
-            routerLink="list/customers"
-            class="example-menu-item"
-            cdkMenuItem
-          >
+          <button routerLink="list/customers" class="example-menu-item" cdkMenuItem>
             Ver Clientes
           </button>
         </div>
