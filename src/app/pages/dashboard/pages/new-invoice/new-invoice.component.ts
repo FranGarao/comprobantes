@@ -13,6 +13,7 @@ export class NewInvoiceComponent {
   public invoiceForm: FormGroup = new FormGroup({});
   public customers: Customer[] = [];
   public jobs: Job[] = [];
+  private selectedJobs: number[] = [];
   constructor(private fb: FormBuilder, private dashboardService: DashboardService) { }
 
   ngOnInit() {
@@ -55,5 +56,14 @@ export class NewInvoiceComponent {
         console.log(error);
       }
     });
+  }
+
+  addJob(id: number) {
+    this.selectedJobs.push(id);
+    console.log(this.selectedJobs);
+
+  }
+
+  addCustomJob() {
   }
 }

@@ -3,21 +3,9 @@
   <div>
     <div class="input-ctn row">
       <label>N°</label>
-      <input
-        *ngIf="!invoice"
-        placeholder="Codigo"
-        readonly
-        type="number"
-        value="{{ lastInvoice }}"
-        formControlName="id"
-      />
-      <input
-        *ngIf="invoice"
-        placeholder="Codigo"
-        readonly
-        type="number"
-        formControlName="id"
-      />
+      <input *ngIf="!invoice" placeholder="Codigo" readonly type="number" value="{{ lastInvoice }}"
+        formControlName="id" />
+      <input *ngIf="invoice" placeholder="Codigo" readonly type="number" formControlName="id" />
     </div>
     <div *ngIf="!invoice" class="input-ctn row">
       <label>Trabajo</label>
@@ -28,13 +16,7 @@
       </button>
       <div *ngFor="let x of addJobs">
         <select formControlName="job">
-          <option
-            (click)="selectJob(job)"
-            *ngFor="let job of jobs"
-            [value]="job?.id"
-            title="job?.name"
-            id="job.id"
-          >
+          <option (click)="selectJob(job)" *ngFor="let job of jobs" [value]="job?.id" title="job?.name" id="job.id">
             {{ job?.name }}
           </option>
         </select>
@@ -48,19 +30,9 @@
     </div>
     <div class="input-ctn row">
       <label>Fecha de entrega</label>
-      <input
-        *ngIf="!invoice"
-        placeholder="Fecha de Entrega"
-        type="date"
-        formControlName="deliveryDate"
-      />
-      <input
-        *ngIf="invoice"
-        placeholder="Fecha de Entrega"
-        type="date"
-        [value]="invoice.deliveryDate"
-        formControlName="deliveryDate"
-      />
+      <input *ngIf="!invoice" placeholder="Fecha de Entrega" type="date" formControlName="deliveryDate" />
+      <input *ngIf="invoice" placeholder="Fecha de Entrega" type="date" [value]="invoice.deliveryDate"
+        formControlName="deliveryDate" />
     </div>
     <!-- <div class="input-ctn row">
             <label>Nombre</label>
@@ -73,12 +45,7 @@
           {{ c?.lastName }}
         </option>
       </select>
-      <input
-        type="text"
-        *ngIf="invoice"
-        [value]="invoice.name"
-        formControlName="name"
-      />
+      <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" />
       <button *ngIf="!invoice" (click)="openCustomer(0)" mat-button>
         Nuevo Cliente
       </button>
@@ -88,69 +55,27 @@
     </div>
     <div class="input-ctn row">
       <label>Telefono</label>
-      <input
-        *ngIf="!invoice"
-        placeholder="Telefono"
-        type="number"
-        inputmode="numeric"
-        formControlName="phone"
-      />
-      <input
-        *ngIf="invoice"
-        placeholder="Telefono"
-        type="number"
-        inputmode="numeric"
-        [value]="invoice.phone"
-        formControlName="phone"
-      />
+      <input *ngIf="!invoice" placeholder="Telefono" type="number" inputmode="numeric" formControlName="phone" />
+      <input *ngIf="invoice" placeholder="Telefono" type="number" inputmode="numeric" [value]="invoice.phone"
+        formControlName="phone" />
     </div>
     <div class="input-ctn row">
       <label>Total</label>
-      <input
-        placeholder="Total"
-        type="number"
-        inputmode="numeric"
-        [value]="selectedJob?.price"
-        formControlName="total"
-        (change)="setBalance()"
-      />
+      <input placeholder="Total" type="number" inputmode="numeric" [value]="selectedJob?.price" formControlName="total"
+        (change)="setBalance()" />
     </div>
     <div class="input-ctn row">
       <label>Seña</label>
-      <input
-        placeholder="Sena"
-        type="number"
-        inputmode="numeric"
-        formControlName="deposit"
-        (change)="setBalance()"
-      />
+      <input placeholder="Sena" type="number" inputmode="numeric" formControlName="deposit" (change)="setBalance()" />
     </div>
     <div class="input-ctn row">
       <label>Saldo</label>
-      <input
-        placeholder="Saldo"
-        type="number"
-        inputmode="numeric"
-        [value]="balance"
-        formControlName="balance"
-      />
+      <input placeholder="Saldo" type="number" inputmode="numeric" [value]="balance" formControlName="balance" />
     </div>
   </div>
   <div class="form-footer">
-    <input
-      *ngIf="!invoice"
-      class="submit"
-      (click)="submit()"
-      type="submit"
-      value="Generar"
-    />
-    <input
-      *ngIf="invoice"
-      class="submit"
-      (click)="edit()"
-      type="submit"
-      value="Editar"
-    />
+    <input *ngIf="!invoice" class="submit" (click)="submit()" type="submit" value="Generar" />
+    <input *ngIf="invoice" class="submit" (click)="edit()" type="submit" value="Editar" />
     <button [cdkMenuTriggerFor]="printMenu" class="print-btn">
       <mat-icon>print</mat-icon>
       Imprimir

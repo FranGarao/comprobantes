@@ -1,11 +1,11 @@
 <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" ngif="invoiceForm">
     <label for="job">Trabajo:</label>
     <select id="job" formControlName="job">
-        <option *ngFor="let job of jobs" [value]="job.id">{{ job.name }}</option>
+        <option (click)="addJob(job.id)" *ngFor="let job of jobs" [value]="job.id">{{ job.name }}</option>
     </select>
     <input id="customJobName" type="text" formControlName="customJobName" placeholder="Nuevo trabajo" />
     <input id="customJobPrice" type="number" formControlName="customJobPrice" placeholder="Precio del trabajo" />
-    <button type="button">Agregar Trabajo</button>
+    <button (click)="addCustomJob()" type="button">Agregar Trabajo</button>
     <label for="total">Total:</label>
     <input id="total" type="number" formControlName="total" />
     <label for="deposit">Depósito:</label>

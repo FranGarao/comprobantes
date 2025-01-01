@@ -30,6 +30,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CustomerModalComponent } from './pages/dashboard/components/customer-modal/customer-modal.component';
 import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
 import { NewInvoiceComponent } from './pages/dashboard/pages/new-invoice/new-invoice.component';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +64,12 @@ import { NewInvoiceComponent } from './pages/dashboard/pages/new-invoice/new-inv
     MatInputModule,
     MatToolbarModule,
     CdkMenuModule,
+    BrowserModule,
+    FormsModule, // Asegúrate de incluirlo aquí
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [provideAnimationsAsync(), provideHttpClient()],
   bootstrap: [AppComponent],

@@ -10,7 +10,7 @@ describe('NewInvoiceComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [NewInvoiceComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(NewInvoiceComponent);
     component = fixture.componentInstance;
@@ -19,5 +19,5 @@ describe('NewInvoiceComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  })
 });
