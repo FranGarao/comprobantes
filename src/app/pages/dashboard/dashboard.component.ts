@@ -35,6 +35,11 @@ export class DashboardComponent {
     this.router.navigate(['/']);
   }
 
+  openProduct(x: number) {
+    console.log();
+    this.service.openProduct(x);
+  }
+
   logout() {
     // this.service.logout();
   }

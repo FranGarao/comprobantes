@@ -9,6 +9,10 @@ import { Job, JobsResponse } from './interfaces/Job';
 import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
 import { Customer, CustomersResponse } from './interfaces/Customer';
 import { BehaviorSubject, map } from 'rxjs';
+import { Product, ProductsResponse } from './interfaces/Product';
+import { ProductModalComponent } from './components/product-modal/product-modal.component';
+import { PaymentsResponse } from './interfaces/Payment';
+import { SalesResponse } from './interfaces/Sale';
 const urlBack = environment.API_URL;
 
 @Injectable({
@@ -18,6 +22,7 @@ export class DashboardService {
   public job: Job = {} as Job;
   public customer: any;
   public invoice: Invoice = {} as Invoice;
+  public product: Product = {} as Product;
   private token: string = localStorage.getItem('AuthToken') || '';
   private invoicesSource = new BehaviorSubject<any[]>([]);
   comprobantes$ = this.invoicesSource.asObservable();
@@ -69,6 +74,15 @@ export class DashboardService {
       },
     });
   }
+  openProduct(x: number) {
+    this.dialogRef.open(ProductModalComponent, {
+      width: '450px',
+      height: '50vh',
+      data: {
+        id: x,
+      },
+    });
+  }
 
   setJob(job: Job) {
     this.job = job;
@@ -78,6 +92,9 @@ export class DashboardService {
   }
   setInvoice(i: Invoice) {
     this.invoice = i;
+  }
+  setProduct(i: Product) {
+    this.product = i;
   }
   //Obtiene las comprobantes del backend
   getInvoices() {
@@ -171,6 +188,53 @@ export class DashboardService {
       );
   }
 
+  getProducts() {
+    const url = `${environment.API_URL}/product`;
+    return this.http.get<ProductsResponse>(url, { headers: this.headers })
+      .pipe(
+        map(res => {
+          return res.products;
+        })
+      );
+  }
+
+  updateProduct(id: number, product: Product) {
+    const url = `${environment.API_URL}/product/${id}`;
+    return this.http.put(url, product, { headers: this.headers });
+  }
+
+  createProduct(product: Product) {
+    const url = `${environment.API_URL}/product`;
+    return this.http.post(url, product, { headers: this.headers });
+  }
+
+  deleteProduct(id: number) {
+    const url = `${environment.API_URL}/product/${id}`;
+    return this.http.delete(url, { headers: this.headers });
+  }
+
+  //Payments
+  getPayments() {
+    const url = `${environment.API_URL}/payment`;
+    return this.http.get<PaymentsResponse>(url, { headers: this.headers })
+      .pipe(
+        map(res => {
+          return res.payments;
+        })
+      );
+  }
+
+  //Sales
+
+  getSales() {
+    const url = `${environment.API_URL}/sale`;
+    return this.http.get<SalesResponse>(url, { headers: this.headers })
+      .pipe(
+        map(res => {
+          return res.sales;
+        })
+      );
+  }
   logout() {
     localStorage.removeItem('AuthToken');
     const url = `${environment.API_URL}/user/logout`;

@@ -20,7 +20,7 @@
         </div>
       </ng-template>
     </div>
-    <div [cdkMenuTriggerFor]="jobMenu" title="Generar Comprobante" class="option">
+    <div [cdkMenuTriggerFor]="jobMenu" title="Trabajos" class="option">
       <mat-icon class="icon material-symbols-outlined"> work </mat-icon>
       <p>Trabajos</p>
       <ng-template #jobMenu>
@@ -34,9 +34,9 @@
         </div>
       </ng-template>
     </div>
-    <div [cdkMenuTriggerFor]="customerMenu" title="Generar Comprobante" class="option">
+    <div [cdkMenuTriggerFor]="customerMenu" title="Clientes" class="option">
       <mat-icon class="icon material-symbols-outlined"> person </mat-icon>
-      <p>Cliente</p>
+      <p>Clientes</p>
       <ng-template #customerMenu>
         <div class="example-menu" cdkMenu>
           <button (click)="openCustomer(0)" class="example-menu-item" cdkMenuItem>
@@ -44,6 +44,37 @@
           </button>
           <button routerLink="list/customers" class="example-menu-item" cdkMenuItem>
             Ver Clientes
+          </button>
+        </div>
+      </ng-template>
+    </div>
+    <div [cdkMenuTriggerFor]="productMenu" title="Productos" class="option">
+      <mat-icon class="icon material-symbols-outlined">shopping_bag
+      </mat-icon>
+      <p>Productos</p>
+      <ng-template #productMenu>
+        <div class="example-menu" cdkMenu>
+          <button (click)="openProduct(0)" class="example-menu-item" cdkMenuItem>
+            Nuevo Producto
+          </button>
+          <button routerLink="list/products" class="example-menu-item" cdkMenuItem>
+            Ver Productos
+          </button>
+        </div>
+      </ng-template>
+    </div>
+    <!-- Ventas -->
+    <div [cdkMenuTriggerFor]="saleMenu" title="Ventas" class="option">
+      <mat-icon class="icon material-symbols-outlined">inventory
+      </mat-icon>
+      <p>Ventas</p>
+      <ng-template #saleMenu>
+        <div class="example-menu" cdkMenu>
+          <button (click)="openProduct(0)" class="example-menu-item" cdkMenuItem>
+            Nueva Venta
+          </button>
+          <button routerLink="list/sales" class="example-menu-item" cdkMenuItem>
+            Ver Ventas
           </button>
         </div>
       </ng-template>

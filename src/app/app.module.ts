@@ -30,7 +30,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CustomerModalComponent } from './pages/dashboard/components/customer-modal/customer-modal.component';
 import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
 import { NewInvoiceComponent } from './pages/dashboard/pages/new-invoice/new-invoice.component';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { FormsModule } from '@angular/forms';
+import { ProductsListComponent } from './pages/dashboard/pages/products-list/products-list.component';
+import { ProductModalComponent } from './pages/dashboard/components/product-modal/product-modal.component';
+import { SalesComponent } from './pages/dashboard/pages/sales/sales.component'; // Importa FormsModule
 
 
 @NgModule({
@@ -47,6 +50,9 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule
     CustomerModalComponent,
     CustomersListComponent,
     NewInvoiceComponent,
+    ProductsListComponent,
+    ProductModalComponent,
+    SalesComponent,
   ],
   imports: [
     BrowserModule,

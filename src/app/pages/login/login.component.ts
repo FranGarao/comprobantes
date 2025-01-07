@@ -31,21 +31,23 @@ export class LoginComponent {
   }
 
   login() {
-    if (this.loginForm.valid) {
-      const user = {
-        username: this.loginForm?.value?.username,
-        password: this.loginForm?.value?.password,
-      };
+    if (!this.loginForm.valid) return;
+    const user = {
+      username: this.loginForm?.value?.username,
+      password: this.loginForm?.value?.password,
+    };
 
-      this.service.login(user).subscribe({
-        next: (r: any) => {
-          localStorage.setItem('AuthToken', r._token);
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          this.alertService.error('Error', 'Usuario o contraseña incorrectos');
-        },
-      });
-    }
+    this.service.login(user).subscribe({
+      next: (r: any) => {
+        console.log(r);
+
+        localStorage.setItem('AuthToken', r._token);
+        this.router.navigate(['/dashboard']);
+      },
+
+      error: (error) => {
+        this.alertService.error('Error', 'Usuario o contraseña incorrectos');
+      },
+    });
   }
 }

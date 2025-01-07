@@ -6,6 +6,8 @@ import { InvoicesListComponent } from './pages/dashboard/pages/invoices-list/inv
 import { JobsListComponent } from './pages/dashboard/pages/jobs-list/jobs-list.component';
 import { CustomersListComponent } from './pages/dashboard/pages/customers-list/customers-list.component';
 import { NewInvoiceComponent } from './pages/dashboard/pages/new-invoice/new-invoice.component';
+import { ProductsListComponent } from './pages/dashboard/pages/products-list/products-list.component';
+import { SalesComponent } from './pages/dashboard/pages/sales/sales.component';
 
 const routes: Routes = [
   {
@@ -27,6 +29,14 @@ const routes: Routes = [
       {
         path: 'list/customers',
         component: CustomersListComponent,
+      },
+      {
+        path: 'list/products',
+        component: ProductsListComponent
+      },
+      {
+        path: 'list/sales',
+        component: SalesComponent
       },
       {
         path: 'invoices/create',
