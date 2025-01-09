@@ -4,9 +4,10 @@ import { Job } from '../../interfaces/Job';
 import Swal from 'sweetalert2';
 import { AlertsService } from '../../alerts.service';
 @Component({
-  selector: 'app-jobs-list',
-  templateUrl: './jobs-list.component.html',
-  styleUrl: './jobs-list.component.css',
+    selector: 'app-jobs-list',
+    templateUrl: './jobs-list.component.html',
+    styleUrl: './jobs-list.component.css',
+    standalone: false
 })
 export class JobsListComponent {
   public jobs: Job[] = [];

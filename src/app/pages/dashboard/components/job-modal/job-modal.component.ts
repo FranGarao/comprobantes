@@ -6,9 +6,10 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertsService } from '../../alerts.service';
 @Component({
-  selector: 'app-job-modal',
-  templateUrl: './job-modal.component.html',
-  styleUrl: './job-modal.component.css',
+    selector: 'app-job-modal',
+    templateUrl: './job-modal.component.html',
+    styleUrl: './job-modal.component.css',
+    standalone: false
 })
 export class JobModalComponent {
   public jobsForm: FormGroup = new FormGroup({});

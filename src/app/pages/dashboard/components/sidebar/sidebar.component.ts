@@ -4,9 +4,10 @@ import { InvoicesModalComponent } from '../invoices-modal/invoices-modal.compone
 import { JobModalComponent } from '../job-modal/job-modal.component';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css',
+    selector: 'app-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrl: './sidebar.component.css',
+    standalone: false
 })
 export class SidebarComponent {
   /**

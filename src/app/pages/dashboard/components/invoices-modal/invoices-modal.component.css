@@ -96,6 +96,7 @@
 .example-menu-item:hover {
   background-color: #f0f0f0;
 }
+
 .refresh-icon {
   color: #3f51b5;
   cursor: pointer;
@@ -104,4 +105,116 @@
 
 .refresh-icon:hover {
   transform: scale(1.2);
+}
+
+/* Estilo general del contenedor */
+ng-select {
+  width: 300px;
+  /* Ajusta el ancho */
+  font-family: 'Arial', sans-serif;
+  /* Cambia la tipografía */
+  border: 1px solid #ccc;
+  /* Borde del contenedor */
+  border-radius: 8px;
+  /* Bordes redondeados */
+}
+
+/* Área de selección */
+ng-select .ng-select-container {
+  background-color: #f9f9f9;
+  /* Fondo del área de selección */
+  padding: 10px;
+  /* Espaciado interno */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Flecha desplegable */
+ng-select .ng-arrow-wrapper {
+  color: #007bff;
+  /* Color de la flecha */
+  font-size: 1.2rem;
+}
+
+/* Opción seleccionada */
+ng-select .ng-value {
+  color: #4caf50;
+  /* Color del texto del valor seleccionado */
+  font-weight: bold;
+}
+
+/* Opciones del menú desplegable */
+ng-select .ng-option {
+  padding: 10px;
+  /* Espaciado interno */
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+ng-select .ng-option:hover {
+  background-color: #007bff;
+  /* Fondo al pasar el cursor */
+  color: white;
+  /* Texto blanco al pasar el cursor */
+}
+
+/* Personalización específica para esta instancia */
+.custom-ng-select {
+  width: 400px;
+  /* Ancho personalizado */
+  border: 2px solid #007bff;
+  /* Borde azul */
+  border-radius: 10px;
+}
+
+.custom-ng-select .ng-select-container {
+  background-color: #f0f8ff;
+  /* Fondo azul claro */
+}
+
+.custom-ng-select .ng-option {
+  color: #333;
+}
+
+.custom-ng-select .ng-option:hover {
+  background-color: #0056b3;
+  /* Fondo azul oscuro */
+  color: white;
+}
+
+/* Estilo general del ng-select */
+.custom-ng-select {
+  width: 300px;
+  border-radius: 8px;
+}
+
+/* Menú desplegable */
+.custom-ng-select .ng-dropdown-panel {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Opciones dentro del menú */
+.custom-ng-select .ng-option {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover en las opciones */
+.custom-ng-select .ng-option:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Opción seleccionada */
+.custom-ng-select .ng-option-selected {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
 }

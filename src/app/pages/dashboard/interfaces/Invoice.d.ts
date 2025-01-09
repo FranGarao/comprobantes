@@ -2,13 +2,15 @@ export interface Invoice {
   id: number;
   name: string;
   phone: string;
-  job: string;
+  job?: string;
   jobId?: number;
+  jobs: any[];
   deliveryDate: Date;
   total: number;
   deposit: number;
   balance: number;
   status: string;
+  customer_id?: number
 }
 
 export interface InvoicesResponse {

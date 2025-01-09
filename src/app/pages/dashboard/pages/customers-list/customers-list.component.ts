@@ -5,9 +5,10 @@ import Swal from 'sweetalert2';
 import { AlertsService } from '../../alerts.service';
 
 @Component({
-  selector: 'app-customers-list',
-  templateUrl: './customers-list.component.html',
-  styleUrl: './customers-list.component.css',
+    selector: 'app-customers-list',
+    templateUrl: './customers-list.component.html',
+    styleUrl: './customers-list.component.css',
+    standalone: false
 })
 export class CustomersListComponent {
   public customers: any[] = [];

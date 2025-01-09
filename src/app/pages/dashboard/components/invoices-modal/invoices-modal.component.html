@@ -68,11 +68,14 @@
       <label>Seña</label>
       <input placeholder="Sena" type="number" inputmode="numeric" formControlName="deposit" (change)="setBalance()" />
     </div>
+    <!-- test -->
     <div class="input-ctn row">
-      <ng-select [items]="paymentMethods" bindLabel="name" bindValue="id" [(ngModel)]="selectedOption">
-
+      <label>Medio de pago</label>
+      <ng-select class="custom-ng-select" [items]="paymentMethods" bindLabel="name" bindValue="id"
+        [(ngModel)]="selectedOption" (change)="onPaymentChange($event)">
       </ng-select>
     </div>
+    <!-- test -->
     <div class="input-ctn row">
       <label>Saldo</label>
       <input placeholder="Saldo" type="number" inputmode="numeric" [value]="balance" formControlName="balance" />

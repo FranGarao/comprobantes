@@ -8,9 +8,10 @@ import { AlertsService } from '../../alerts.service';
 import { Product } from '../../interfaces/Product';
 
 @Component({
-  selector: 'app-product-modal',
-  templateUrl: './product-modal.component.html',
-  styleUrl: './product-modal.component.css'
+    selector: 'app-product-modal',
+    templateUrl: './product-modal.component.html',
+    styleUrl: './product-modal.component.css',
+    standalone: false
 })
 export class ProductModalComponent {
   public productsForm: FormGroup = new FormGroup({});

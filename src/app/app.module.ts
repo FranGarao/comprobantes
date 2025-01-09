@@ -34,7 +34,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductsListComponent } from './pages/dashboard/pages/products-list/products-list.component';
 import { ProductModalComponent } from './pages/dashboard/components/product-modal/product-modal.component';
 import { SalesComponent } from './pages/dashboard/pages/sales/sales.component'; // Importa FormsModule
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -76,6 +76,7 @@ import { SalesComponent } from './pages/dashboard/pages/sales/sales.component'; 
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
+    NgSelectModule
   ],
   providers: [provideAnimationsAsync(), provideHttpClient()],
   bootstrap: [AppComponent],

@@ -21,6 +21,7 @@ import { format } from 'date-fns';
   selector: 'app-invoices-modal',
   templateUrl: './invoices-modal.component.html',
   styleUrl: './invoices-modal.component.css',
+  standalone: false
 })
 export class InvoicesModalComponent implements OnInit {
   @Output() comprobanteCreated = new EventEmitter<any>();
@@ -40,11 +41,9 @@ export class InvoicesModalComponent implements OnInit {
   private newJob: any;
   private jobId: number = 0;
   private printContent: string = '';
-  public paymentMethods: any = [
-    { value: 1, viewValue: 'Efectivo' },
-    { value: 2, viewValue: 'Transferencia' },
-  ]
-  public selectedOption: number = 1;
+  public paymentMethods: any;
+  private customerId: number = 0;
+  public selectedOption: number = 0;
   @ViewChild('newJobName', { static: false })
   newJobName!: ElementRef;
   @ViewChild('newJobPrice', { static: false })
@@ -62,6 +61,7 @@ export class InvoicesModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getPaymentMethods();
     if (this.data?.x === 0) {
       this.invoice = null;
       this.buildForm();
@@ -97,9 +97,10 @@ export class InvoicesModalComponent implements OnInit {
     });
   }
 
-  setCustomer(name: any, lastName: any, phone: any) {
-    this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
-    this.invoicesForm.get('phone')?.setValue(phone);
+  setCustomer(id: number) {
+    // this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
+    // this.invoicesForm.get('phone')?.setValue(phone);
+    this.customerId = id;
   }
 
   onChangeSetCustomer(event: any) {
@@ -112,9 +113,7 @@ export class InvoicesModalComponent implements OnInit {
     console.log(selectedCustomer);
     if (selectedCustomer) {
       this.setCustomer(
-        selectedCustomer.name,
-        selectedCustomer.lastName,
-        selectedCustomer.phone
+        selectedCustomer.id
       );
     }
   }
@@ -143,23 +142,25 @@ export class InvoicesModalComponent implements OnInit {
       this.jobId = Number(this.invoicesForm.get('job')?.value);
     }
 
+
     this.form = {
       id: this.lastInvoice,
       total: this.invoicesForm.get('total')?.value,
       deposit: this.invoicesForm.get('deposit')?.value,
       balance: this.balance,
       deliveryDate: this.invoicesForm.get('deliveryDate')?.value,
+      customer_id: this.customerId,
       name: this.invoicesForm.get('name')?.value,
       phone: this.invoicesForm.get('phone')?.value.toString(),
-      job: jobStrings,
-      jobId: this.jobId || 0,
+      jobs: this.selectedJobs,
       status: 'Pendiente',
     };
     !this.form.deposit ? (this.form.deposit = 0) : null;
 
-    this.service.sendForm(this.form).subscribe({
-      next: () => {
-        this.service.addInvoice(this.form);
+    this.service.createInvoice(this.form, this.selectedOption).subscribe({
+      next: (res: any) => {
+        console.log({ res });
+        // this.service.addInvoice(this.form);
         this.closeModal();
         Swal.fire({
           title: 'Formulario enviado',
@@ -213,10 +214,10 @@ export class InvoicesModalComponent implements OnInit {
       deposit: this.invoicesForm.get('deposit')?.value,
       balance: this.balance,
       deliveryDate: this.invoicesForm.get('deliveryDate')?.value,
+      customer_id: this.customerId,
       name: this.invoicesForm.get('name')?.value,
       phone: this.invoicesForm.get('phone')?.value.toString(),
-      job: this.invoice?.job || '',
-      jobId: this.invoice?.jobId || 0,
+      jobs: this.selectedJobs,
       status: this.invoice?.status || 'Pendiente',
     };
 
@@ -238,7 +239,7 @@ export class InvoicesModalComponent implements OnInit {
           'Por favor espere...'
         );
 
-        this.service.updateInvoice(this.form.id, form).subscribe({
+        this.service.updateInvoice(this.form.id, form, this.selectedOption).subscribe({
           next: () => {
             this.closeModal();
             Swal.fire({
@@ -313,7 +314,10 @@ export class InvoicesModalComponent implements OnInit {
       ?.setValue(
         Number(this.invoicesForm.get('total')?.value) + Number(newJobPrice)
       );
+
     this.selectedJobs.push(this.newJob);
+    console.log(this.selectedJobs);
+
     this.setBalance();
   }
 
@@ -322,6 +326,7 @@ export class InvoicesModalComponent implements OnInit {
       next: (invoices: Invoice[]) => {
         const invoicesIds: number[] = [];
         // Ordena los invoices por id de mayor a menor
+        console.log(invoices);
         invoices.sort((a: Invoice, b: Invoice) => b.id - a.id);
 
         // Si hay elementos en invoices, asigna el id más grande a this.lastInvoice
@@ -353,7 +358,7 @@ export class InvoicesModalComponent implements OnInit {
       return;
     }
 
-    this.selectedJobs.push(job);
+    this.selectedJobs.push(job.id);
     this.invoicesForm
       .get('total')
       ?.setValue(
@@ -468,6 +473,20 @@ export class InvoicesModalComponent implements OnInit {
       .get('total')
       ?.setValue(Number(this.invoicesForm.get('total')?.value) - lastJob.price);
     this.setBalance();
+  }
+
+  onPaymentChange(event: any): void {
+    this.selectedOption = event;
+  }
+  getPaymentMethods() {
+    this.service.getPaymentsMethods().subscribe({
+      next: (res: any) => {
+        this.paymentMethods = res;
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
   }
 }
 /*

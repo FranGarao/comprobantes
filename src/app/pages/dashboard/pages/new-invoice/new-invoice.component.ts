@@ -5,9 +5,10 @@ import { Customer } from '../../interfaces/Customer';
 import { Job } from '../../interfaces/Job';
 import { DashboardService } from '../../dashboard.service';
 @Component({
-  selector: 'app-new-invoice',
-  templateUrl: './new-invoice.component.html',
-  styleUrl: './new-invoice.component.css'
+    selector: 'app-new-invoice',
+    templateUrl: './new-invoice.component.html',
+    styleUrl: './new-invoice.component.css',
+    standalone: false
 })
 export class NewInvoiceComponent {
   public invoiceForm: FormGroup = new FormGroup({});

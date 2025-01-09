@@ -4,9 +4,10 @@ import { Payment } from '../../interfaces/Payment';
 import { DashboardService } from '../../dashboard.service';
 
 @Component({
-  selector: 'app-sales',
-  templateUrl: './sales.component.html',
-  styleUrl: './sales.component.css'
+    selector: 'app-sales',
+    templateUrl: './sales.component.html',
+    styleUrl: './sales.component.css',
+    standalone: false
 })
 export class SalesComponent {
   public sales: Sale[] = [];

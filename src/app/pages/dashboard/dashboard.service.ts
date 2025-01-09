@@ -38,13 +38,13 @@ export class DashboardService {
   }
 
   //Postea el formulario al backend
-  sendForm(form: Invoice) {
+  sendForm(form: Invoice, paymentMethod: any) {
     const url = `${environment.API_URL}/invoice`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       // Authorization: `Bearer ${this.token}`,
     });
-    return this.http.post(url, form, { headers: this.headers });
+    return this.http.post(url, { form, paymentMethod }, { headers: this.headers });
   }
 
   openInvoice(x: number) {
@@ -114,9 +114,9 @@ export class DashboardService {
   }
 
   //Actualiza la comprobante
-  updateInvoice(id: number, invoice: Invoice) {
+  updateInvoice(id: number, invoice: Invoice, paymentMethod?: any) {
     const url = `${environment.API_URL}/invoice/${id}`;
-    return this.http.put(url, invoice, { headers: this.headers });
+    return this.http.put(url, { invoice, paymentMethod }, { headers: this.headers });
   }
 
   //Elimina la comprobante
@@ -126,9 +126,9 @@ export class DashboardService {
   }
 
   //Crea un comprobante nuevo
-  createInvoice(invoice: Invoice) {
+  createInvoice(invoice: Invoice, paymentMethod: any) {
     const url = `${environment.API_URL}/invoice`;
-    return this.http.post(url, invoice, { headers: this.headers });
+    return this.http.post(url, { invoice, paymentMethod }, { headers: this.headers });
   }
 
   //Obtiene los trabajos del backend
@@ -224,6 +224,10 @@ export class DashboardService {
       );
   }
 
+  getPaymentsMethods() {
+    const url = `${environment.API_URL}/payment/methods`;
+    return this.http.get(url, { headers: this.headers })
+  }
   //Sales
 
   getSales() {

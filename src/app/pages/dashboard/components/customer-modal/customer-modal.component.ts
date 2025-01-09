@@ -6,9 +6,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertsService } from '../../alerts.service';
 
 @Component({
-  selector: 'app-customer-modal',
-  templateUrl: './customer-modal.component.html',
-  styleUrl: './customer-modal.component.css',
+    selector: 'app-customer-modal',
+    templateUrl: './customer-modal.component.html',
+    styleUrl: './customer-modal.component.css',
+    standalone: false
 })
 export class CustomerModalComponent {
   public customerForm: FormGroup = new FormGroup({});

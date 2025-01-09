@@ -7,9 +7,10 @@ import { AlertsService } from '../../alerts.service';
 import { format } from 'date-fns';
 
 @Component({
-  selector: 'app-invoices-list',
-  templateUrl: './invoices-list.component.html',
-  styleUrls: ['./invoices-list.component.css', '../../../../app.component.css'],
+    selector: 'app-invoices-list',
+    templateUrl: './invoices-list.component.html',
+    styleUrls: ['./invoices-list.component.css', '../../../../app.component.css'],
+    standalone: false
 })
 export class InvoicesListComponent {
   public invoices: Invoice[] = [];
