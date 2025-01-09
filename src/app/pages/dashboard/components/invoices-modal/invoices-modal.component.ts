@@ -40,6 +40,11 @@ export class InvoicesModalComponent implements OnInit {
   private newJob: any;
   private jobId: number = 0;
   private printContent: string = '';
+  public paymentMethods: any = [
+    { value: 1, viewValue: 'Efectivo' },
+    { value: 2, viewValue: 'Transferencia' },
+  ]
+  public selectedOption: number = 1;
   @ViewChild('newJobName', { static: false })
   newJobName!: ElementRef;
   @ViewChild('newJobPrice', { static: false })
