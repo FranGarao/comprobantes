@@ -35,6 +35,7 @@ import { ProductsListComponent } from './pages/dashboard/pages/products-list/pro
 import { ProductModalComponent } from './pages/dashboard/components/product-modal/product-modal.component';
 import { SalesComponent } from './pages/dashboard/pages/sales/sales.component'; // Importa FormsModule
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SaleModalComponent } from './pages/dashboard/components/sale-modal/sale-modal.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ProductsListComponent,
     ProductModalComponent,
     SalesComponent,
+    SaleModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,36 @@
+<form [formGroup]="salesForm" class="sales-form">
+    <h3>Generar Venta</h3>
+    <div class="form-group">
+        <label for="productSelect">Producto</label>
+        <ng-select id="productSelect" [items]="products" bindLabel="name" bindValue="id" formControlName="product"
+            class="form-control">
+
+            <!-- Personalización del dropdown -->
+            <ng-template ng-option-tmp let-item="item">
+                <div class="custom-option">
+                    <span>{{ item.name }}</span>
+                </div>
+            </ng-template>
+        </ng-select>
+    </div>
+
+    <div class="form-group">
+        <label for="datePicker">Fecha</label>
+        <input type="date" id="datePicker" formControlName="date" class="form-control">
+    </div>
+
+    <div class="input-ctn row">
+        <label>Medio de pago</label>
+        <ng-select class="custom-ng-select form-control" [items]="paymentMethods" bindLabel="name" bindValue="id"
+            formControlName="paymentMethod">
+            <!-- Personalización del dropdown -->
+            <ng-template ng-option-tmp let-item="item">
+                <div class="custom-option">
+                    <span>{{ item.name }}</span>
+                </div>
+            </ng-template>
+        </ng-select>
+    </div>
+
+    <button type="submit" class="btn btn-primary" (click)="previousSubmit()">Guardar</button>
+</form>

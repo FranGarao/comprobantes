@@ -7,10 +7,10 @@ import { AlertsService } from '../../alerts.service';
 import { format } from 'date-fns';
 
 @Component({
-    selector: 'app-invoices-list',
-    templateUrl: './invoices-list.component.html',
-    styleUrls: ['./invoices-list.component.css', '../../../../app.component.css'],
-    standalone: false
+  selector: 'app-invoices-list',
+  templateUrl: './invoices-list.component.html',
+  styleUrls: ['./invoices-list.component.css', '../../../../app.component.css'],
+  standalone: false
 })
 export class InvoicesListComponent {
   public invoices: Invoice[] = [];
@@ -137,7 +137,7 @@ export class InvoicesListComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         invoice.status = 'Entregado';
-        this.service.updateInvoice(invoice.id, invoice).subscribe({
+        this.service.changeStatus(invoice.id, "Entregado").subscribe({
           next: () => {
             Swal.fire({
               title: 'Comprobante editado.',
@@ -147,7 +147,7 @@ export class InvoicesListComponent {
             });
             this.getInvoices();
           },
-          error: (err) => {
+          error: (err: any) => {
             Swal.fire({
               title: 'Error de conexion',
               text:
@@ -282,7 +282,7 @@ export class InvoicesListComponent {
   finishInvoiceRequest(invoice: Invoice) {
     this.alertService.loading('Enviando comprobante', 'Por favor espere...');
 
-    this.service.updateInvoice(invoice?.id, invoice).subscribe({
+    this.service.changeStatus(invoice?.id, "FINALIZADO").subscribe({
       next: () => {
         const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
         const whatsappUrl = `https://wa.me/549${invoice?.phone}?text=${message}}`;

@@ -12,7 +12,8 @@ import { BehaviorSubject, map } from 'rxjs';
 import { Product, ProductsResponse } from './interfaces/Product';
 import { ProductModalComponent } from './components/product-modal/product-modal.component';
 import { PaymentsResponse } from './interfaces/Payment';
-import { SalesResponse } from './interfaces/Sale';
+import { Sale, SalesResponse } from './interfaces/Sale';
+import { SaleModalComponent } from './components/sale-modal/sale-modal.component';
 const urlBack = environment.API_URL;
 
 @Injectable({
@@ -84,6 +85,16 @@ export class DashboardService {
     });
   }
 
+  openSale(x: number) {
+    this.dialogRef.open(SaleModalComponent, {
+      width: '450px',
+      height: '50vh',
+      data: {
+        id: x,
+      },
+    });
+  }
+
   setJob(job: Job) {
     this.job = job;
   }
@@ -125,6 +136,11 @@ export class DashboardService {
     return this.http.delete(url, { headers: this.headers });
   }
 
+  changeStatus(id: number, status: string) {
+    const url = `${environment.API_URL}/invoice/status/${id}/${status}`;
+    return this.http.put(url, { headers: this.headers });
+  }
+
   //Crea un comprobante nuevo
   createInvoice(invoice: Invoice, paymentMethod: any) {
     const url = `${environment.API_URL}/invoice`;
@@ -163,7 +179,6 @@ export class DashboardService {
 
   createCustomer(customer: Customer) {
     const url = `${environment.API_URL}/customer`;
-
     return this.http.post<Customer>(url, customer, { headers: this.headers });
   }
 
@@ -186,6 +201,11 @@ export class DashboardService {
           return res.customers;
         })
       );
+  }
+
+  getCustomerById(id: number) {
+    const url = `${environment.API_URL}/customer/${id}`;
+    return this.http.get(url);
   }
 
   getProducts() {
@@ -217,11 +237,6 @@ export class DashboardService {
   getPayments() {
     const url = `${environment.API_URL}/payment`;
     return this.http.get<PaymentsResponse>(url, { headers: this.headers })
-      .pipe(
-        map(res => {
-          return res.payments;
-        })
-      );
   }
 
   getPaymentsMethods() {
@@ -229,6 +244,10 @@ export class DashboardService {
     return this.http.get(url, { headers: this.headers })
   }
   //Sales
+  getPaymentsMethodById(id: number) {
+    const url = `${environment.API_URL}/payment/methods/${id}`;
+    return this.http.get(url, { headers: this.headers })
+  }
 
   getSales() {
     const url = `${environment.API_URL}/sale`;
@@ -238,6 +257,12 @@ export class DashboardService {
           return res.sales;
         })
       );
+  }
+
+  createSale(sale: any) {
+    console.log({ sale })
+    const url = `${environment.API_URL}/sale`;
+    return this.http.post(url, sale, { headers: this.headers });
   }
   logout() {
     localStorage.removeItem('AuthToken');

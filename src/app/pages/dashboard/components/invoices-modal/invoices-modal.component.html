@@ -71,8 +71,15 @@
     <!-- test -->
     <div class="input-ctn row">
       <label>Medio de pago</label>
-      <ng-select class="custom-ng-select" [items]="paymentMethods" bindLabel="name" bindValue="id"
-        [(ngModel)]="selectedOption" (change)="onPaymentChange($event)">
+      <ng-select class="custom-ng-select form-control" [items]="paymentMethods" bindLabel="name" bindValue="id"
+        [formControlName]="selectedOption" (change)="onPaymentChange($event)">
+
+        <!-- Personalización del dropdown -->
+        <ng-template ng-option-tmp let-item="item">
+          <div class="custom-option">
+            <span>{{ item.name }}</span>
+          </div>
+        </ng-template>
       </ng-select>
     </div>
     <!-- test -->

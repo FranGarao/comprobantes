@@ -1,1 +1,33 @@
-<p>sales works!</p>
+<div class="sales-section">
+    <h1>Lista de Ventas</h1>
+    <table class="readonly">
+        <thead>
+            <tr>
+                <th (click)="orderBy('date')">Fecha</th>
+                <th (click)="orderBy('invoice')">Comprobante</th>
+                <th (click)="orderBy('job')">Trabajo/s</th>
+                <th (click)="orderBy('product')">Producto</th>
+                <th (click)="orderBy('customer')">Cliente</th>
+                <th (click)="orderBy('payment')">Método de Pago</th>
+                <th (click)="orderBy('price')">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of records">
+                <td>{{ record.date|| "-" }}</td>
+                <td>{{ record.invoice || "-" }}</td>
+                <td>{{ record.job|| "-" }}</td>
+                <td>{{ record.product|| "-" }}</td>
+                <td>{{ record.customer || "-" }}</td>
+                <td>{{ record.paymentMethod|| "-" }}</td>
+                <td>{{ record.total }}</td>
+
+                <!-- <td>{{ sale.fecha }}</td> -->
+                <!-- <td *ngIf="sale.type === 'trabajo'">{{ sale.trabajo }}</td> -->
+                <!-- <td *ngIf="sale.type === 'trabajo'">{{ sale.cliente }}</td> -->
+                <!-- <td>{{ sale.metodoPago }}</td> -->
+                <!-- <td>{{ sale.total }}</td> -->
+            </tr>
+        </tbody>
+    </table>
+</div>

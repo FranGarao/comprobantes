@@ -3,10 +3,10 @@ import { DashboardService } from './dashboard.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrl: './dashboard.component.css',
-    standalone: false
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
+  standalone: false
 })
 export class DashboardComponent {
   /**
@@ -37,8 +37,11 @@ export class DashboardComponent {
   }
 
   openProduct(x: number) {
-    console.log();
     this.service.openProduct(x);
+  }
+
+  openSale(x: number) {
+    this.service.openSale(x);
   }
 
   logout() {

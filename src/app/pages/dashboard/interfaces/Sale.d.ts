@@ -1,8 +1,8 @@
 export interface Sale {
     id?: number,
-    productId: number,
-    customerId: number,
-    paymentId: number,
+    product_id: number,
+    customer_id?: number,
+    payment_id: number,
 }
 
 export interface SalesResponse {

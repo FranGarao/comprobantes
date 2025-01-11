@@ -106,15 +106,15 @@
         </p>
       </div>
       <div class="invoice-footer">
-        <button *ngIf="invoice?.status === 'Pendiente'" (click)="finishInvoice(invoice)" class="finalize-btn">
+        <button *ngIf="invoice?.status === 'PENDIENTE'" (click)="finishInvoice(invoice)" class="finalize-btn">
           Finalizar
         </button>
-        <button *ngIf="invoice?.status !== 'Entregado'" (click)="deliverInvoice(invoice)" class="final-btn">
+        <button *ngIf="invoice?.status !== 'ENTREGADO'" (click)="deliverInvoice(invoice)" class="final-btn">
           Terminar
         </button>
-        <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">
+        <!-- <button (click)="deleteInvoice(invoice?.id)" class="delete-btn">
           Eliminar
-        </button>
+        </button> -->
       </div>
     </div>
     <div *ngIf="isLoading" class="loading-message">
