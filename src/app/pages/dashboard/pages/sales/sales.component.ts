@@ -3,6 +3,7 @@ import { Sale } from '../../interfaces/Sale';
 import { Payment } from '../../interfaces/Payment';
 import { DashboardService } from '../../dashboard.service';
 import { AlertsService } from '../../alerts.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sales',
@@ -15,6 +16,8 @@ export class SalesComponent {
   private payments: Payment[] = [];
   public records: any[] = [];
   private invoice: any = null;
+  private invoicesIds: number[] = [];
+  public isLoading: boolean = false;
   constructor(private alertService: AlertsService,
     private service: DashboardService
   ) { }
@@ -25,8 +28,11 @@ export class SalesComponent {
   }
 
   getSales() {
+    this.isLoading = true;
     this.service.getSales().subscribe({
       next: (sales: any) => {
+        this.isLoading = false;
+
         sales.forEach((sale: any) => {
           this.service.getPaymentsMethodById(sale.payment_id).subscribe({
             next: (paymentMethod: any) => {
@@ -37,7 +43,6 @@ export class SalesComponent {
                 total: sale.product_price,
                 paymentMethod: paymentMethod.name,
               });
-
             },
             error: (err: any) => {
               this.alertService.error('Error', 'No se pudieron obtener los metodos de pago')
@@ -52,68 +57,33 @@ export class SalesComponent {
     })
   }
 
+
   getPayments() {
-    this.service.getPayments().subscribe({
+    this.isLoading = true;
+
+    this.service.getPaymentsWithDetails().subscribe({
       next: (res: any) => {
-        this.payments = res;
-        console.log(this.payments);
+        this.isLoading = false;
+
         res.forEach((payment: any) => {
-          this.getInvoice(payment.invoice_id);
-          setTimeout(() => {
-            this.service.getPaymentsMethodById(payment.payment_method_id).subscribe({
-              next: (paymentMethod: any) => {
-                console.log({ aasas: this.invoice });
-
-                this.records.push({
-                  id: payment.id,
-                  date: payment.payment_date,
-                  invoice: payment.invoice_id,
-                  job: this.invoice.job,
-                  customer: this.invoice.customer.name,
-                  total: payment.mount,
-                  paymentMethod: paymentMethod.name,
-                });
-              },
-              error: (err: any) => {
-                this.alertService.error('Error', 'No se pudieron obtener los metodos de pago')
-              }
-            })
-          }, 1000);
-        })
+          this.records.push({
+            id: payment.id,
+            date: payment.date,
+            invoice: payment.invoice_id,
+            job: payment.jobs,
+            customer: payment.customer,
+            total: payment.total,
+            paymentMethod: payment.payment_method,
+          })
+        });
       },
       error: (err: any) => {
+        this.alertService.error('Error', 'No se pudieron obtener los pagos')
         console.log(err);
       }
     })
   }
 
-  getInvoice(id: number) {
-    this.service.getInvoice(id).subscribe({
-      next: (invoice: any) => {
-        this.invoice = invoice.invoice;
-        console.log(invoice);
-
-        this.service.getCustomerById(this.invoice.customerId).subscribe({
-          next: (customer: any) => {
-            this.invoice.customer = customer.customer;
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        })
-        // this.records.push({
-        //   id: invoice.id,
-        //   date: invoice.delivery_date,
-        //   job: invoice.job,
-        //   total: invoice.total,
-        //   paymentMethod: 'Efectivo',
-        // });
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    })
-  }
   orderBy(column: string) {
     this.records.sort((a: any, b: any) => {
       if (a[column] > b[column]) {

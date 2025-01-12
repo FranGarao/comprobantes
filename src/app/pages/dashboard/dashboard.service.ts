@@ -239,6 +239,10 @@ export class DashboardService {
     return this.http.get<PaymentsResponse>(url, { headers: this.headers })
   }
 
+  getPaymentsWithDetails() {
+    const url = `${environment.API_URL}/payment/details`;
+    return this.http.get<PaymentsResponse>(url, { headers: this.headers })
+  }
   getPaymentsMethods() {
     const url = `${environment.API_URL}/payment/methods`;
     return this.http.get(url, { headers: this.headers })
@@ -260,7 +264,6 @@ export class DashboardService {
   }
 
   createSale(sale: any) {
-    console.log({ sale })
     const url = `${environment.API_URL}/sale`;
     return this.http.post(url, sale, { headers: this.headers });
   }

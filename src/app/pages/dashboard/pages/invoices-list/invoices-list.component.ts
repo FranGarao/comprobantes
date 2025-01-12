@@ -19,6 +19,7 @@ export class InvoicesListComponent {
   public dateFilter: FormGroup = new FormGroup({});
   private printContent: string = '';
   public balance: number = 0;
+  private paymentMethods: any[] = [];
   constructor(
     private service: DashboardService,
     private fb: FormBuilder,
@@ -26,6 +27,14 @@ export class InvoicesListComponent {
   ) { }
 
   ngOnInit(): void {
+    this.service.getPaymentsMethods().subscribe({
+      next: (res: any) => {
+        this.paymentMethods = res;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
     this.getInvoices();
     this.createDateForm();
     this.service.comprobantes$.subscribe((comprobantes) => {
@@ -134,31 +143,64 @@ export class InvoicesListComponent {
       showCancelButton: true,
       confirmButtonText: 'Si',
       cancelButtonText: 'No',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        invoice.status = 'Entregado';
-        this.service.changeStatus(invoice.id, "Entregado").subscribe({
-          next: () => {
-            Swal.fire({
-              title: 'Comprobante editado.',
-              text: 'El comprobante se ha editado correctamente',
-              icon: 'success',
-              confirmButtonText: 'Ok',
-            });
-            this.getInvoices();
-          },
-          error: (err: any) => {
-            Swal.fire({
-              title: 'Error de conexion',
-              text:
-                err?.error?.message ||
-                'Ocurrio un error al intentar editar el comprobante',
-              icon: 'error',
-              confirmButtonText: 'Ok',
-            });
-          },
+
+        const selectOptions = this.paymentMethods.map(option => {
+          return `<option value="${option.id}">${option.name}</option>`;
+        }).join('');
+        const result = await Swal.fire({
+          title: 'Selecciona una opción',
+          html: `
+            <select id="dynamic-select" class="swal2-input">
+              <option value="" disabled selected>Seleccione una opción</option>
+              ${selectOptions}
+            </select>
+          `,
+          focusConfirm: false,
+          preConfirm: () => {
+            const select = document.getElementById('dynamic-select') as HTMLSelectElement | null;
+            return select && select.value ? select.value : null;
+          }
         });
+
+        // Manejar la respuesta
+        if (result.value) {
+          Swal.fire(`Seleccionaste: ${result.value}`);
+        } else {
+          Swal.fire('No seleccionaste ninguna opción');
+        }
+
+
+
+        return;
+        this.createLastPayment(invoice);
       }
+    });
+  }
+
+  createLastPayment(invoice: any) {
+    invoice.status = 'Entregado';
+    this.service.changeStatus(invoice.id, "Entregado").subscribe({
+      next: () => {
+        Swal.fire({
+          title: 'Comprobante editado.',
+          text: 'El comprobante se ha editado correctamente',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+        });
+        this.getInvoices();
+      },
+      error: (err: any) => {
+        Swal.fire({
+          title: 'Error de conexion',
+          text:
+            err?.error?.message ||
+            'Ocurrio un error al intentar editar el comprobante',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+        });
+      },
     });
   }
 

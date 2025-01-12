@@ -13,6 +13,7 @@
             </tr>
         </thead>
         <tbody>
+            <h1 *ngIf="isLoading">Cargando ...</h1>
             <tr *ngFor="let record of records">
                 <td>{{ record.date|| "-" }}</td>
                 <td>{{ record.invoice || "-" }}</td>
@@ -30,4 +31,8 @@
             </tr>
         </tbody>
     </table>
+    <div *ngIf="isLoading" class="loading-message">
+        <div class="spinner"></div>
+        Cargando...
+    </div>
 </div>
