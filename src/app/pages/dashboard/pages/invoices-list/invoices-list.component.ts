@@ -20,6 +20,7 @@ export class InvoicesListComponent {
   private printContent: string = '';
   public balance: number = 0;
   private paymentMethods: any[] = [];
+  private qr: string = '';
   constructor(
     private service: DashboardService,
     private fb: FormBuilder,
@@ -137,15 +138,14 @@ export class InvoicesListComponent {
 
   deliverInvoice(invoice: Invoice) {
     Swal.fire({
-      title: '¿Marcar como entregado?',
+      title: '¿Marcar como terminado?',
       text: 'Esta accion eliminara el comprobante de la lista.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si',
       cancelButtonText: 'No',
     }).then(async (result) => {
-      if (result.isConfirmed) {
-
+      if (result.isConfirmed && invoice.deposit !== invoice.total) {
         const selectOptions = this.paymentMethods.map(option => {
           return `<option value="${option.id}">${option.name}</option>`;
         }).join('');
@@ -163,24 +163,45 @@ export class InvoicesListComponent {
             return select && select.value ? select.value : null;
           }
         });
-
         // Manejar la respuesta
         if (result.value) {
           Swal.fire(`Seleccionaste: ${result.value}`);
+          this.createLastPayment(invoice, result.value);
         } else {
           Swal.fire('No seleccionaste ninguna opción');
         }
-
-
-
-        return;
-        this.createLastPayment(invoice);
+      } else {
+        this.changeStatus(invoice);
       }
     });
   }
 
-  createLastPayment(invoice: any) {
+  createLastPayment(invoice: any, paymentMethodId: any) {
     invoice.status = 'Entregado';
+    const payment = {
+      ...invoice,
+      paymentMethodId
+    }
+    //TODO: llamar a otro endpoint para crearr el nuevo pago
+    this.service.createPayment(payment).subscribe({
+      next: (resp) => {
+        console.log(resp);
+      },
+      error: (err: any) => {
+        Swal.fire({
+          title: 'Error de conexion',
+          text:
+            err?.error?.message ||
+            'Ocurrio un error al intentar editar el comprobante',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+        });
+      },
+    })
+    this.changeStatus(invoice);
+  }
+
+  changeStatus(invoice: Invoice) {
     this.service.changeStatus(invoice.id, "Entregado").subscribe({
       next: () => {
         Swal.fire({
@@ -203,7 +224,6 @@ export class InvoicesListComponent {
       },
     });
   }
-
   deleteInvoice(id: any) {
     Swal.fire({
       title: 'Eliminar factura',
@@ -352,6 +372,7 @@ export class InvoicesListComponent {
   }
 
   printInvoice(invoice: Invoice, type: number) {
+    this.qr = '';
     // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
     let messagge = '';
     const date = new Date(invoice?.deliveryDate);
@@ -384,20 +405,25 @@ export class InvoicesListComponent {
         break;
 
       case 1:
-        this.printContent = `
-        <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
-          <p>Nº ${invoice.id}</p>
-          <p>Fecha de entrega: ${formattedDate}</p>
-          <p>Total $${invoice?.total}</p>
-          <p>Seña $${invoice?.deposit}</p>
-          <p>Saldo $${invoice?.balance}</p>
-          <hr>
-          <p>NOMBRE: ${invoice?.name}</p>
-          <p>TELÉFONO: ${invoice?.phone}</p>
-          <p>TRABAJO: ${invoice?.job}</p>
-        </div>
-      `;
-        this.print(this.printContent);
+        this.getQr(invoice).then((qrCode) => {
+          this.printContent = `
+            <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
+              <p>Nº ${invoice.id}</p>
+              <p>Fecha de entrega: ${formattedDate}</p>
+              <p>Total $${invoice?.total}</p>
+              <p>Seña $${invoice?.deposit}</p>
+              <p>Saldo $${invoice?.balance}</p>
+              <hr>
+              <p>NOMBRE: ${invoice?.name}</p>
+              <p>TELÉFONO: ${invoice?.phone}</p>
+              <p>TRABAJO: ${invoice?.job}</p>
+              <img src="${qrCode}" alt="QR Code">
+            </div>
+          `;
+          this.print(this.printContent);
+        }).catch((err: any) => {
+          this.alertService.error('Error', err?.error?.message);
+        });
 
         break;
       case 2:
@@ -426,6 +452,19 @@ export class InvoicesListComponent {
       default:
         break;
     }
+  }
+
+  getQr(invoice: Invoice): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.service.getQRCode(invoice).subscribe({
+        next: (response: any) => {
+          resolve(response.qrCode); // Devuelve el código QR
+        },
+        error: (err: any) => {
+          reject(err); // Maneja el error
+        },
+      });
+    });
   }
 
   print(printContent: string) {
@@ -478,4 +517,5 @@ export class InvoicesListComponent {
       return deliveryDate >= start && deliveryDate <= end;
     });
   }
+
 }

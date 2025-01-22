@@ -234,6 +234,12 @@ export class DashboardService {
   }
 
   //Payments
+
+  createPayment(payment: any) {
+    const url = `${environment.API_URL}/payment`;
+    return this.http.post(url, payment, { headers: this.headers });
+  }
+
   getPayments() {
     const url = `${environment.API_URL}/payment`;
     return this.http.get<PaymentsResponse>(url, { headers: this.headers })
@@ -261,6 +267,12 @@ export class DashboardService {
           return res.sales;
         })
       );
+  }
+
+  //QR
+  getQRCode(invoice: Invoice) {
+    const url = `${environment.API_URL}/invoice/qr/${invoice.id}`;
+    return this.http.get(url);
   }
 
   createSale(sale: any) {

@@ -99,23 +99,23 @@ export class InvoicesModalComponent implements OnInit {
 
   setCustomer(id: number) {
     // this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
-    // this.invoicesForm.get('phone')?.setValue(phone);
     this.customerId = id;
+
   }
 
   onChangeSetCustomer(event: any) {
-    console.log(event);
-
     const selectedId = event.target.value;
     const selectedCustomer = this.customers.find(
       (c) => c.id === Number(selectedId)
     );
     console.log(selectedCustomer);
+    this.invoicesForm.get('phone')?.setValue(selectedCustomer?.phone);
     if (selectedCustomer) {
       this.setCustomer(
         selectedCustomer.id
       );
     }
+
   }
 
   sendForm() {

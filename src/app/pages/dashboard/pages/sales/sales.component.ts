@@ -18,6 +18,8 @@ export class SalesComponent {
   private invoice: any = null;
   private invoicesIds: number[] = [];
   public isLoading: boolean = false;
+  private sortOrder: { [key: string]: 'asc' | 'desc' } = {};
+
   constructor(private alertService: AlertsService,
     private service: DashboardService
   ) { }
@@ -60,7 +62,6 @@ export class SalesComponent {
 
   getPayments() {
     this.isLoading = true;
-
     this.service.getPaymentsWithDetails().subscribe({
       next: (res: any) => {
         this.isLoading = false;
@@ -85,14 +86,42 @@ export class SalesComponent {
   }
 
   orderBy(column: string) {
-    this.records.sort((a: any, b: any) => {
-      if (a[column] > b[column]) {
-        return 1;
-      }
-      if (a[column] < b[column]) {
-        return -1;
-      }
-      return 0;
-    });
+    console.log(`Ordenando por: ${column}`);
+
+    // Alternar el orden
+    this.sortOrder[column] = this.sortOrder[column] === 'asc' ? 'desc' : 'asc';
+
+    // Ordenar según la columna seleccionada
+    switch (column) {
+      case 'date':
+        console.log("Ordenando por fecha");
+        this.records = this.records.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return this.sortOrder[column] === 'asc' ? dateA - dateB : dateB - dateA;
+        });
+        break;
+
+      case 'invoice':
+        console.log("Ordenando por comprobante");
+        this.records = this.records.sort((a, b) => {
+          return this.sortOrder[column] === 'asc' ? a.invoice - b.invoice : b.invoice - a.invoice;
+        });
+        break;
+
+      case 'price':
+        console.log("Ordenando por precio");
+        this.records = this.records.sort((a, b) => {
+          return this.sortOrder[column] === 'asc' ? a.total - b.total : b.total - a.total;
+        });
+        break;
+
+      default:
+        console.log(`Columna no soportada: ${column}`);
+        break;
+    }
+
+    console.log({ records: this.records });
   }
+
 }

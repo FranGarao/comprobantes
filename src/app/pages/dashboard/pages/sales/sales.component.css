@@ -43,5 +43,9 @@ table tr:nth-child(even) {
 
 .readonly {
     background-color: #e9ecef;
-    pointer-events: none;
+    /* pointer-events: none; */
+}
+
+.click:hover {
+    cursor: pointer;
 }

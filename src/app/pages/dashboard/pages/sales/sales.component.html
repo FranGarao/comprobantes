@@ -3,13 +3,13 @@
     <table class="readonly">
         <thead>
             <tr>
-                <th (click)="orderBy('date')">Fecha</th>
-                <th (click)="orderBy('invoice')">Comprobante</th>
+                <th class="click" (click)="orderBy('date')">Fecha</th>
+                <th class="click" (click)="orderBy('invoice')">Comprobante</th>
                 <th (click)="orderBy('job')">Trabajo/s</th>
                 <th (click)="orderBy('product')">Producto</th>
                 <th (click)="orderBy('customer')">Cliente</th>
                 <th (click)="orderBy('payment')">Método de Pago</th>
-                <th (click)="orderBy('price')">Total</th>
+                <th class="click" (click)="orderBy('price')">Total</th>
             </tr>
         </thead>
         <tbody>
