@@ -175,7 +175,7 @@ export class InvoicesModalComponent implements OnInit {
 
           const encodedMessage = encodeURIComponent(message);
           const phoneNumber = this.form?.phone; // Asegúrate de que el número de teléfono esté correctamente formateado
-          const whatsappUrl = `https://wa.me/549${phoneNumber}?text=${encodedMessage}`;
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=549${phoneNumber}&text=${encodedMessage}`;
           window.open(whatsappUrl, '_blank');
         });
       },
