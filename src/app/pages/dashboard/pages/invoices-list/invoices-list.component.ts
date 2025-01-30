@@ -347,7 +347,8 @@ export class InvoicesListComponent {
     this.service.changeStatus(invoice?.id, "FINALIZADO").subscribe({
       next: () => {
         const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
-        const whatsappUrl = `https://wa.me/549${invoice?.phone}?text=${message}}`;
+        console.log(invoice)
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
         window.open(whatsappUrl, '_blank');
 
         Swal.fire({
@@ -497,7 +498,7 @@ export class InvoicesListComponent {
 
   sendWhatsApp(phone: any, message: string) {
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/549${phone}?text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=549${phone}&text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   }
 

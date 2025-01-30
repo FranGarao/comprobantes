@@ -108,7 +108,6 @@ export class InvoicesModalComponent implements OnInit {
     const selectedCustomer = this.customers.find(
       (c) => c.id === Number(selectedId)
     );
-    console.log(selectedCustomer);
     this.invoicesForm.get('phone')?.setValue(selectedCustomer?.phone);
     if (selectedCustomer) {
       this.setCustomer(
@@ -181,7 +180,7 @@ export class InvoicesModalComponent implements OnInit {
 
           const encodedMessage = encodeURIComponent(message);
           const phoneNumber = this.form?.phone; // Asegúrate de que el número de teléfono esté correctamente formateado
-          const whatsappUrl = `https://wa.me/549${phoneNumber}?text=${encodedMessage}`;
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=549${phoneNumber}&text=${encodedMessage}`;
           window.open(whatsappUrl, '_blank');
         });
       },
@@ -316,8 +315,6 @@ export class InvoicesModalComponent implements OnInit {
       );
 
     this.selectedJobs.push(this.newJob);
-    console.log(this.selectedJobs);
-
     this.setBalance();
   }
 
@@ -325,10 +322,7 @@ export class InvoicesModalComponent implements OnInit {
     this.service.getInvoices().subscribe({
       next: (invoices: Invoice[]) => {
         const invoicesIds: number[] = [];
-        // Ordena los invoices por id de mayor a menor
-        console.log(invoices);
         invoices.sort((a: Invoice, b: Invoice) => b.id - a.id);
-
         // Si hay elementos en invoices, asigna el id más grande a this.lastInvoice
         if (invoices.length > 0) {
           this.lastInvoice = invoices[0].id + 1; // El id más grande estará en el primer elemento después de ordenar
@@ -485,6 +479,7 @@ export class InvoicesModalComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err);
+        this.alertService.error("Error", err)
       }
     })
   }
