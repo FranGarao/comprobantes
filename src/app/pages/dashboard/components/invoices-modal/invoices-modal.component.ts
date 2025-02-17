@@ -141,7 +141,7 @@ export class InvoicesModalComponent implements OnInit {
       this.jobId = Number(this.invoicesForm.get('job')?.value);
     }
 
-
+    console.log({ JOBS: this.selectedJobs });
     this.form = {
       id: this.lastInvoice,
       total: this.invoicesForm.get('total')?.value,
@@ -287,9 +287,9 @@ export class InvoicesModalComponent implements OnInit {
   }
 
   getJobs() {
-    this.service.getJobs().subscribe({
+    this.service.getGoogleSheets().subscribe({
       next: (jobs: any) => {
-        this.jobs = jobs;
+        this.jobs = jobs.data;
       },
       error: (error) => console.error(error),
     });
@@ -351,8 +351,9 @@ export class InvoicesModalComponent implements OnInit {
       this.newJobExist = true;
       return;
     }
+    console.log({ job });
 
-    this.selectedJobs.push(job.id);
+    this.selectedJobs.push(job.name);
     this.invoicesForm
       .get('total')
       ?.setValue(

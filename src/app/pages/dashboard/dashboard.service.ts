@@ -148,15 +148,15 @@ export class DashboardService {
   }
 
   //Obtiene los trabajos del backend
-  getJobs() {
-    const url = `${environment.API_URL}/job`;
-    return this.http.get<JobsResponse>(url, { headers: this.headers })
-      .pipe(
-        map(res => {
-          return res.jobs;
-        })
-      );
-  }
+  // getJobs() {
+  //   const url = `${environment.API_URL}/job`;
+  //   return this.http.get<JobsResponse>(url, { headers: this.headers })
+  //     .pipe(
+  //       map(res => {
+  //         return res.jobs;
+  //       })
+  //     );
+  // }
 
   // Borra un trabajo
   deleteJob(id: number) {
@@ -282,6 +282,13 @@ export class DashboardService {
   logout() {
     localStorage.removeItem('AuthToken');
     const url = `${environment.API_URL}/user/logout`;
+    return this.http.get(url);
+  }
+
+
+  //Google Sheets
+  getGoogleSheets() {
+    const url = `${environment.API_URL}/sheets/read-sheet`;
     return this.http.get(url);
   }
 }

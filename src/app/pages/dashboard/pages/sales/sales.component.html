@@ -1,5 +1,6 @@
-<div class="sales-section">
+<!-- <div class="sales-section">
     <h1>Lista de Ventas</h1>
+    <mat-icon class="refresh-icon" (click)="getSales()">refresh</mat-icon>
     <table class="readonly">
         <thead>
             <tr>
@@ -22,12 +23,6 @@
                 <td>{{ record.customer || "-" }}</td>
                 <td>{{ record.paymentMethod|| "-" }}</td>
                 <td>{{ record.total }}</td>
-
-                <!-- <td>{{ sale.fecha }}</td> -->
-                <!-- <td *ngIf="sale.type === 'trabajo'">{{ sale.trabajo }}</td> -->
-                <!-- <td *ngIf="sale.type === 'trabajo'">{{ sale.cliente }}</td> -->
-                <!-- <td>{{ sale.metodoPago }}</td> -->
-                <!-- <td>{{ sale.total }}</td> -->
             </tr>
         </tbody>
     </table>
@@ -35,4 +30,77 @@
         <div class="spinner"></div>
         Cargando...
     </div>
+</div> -->
+
+
+<div class="sales-section">
+    <h1>Lista de Ventas</h1>
+    <mat-icon class="refresh-icon" (click)="getSales()">refresh</mat-icon>
+    <mat-icon class="refresh-icon" (click)="clearFilters()">delete</mat-icon>
+
+    <!-- Sección de filtros -->
+    <div class="filters" style="margin-bottom: 1em;">
+        <label for="startDate">Fecha inicio:</label>
+        <input type="date" id="startDate" [(ngModel)]="startDate" (change)="updateFilteredRecords()">
+
+        <label for="endDate">Fecha fin:</label>
+        <input type="date" id="endDate" [(ngModel)]="endDate" (change)="updateFilteredRecords()">
+
+        <label for="productFilter">Producto:</label>
+        <input type="text" id="productFilter" placeholder="Filtrar por producto" [(ngModel)]="productFilter"
+            (input)="updateFilteredRecords()">
+    </div>
+
+    <p><strong>Total ventas en el rango:</strong> {{ filteredRecords.length }}</p>
+
+    <!-- Tabla de ventas filtradas -->
+    <table class="readonly">
+        <thead>
+            <tr>
+                <th class="click" (click)="orderBy('date')">Fecha</th>
+                <th class="click" (click)="orderBy('invoice')">Comprobante</th>
+                <th (click)="orderBy('job')">Trabajo/s</th>
+                <th (click)="orderBy('product')">Producto</th>
+                <th (click)="orderBy('customer')">Cliente</th>
+                <th (click)="orderBy('payment')">Método de Pago</th>
+                <th class="click" (click)="orderBy('price')">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of filteredRecords">
+                <td>{{ record.date || "-" }}</td>
+                <td>{{ record.invoice || "-" }}</td>
+                <td>{{ record.job || "-" }}</td>
+                <td>{{ record.product || "-" }}</td>
+                <td>{{ record.customer || "-" }}</td>
+                <td>{{ record.paymentMethod || "-" }}</td>
+                <td>{{ record.total }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="isLoading" class="loading-message">
+        <div class="spinner"></div>
+        Cargando...
+    </div>
+</div>
+
+<!-- Tabla de Ganancias por Método de Pago -->
+<div class="earnings-section" style="margin-top: 2em;">
+    <h2>Ganancias por Método de Pago</h2>
+    <!-- Opcional: Puedes agregar controles de filtro propios para esta tabla -->
+    <table class="readonly">
+        <thead>
+            <tr>
+                <th>Método de Pago</th>
+                <th>Total Ganado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let earning of earningsByPaymentMethod">
+                <td>{{ earning.paymentMethod }}</td>
+                <td>{{ earning.totalEarned | number:'1.2-2' }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

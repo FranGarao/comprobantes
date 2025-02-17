@@ -6,10 +6,10 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertsService } from '../../alerts.service';
 @Component({
-    selector: 'app-job-modal',
-    templateUrl: './job-modal.component.html',
-    styleUrl: './job-modal.component.css',
-    standalone: false
+  selector: 'app-job-modal',
+  templateUrl: './job-modal.component.html',
+  styleUrl: './job-modal.component.css',
+  standalone: false
 })
 export class JobModalComponent {
   public jobsForm: FormGroup = new FormGroup({});
@@ -34,9 +34,11 @@ export class JobModalComponent {
   }
 
   getJobs() {
-    this.service.getJobs().subscribe({
+    this.service.getGoogleSheets().subscribe({
       next: (data) => {
-        this.jobs = data;
+        console.log(data);
+
+        // this.jobs = data;
       },
       error: (error) => {
         Swal.fire('Error', 'No se pudo obtener el trabajo', 'error');

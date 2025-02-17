@@ -4,10 +4,10 @@ import { Job } from '../../interfaces/Job';
 import Swal from 'sweetalert2';
 import { AlertsService } from '../../alerts.service';
 @Component({
-    selector: 'app-jobs-list',
-    templateUrl: './jobs-list.component.html',
-    styleUrl: './jobs-list.component.css',
-    standalone: false
+  selector: 'app-jobs-list',
+  templateUrl: './jobs-list.component.html',
+  styleUrl: './jobs-list.component.css',
+  standalone: false
 })
 export class JobsListComponent {
   public jobs: Job[] = [];
@@ -28,10 +28,10 @@ export class JobsListComponent {
 
   getJobs() {
     this.isLoading = true;
-    this.service.getJobs().subscribe({
+    this.service.getGoogleSheets().subscribe({
       next: (res: any) => {
         this.isLoading = false;
-        this.jobs = res;
+        this.jobs = res.data;
       },
       error: (err) => {
         Swal.fire({
