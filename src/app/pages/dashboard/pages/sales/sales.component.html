@@ -67,7 +67,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let record of filteredRecords">
+            <tr *ngFor="let record of getPaginatedRecords()">
                 <td>{{ record.date || "-" }}</td>
                 <td>{{ record.invoice || "-" }}</td>
                 <td>{{ record.job || "-" }}</td>
@@ -77,6 +77,11 @@
                 <td>{{ record.total }}</td>
             </tr>
         </tbody>
+        <div class="pagination-controls">
+            <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+            <span>Página {{ currentPage }} de {{ getTotalPages() }}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === getTotalPages()">Siguiente</button>
+        </div>
     </table>
 
     <div *ngIf="isLoading" class="loading-message">

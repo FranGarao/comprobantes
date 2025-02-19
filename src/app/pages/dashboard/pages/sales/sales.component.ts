@@ -1,131 +1,3 @@
-// import { Component } from '@angular/core';
-// import { Sale } from '../../interfaces/Sale';
-// import { Payment } from '../../interfaces/Payment';
-// import { DashboardService } from '../../dashboard.service';
-// import { AlertsService } from '../../alerts.service';
-// import Swal from 'sweetalert2';
-
-// @Component({
-//   selector: 'app-sales',
-//   templateUrl: './sales.component.html',
-//   styleUrl: './sales.component.css',
-//   standalone: false
-// })
-// export class SalesComponent {
-//   private sales: Sale[] = [];
-//   private payments: Payment[] = [];
-//   public records: any[] = [];
-//   private invoice: any = null;
-//   private invoicesIds: number[] = [];
-//   public isLoading: boolean = false;
-//   private sortOrder: { [key: string]: 'asc' | 'desc' } = {};
-
-//   constructor(private alertService: AlertsService,
-//     private service: DashboardService
-//   ) { }
-
-//   ngOnInit() {
-//     this.getSales();
-//     this.getPayments();
-//   }
-
-//   getSales() {
-//     this.isLoading = true;
-//     this.service.getSales().subscribe({
-//       next: (sales: any) => {
-//         this.isLoading = false;
-
-//         sales.forEach((sale: any) => {
-//           this.service.getPaymentsMethodById(sale.payment_id).subscribe({
-//             next: (paymentMethod: any) => {
-//               this.records.push({
-//                 id: sale.id,
-//                 date: sale.sale_date,
-//                 product: sale.product_name,
-//                 total: sale.product_price,
-//                 paymentMethod: paymentMethod.name,
-//               });
-//             },
-//             error: (err: any) => {
-//               this.alertService.error('Error', 'No se pudieron obtener los metodos de pago')
-//             }
-//           })
-//         });
-
-//       },
-//       error: (err: any) => {
-//         console.log(err);
-//       }
-//     })
-//   }
-
-
-//   getPayments() {
-//     this.isLoading = true;
-//     this.service.getPaymentsWithDetails().subscribe({
-//       next: (res: any) => {
-//         this.isLoading = false;
-
-//         res.forEach((payment: any) => {
-//           this.records.push({
-//             id: payment.id,
-//             date: payment.date,
-//             invoice: payment.invoice_id,
-//             job: payment.jobs,
-//             customer: payment.customer,
-//             total: payment.total,
-//             paymentMethod: payment.payment_method,
-//           })
-//         });
-//       },
-//       error: (err: any) => {
-//         this.alertService.error('Error', 'No se pudieron obtener los pagos')
-//         console.log(err);
-//       }
-//     })
-//   }
-
-//   orderBy(column: string) {
-//     console.log(`Ordenando por: ${column}`);
-
-//     // Alternar el orden
-//     this.sortOrder[column] = this.sortOrder[column] === 'asc' ? 'desc' : 'asc';
-
-//     // Ordenar según la columna seleccionada
-//     switch (column) {
-//       case 'date':
-//         console.log("Ordenando por fecha");
-//         this.records = this.records.sort((a, b) => {
-//           const dateA = new Date(a.date).getTime();
-//           const dateB = new Date(b.date).getTime();
-//           return this.sortOrder[column] === 'asc' ? dateA - dateB : dateB - dateA;
-//         });
-//         break;
-
-//       case 'invoice':
-//         console.log("Ordenando por comprobante");
-//         this.records = this.records.sort((a, b) => {
-//           return this.sortOrder[column] === 'asc' ? a.invoice - b.invoice : b.invoice - a.invoice;
-//         });
-//         break;
-
-//       case 'price':
-//         console.log("Ordenando por precio");
-//         this.records = this.records.sort((a, b) => {
-//           return this.sortOrder[column] === 'asc' ? a.total - b.total : b.total - a.total;
-//         });
-//         break;
-
-//       default:
-//         console.log(`Columna no soportada: ${column}`);
-//         break;
-//     }
-
-//     console.log({ records: this.records });
-//   }
-
-// }
-
 import { Component } from '@angular/core';
 import { Sale } from '../../interfaces/Sale';
 import { Payment } from '../../interfaces/Payment';
@@ -152,7 +24,8 @@ export class SalesComponent {
   public filteredRecords: any[] = [];
   // Arreglo para agrupar ganancias por método de pago
   public earningsByPaymentMethod: any[] = [];
-
+  public currentPage: number = 1; // Página actual
+  public pageSize: number = 15;   // Tamaño de la página (registros por página)
   // Filtros
   public startDate: string = ''; // Formato: YYYY-MM-DD
   public endDate: string = '';
@@ -223,12 +96,33 @@ export class SalesComponent {
       },
     });
   }
+  getTotalPages(): number {
+    return Math.ceil(this.filteredRecords.length / this.pageSize);
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.getTotalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  getPaginatedRecords(): any[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredRecords.slice(startIndex, endIndex);
+  }
 
   // Aplica los filtros sobre "records" y actualiza "filteredRecords" y las ganancias por método de pago
   updateFilteredRecords() {
     let filtered = [...this.records];
 
-    // Filtrar por rango de fechas si se han ingresado valores
+    // Filtros existentes (fechas y producto)
     if (this.startDate) {
       const start = new Date(this.startDate);
       filtered = filtered.filter(record => new Date(record.date) >= start);
@@ -237,17 +131,40 @@ export class SalesComponent {
       const end = new Date(this.endDate);
       filtered = filtered.filter(record => new Date(record.date) <= end);
     }
-    // Filtrar por producto si se ingresa algún valor
     if (this.productFilter && this.productFilter.trim() !== '') {
       filtered = filtered.filter(record =>
         record.product && record.product.toLowerCase().includes(this.productFilter.toLowerCase()) || record.job && record.job.toLowerCase().includes(this.productFilter.toLowerCase())
       );
     }
 
+    // Actualiza los registros filtrados
     this.filteredRecords = filtered;
-    this.updateEarnings();
 
+    // Actualiza las ganancias y pagos por método
+    this.updateEarnings();
     this.paymentsByMethod();
+    // let filtered = [...this.records];
+
+    // // Filtrar por rango de fechas si se han ingresado valores
+    // if (this.startDate) {
+    //   const start = new Date(this.startDate);
+    //   filtered = filtered.filter(record => new Date(record.date) >= start);
+    // }
+    // if (this.endDate) {
+    //   const end = new Date(this.endDate);
+    //   filtered = filtered.filter(record => new Date(record.date) <= end);
+    // }
+    // // Filtrar por producto si se ingresa algún valor
+    // if (this.productFilter && this.productFilter.trim() !== '') {
+    //   filtered = filtered.filter(record =>
+    //     record.product && record.product.toLowerCase().includes(this.productFilter.toLowerCase()) || record.job && record.job.toLowerCase().includes(this.productFilter.toLowerCase())
+    //   );
+    // }
+
+    // this.filteredRecords = filtered;
+    // this.updateEarnings();
+
+    // this.paymentsByMethod();
   }
 
   paymentsByMethod() {
