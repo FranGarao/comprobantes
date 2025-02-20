@@ -35,7 +35,7 @@
 
 <div class="sales-section">
     <h1>Lista de Ventas</h1>
-    <mat-icon class="refresh-icon" (click)="getSales()">refresh</mat-icon>
+    <mat-icon class="refresh-icon" (click)="refresh()">refresh</mat-icon>
     <mat-icon class="refresh-icon" (click)="clearFilters()">delete</mat-icon>
 
     <!-- Sección de filtros -->
@@ -102,9 +102,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let earning of earningsByPaymentMethod">
+            <tr *ngFor="let earning of paymentArray">
                 <td>{{ earning.paymentMethod }}</td>
-                <td>{{ earning.totalEarned | number:'1.2-2' }}</td>
+                <td>{{ earning.total | number:'1.2-2' }}</td>
             </tr>
         </tbody>
     </table>

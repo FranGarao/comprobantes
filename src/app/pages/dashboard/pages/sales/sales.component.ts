@@ -30,6 +30,8 @@ export class SalesComponent {
   public startDate: string = ''; // Formato: YYYY-MM-DD
   public endDate: string = '';
   public productFilter: string = '';
+  private paymentMethods: any[] = [];
+  public paymentArray: any[] = [];
 
   constructor(
     private alertService: AlertsService,
@@ -38,25 +40,54 @@ export class SalesComponent {
 
   ngOnInit() {
     // Carga de registros: puedes combinar getSales y getPayments o asegurarte de que al finalizar ambos se actualicen los filtros.
+    this.getPaymentMethods();
     this.getSales();
     this.getPayments();
+    setTimeout(() => {
+      this.setPaymentMethods();
+    }, 2000);
   }
 
+  setPaymentMethods() {
+    const paymentTotals = this.filteredRecords.reduce((acc, record) => {
+      // Asegurarse de que el total sea un número
+      const total = parseFloat(record.total) || 0;
+      const method = record.paymentMethod;
+
+      if (!acc[method]) {
+        acc[method] = total;
+      } else {
+        acc[method] += total;
+      }
+
+      return acc;
+    }, {});
+
+    // Convertir el objeto a un array
+    this.paymentArray = Object.entries(paymentTotals).map(([paymentMethod, total]) => ({
+      paymentMethod,
+      total
+    }));
+
+    console.log({ paymentArray: this.paymentArray });
+  }
   // Ejemplo de método para obtener ventas
   getSales() {
     this.isLoading = true;
     this.service.getSales().subscribe({
       next: (sales: any[]) => {
         sales.forEach((sale: any) => {
+          const paymentMethod = this.paymentMethods.find(p => p.id === sale.payment_id);
           // Suponiendo que cada venta tenga 'sale_date', 'product_name', 'id', etc.
           this.records.push({
             id: sale.id,
             date: sale.sale_date,
             product: sale.product_name,
             total: sale.product_price,
-            invoice: sale.invoice, // O el número de comprobante
+            paymentMethod: paymentMethod.name // O el número de comprobante
             // Otros campos según corresponda…
           });
+
           // Opcional: si necesitas obtener el método de pago u otros datos, encadénalos o espera la respuesta de otro servicio.
         });
         this.isLoading = false;
@@ -68,7 +99,12 @@ export class SalesComponent {
       },
     });
   }
-
+  refresh() {
+    this.filteredRecords = [];
+    this.records = [];
+    this.getSales();
+    this.getPayments();
+  }
   // Ejemplo de método para obtener pagos (si los registros de pagos se fusionan con ventas)
   getPayments() {
     this.isLoading = true;
@@ -165,11 +201,11 @@ export class SalesComponent {
     // this.updateEarnings();
 
     // this.paymentsByMethod();
+    this.setPaymentMethods();
+
   }
 
   paymentsByMethod() {
-    console.log({ records: this.filteredRecords });
-
     this.filteredPaymentMethods = this.filteredRecords.filter((r) => {
       switch (r.paymentMethod) {
         case "Efectivo":
@@ -197,8 +233,6 @@ export class SalesComponent {
       }
       return r.paymentMethod === "Efectivo"
     })
-    console.log({ fMethods: this.filteredPaymentMethods });
-
   }
 
 
@@ -206,7 +240,6 @@ export class SalesComponent {
     if (this.startDate && this.endDate) {
       const start = new Date(this.startDate);
       const end = new Date(this.endDate);
-      console.log(this.earningsByPaymentMethod);
 
       this.earningsByPaymentMethod = this.earningsByPaymentMethod
         .filter(earning => {
@@ -223,9 +256,6 @@ export class SalesComponent {
         totalEarned: earning.totalEarned
       }));
     }
-
-    console.log(this.earningsByPaymentMethod);
-
   }
 
   // Agrupa los registros filtrados por "paymentMethod" y suma el campo "total"
@@ -276,5 +306,17 @@ export class SalesComponent {
     this.endDate = '';
     this.productFilter = '';
     this.updateFilteredRecords();
+  }
+
+  getPaymentMethods() {
+    this.service.getPaymentsMethods().subscribe({
+      next: (res: any) => {
+        this.paymentMethods = res;
+      },
+      error: (err: any) => {
+        console.log(err);
+        this.alertService.error("Error", err)
+      }
+    })
   }
 }
