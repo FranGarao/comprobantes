@@ -289,6 +289,6 @@ export class DashboardService {
   //Google Sheets
   getGoogleSheets() {
     const url = `${environment.API_URL}/sheets/read-sheet`;
-    return this.http.get(url);
+    return this.http.get(url, { headers: this.headers });
   }
 }
