@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { AlertsService } from '../dashboard/alerts.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.css',
-    standalone: false
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
+  standalone: false
 })
 export class LoginComponent {
   public loginForm: FormGroup = new FormGroup({});
@@ -40,9 +40,7 @@ export class LoginComponent {
 
     this.service.login(user).subscribe({
       next: (r: any) => {
-        console.log(r);
-
-        localStorage.setItem('AuthToken', r._token);
+        localStorage.setItem('AuthToken', r.token.token);
         this.router.navigate(['/dashboard']);
       },
 
