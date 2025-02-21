@@ -25,7 +25,7 @@ import { format } from 'date-fns';
 })
 export class InvoicesModalComponent implements OnInit {
   @Output() comprobanteCreated = new EventEmitter<any>();
-
+  
   public firstName: string = '';
   public invoicesForm: FormGroup = new FormGroup({});
   public form: Invoice = {} as Invoice;
@@ -100,11 +100,10 @@ export class InvoicesModalComponent implements OnInit {
   setCustomer(id: number) {
     // this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
     this.customerId = id;
-
   }
 
-  onChangeSetCustomer(event: any) {
-    const selectedId = event.target.value;
+  onChangeSetCustomer(customer: any) {
+    const selectedId = customer.id;
     const selectedCustomer = this.customers.find(
       (c) => c.id === Number(selectedId)
     );
@@ -295,9 +294,11 @@ export class InvoicesModalComponent implements OnInit {
     });
   }
   getCustomers() {
+    // this.customers.forEach((c: Customer) => c.fullName = c.name + " " + c.LastName)
     this.service.getCustomers().subscribe({
       next: (customers: Customer[]) => {
         this.customers = customers;
+        this.customers.forEach((c: Customer) => c.fullName = c.name + " " + c.LastName)
       },
       error: (error) =>
         Swal.fire('Error', 'No se pudieron obtener los clientes', 'error'),

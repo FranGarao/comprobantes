@@ -4,6 +4,7 @@ export interface Customer {
   LastName?: string;
   email: string;
   phone: string;
+  fullName?: string;
 }
 
 export interface CustomerResponse {

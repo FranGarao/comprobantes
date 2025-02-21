@@ -39,12 +39,13 @@
             <input placeholder="Nombre" formControlName="name">
         </div> -->
     <div class="input-ctn row">
-      <select *ngIf="!invoice" (change)="onChangeSetCustomer($event)">
+      <!-- <select *ngIf="!invoice" (change)="onChangeSetCustomer($event)">
         <option *ngFor="let c of customers" [value]="c?.id">
           {{ c?.name }}
           {{ c?.lastName }}
         </option>
-      </select>
+      </select> -->
+      <ng-select style="border: 1px solid grey;" (change)="onChangeSetCustomer($event)" [items]="customers" bindLabel="fullName" bindValue="id" [searchable]="true" [(ngModel)]="selectedCustomer"></ng-select>
       <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" />
       <button *ngIf="!invoice" (click)="openCustomer(0)" mat-button>
         Nuevo Cliente
