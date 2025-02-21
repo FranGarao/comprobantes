@@ -295,11 +295,9 @@ export class InvoicesModalComponent implements OnInit {
     });
   }
   getCustomers() {
-    // this.customers.forEach((c: Customer) => c.fullName = c.name + " " + c.LastName)
     this.service.getCustomers().subscribe({
       next: (customers: Customer[]) => {
         this.customers = customers;
-        this.customers.forEach((c: Customer) => c.fullName = c.name + " " + c.LastName)
       },
       error: (error) =>
         Swal.fire('Error', 'No se pudieron obtener los clientes', 'error'),

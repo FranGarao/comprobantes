@@ -14,13 +14,21 @@
       <button (click)="showSelectedJobs()" mat-button>
         Ver ({{ selectedJobs.length }})
       </button>
-      <div *ngFor="let x of addJobs">
-        <select formControlName="job">
-          <option (click)="selectJob(job)" *ngFor="let job of jobs" [value]="job?.id" title="job?.name" id="job.id">
-            {{ job?.name }}
-          </option>
-        </select>
-      </div>
+
+      <ng-select formControlName="job" [items]="jobs" bindLabel="name" bindValue="id" (change)="selectJob($event)"
+        class="custom-ng-select" style="width: 300px; border: 1px solid #ccc; border-radius: 4px;">
+
+        <ng-template ng-label-tmp let-item="item">
+          <span class="selected-label">{{ item?.name }}</span>
+        </ng-template>
+
+        <ng-template ng-option-tmp let-item="item">
+          <div class="option-item" title="{{ item?.name }}">
+            {{ item?.name }}
+          </div>
+        </ng-template>
+
+      </ng-select>
     </div>
     <div *ngIf="!invoice" class="input-ctn row">
       <label>Nuevo Trabajo</label>
@@ -45,7 +53,14 @@
           {{ c?.lastName }}
         </option>
       </select> -->
-      <ng-select style="border: 1px solid grey;" (change)="onChangeSetCustomer($event)" [items]="customers" bindLabel="fullName" bindValue="id" [searchable]="true" [(ngModel)]="selectedCustomer"></ng-select>
+      <ng-select class="custom-ng-select form-control" (change)="onChangeSetCustomer($event)" [items]="customers"
+        bindLabel="name" bindValue="id" [searchable]="true" [(ngModel)]="selectedCustomer">
+        <ng-template class="custom-option" ng-option-tmp let-item="item">
+          <div class="custom-option">
+            <span>{{ item.name }}</span>
+          </div>
+        </ng-template>
+      </ng-select>
       <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" />
       <button *ngIf="!invoice" (click)="openCustomer(0)" mat-button>
         Nuevo Cliente

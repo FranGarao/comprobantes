@@ -253,3 +253,28 @@ ng-select .ng-dropdown-panel {
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.custom-ng-select {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.custom-ng-select .selected-label {
+  color: #333;
+  font-weight: bold;
+  background-color: #f9f9f9;
+
+}
+
+.custom-ng-select .option-item {
+  background-color: #f9f9f9;
+  color: #007bff;
+
+}
+
+.custom-ng-select .option-item:hover {
+  background-color: #313131;
+  color: #f9f9f9f9;
+
+}
