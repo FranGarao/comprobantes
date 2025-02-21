@@ -121,7 +121,7 @@ export class DashboardService {
   //Obtiene comprobante por id
   getInvoice(id: number) {
     const url = `${environment.API_URL}/invoice/${id}`;
-    return this.http.get(url);
+    return this.http.get(url, { headers: this.headers });
   }
 
   //Actualiza la comprobante
