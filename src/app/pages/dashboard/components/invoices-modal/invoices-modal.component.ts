@@ -25,7 +25,7 @@ import { format } from 'date-fns';
 })
 export class InvoicesModalComponent implements OnInit {
   @Output() comprobanteCreated = new EventEmitter<any>();
-  
+  selectedCustomer: number | undefined
   public firstName: string = '';
   public invoicesForm: FormGroup = new FormGroup({});
   public form: Invoice = {} as Invoice;
@@ -100,6 +100,7 @@ export class InvoicesModalComponent implements OnInit {
   setCustomer(id: number) {
     // this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
     this.customerId = id;
+    console.log(id)
   }
 
   onChangeSetCustomer(customer: any) {
