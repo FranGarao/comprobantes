@@ -11,6 +11,8 @@ export interface Invoice {
   balance: number;
   status: string;
   customer_id?: number
+  customerId?: number
+  customer?: string
 }
 
 export interface InvoicesResponse {

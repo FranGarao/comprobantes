@@ -20,7 +20,7 @@
         </div>
       </ng-template>
     </div>
-    <div [cdkMenuTriggerFor]="jobMenu" title="Trabajos" class="option">
+    <div *ngIf="role === 'admin'" [cdkMenuTriggerFor]="jobMenu" title="Trabajos" class="option">
       <mat-icon class="icon material-symbols-outlined"> work </mat-icon>
       <p>Trabajos</p>
       <ng-template #jobMenu>
@@ -34,7 +34,7 @@
         </div>
       </ng-template>
     </div>
-    <div [cdkMenuTriggerFor]="customerMenu" title="Clientes" class="option">
+    <div *ngIf="role === 'admin'" [cdkMenuTriggerFor]="customerMenu" title="Clientes" class="option">
       <mat-icon class="icon material-symbols-outlined"> person </mat-icon>
       <p>Clientes</p>
       <ng-template #customerMenu>
@@ -48,7 +48,7 @@
         </div>
       </ng-template>
     </div>
-    <div [cdkMenuTriggerFor]="productMenu" title="Productos" class="option">
+    <div *ngIf="role === 'admin'" [cdkMenuTriggerFor]="productMenu" title="Productos" class="option">
       <mat-icon class="icon material-symbols-outlined">shopping_bag
       </mat-icon>
       <p>Productos</p>
@@ -64,7 +64,7 @@
       </ng-template>
     </div>
     <!-- Ventas -->
-    <div [cdkMenuTriggerFor]="saleMenu" title="Ventas" class="option">
+    <div *ngIf="role === 'admin'" [cdkMenuTriggerFor]="saleMenu" title="Ventas" class="option">
       <mat-icon class="icon material-symbols-outlined">inventory
       </mat-icon>
       <p>Ventas</p>

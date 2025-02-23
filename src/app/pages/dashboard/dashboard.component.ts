@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -12,11 +11,19 @@ export class DashboardComponent {
   /**
    *
    */
-  constructor(private service: DashboardService, private router: Router) { }
+  public role: string = '';
+  constructor(private service: DashboardService, private router: Router) {
+  }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    if (this.service._role) {
+      this.role = this.service._role;
+    } else {
+      this.role = localStorage.getItem('role') || '';
+    }
+    console.log(this.role);
   }
 
   openInvoice(x: number) {

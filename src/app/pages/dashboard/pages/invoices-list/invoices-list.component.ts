@@ -21,6 +21,7 @@ export class InvoicesListComponent {
   public balance: number = 0;
   private paymentMethods: any[] = [];
   private qr: string = '';
+  customers: any;
   constructor(
     private service: DashboardService,
     private fb: FormBuilder,
@@ -28,6 +29,7 @@ export class InvoicesListComponent {
   ) { }
 
   ngOnInit(): void {
+    this.getCustomers()
     this.service.getPaymentsMethods().subscribe({
       next: (res: any) => {
         this.paymentMethods = res;
@@ -43,20 +45,47 @@ export class InvoicesListComponent {
     });
   }
 
+  getCustomers() {
+    this.service.getCustomers().subscribe({
+      next: (data: any) => {
+        this.customers = data;
+      },
+      error: (error: any) => {
+        Swal.fire('Error', 'No se pudo obtener el cliente', 'error');
+        console.log({ error });
+      },
+    });
+  }
+
   getInvoices() {
     this.isLoading = true;
     this.service.getInvoices().subscribe({
       next: (res: Invoice[]) => {
+        console.log(res[50]);
+
         this.isLoading = false;
         // res.map(i => {
         //   i.balance = i.total - i.deposit;
         //   i.name = "pepe";
         //   i.job = "paseo";
         // });
-        console.log(res);
 
+
+        // res.forEach((i) => {
+        //   i.name = this.customers.find((c: any) => {
+        //     c.id === i.customer_id
+        //   });
+
+        // })
         this.invoices = res;
         this.filteredInvoices = res;
+        // this.filteredInvoices.forEach((invoice) => {
+        //   invoice.name = this.customers.find((c: any) => {
+        //     c.id === invoice.customer_id
+        //   })
+        //   console.log(invoice.name);
+        // })
+        console.log(this.filteredInvoices);
       },
       error: (err) => {
         Swal.fire({
@@ -166,6 +195,9 @@ export class InvoicesListComponent {
         // Manejar la respuesta
         if (result.value) {
           Swal.fire(`Seleccionaste: ${result.value}`);
+          const message = `Hola ${invoice?.name}, gracias por confiar en Pisadas Renovadas.Te invitamos a agendar nuestro número para cualquier consulta o futura reparación.`;
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
+          window.open(whatsappUrl, '_blank');
           this.createLastPayment(invoice, result.value);
         } else {
           Swal.fire('No seleccionaste ninguna opción');
@@ -297,12 +329,12 @@ export class InvoicesListComponent {
     switch (therm?.value) {
       case 'pendiente':
         this.filteredInvoices = this.invoices?.filter((invoice) => {
-          return invoice.status === 'Pendiente';
+          return invoice.status === 'PENDIENTE';
         });
         break;
       case 'finalizado':
         this.filteredInvoices = this.invoices?.filter((invoice) => {
-          return invoice.status === 'Finalizado';
+          return invoice.status === 'FINALIZADO';
         });
 
         break;
@@ -310,7 +342,7 @@ export class InvoicesListComponent {
         console.log(therm.value);
 
         this.filteredInvoices = this.invoices?.filter((invoice) => {
-          return invoice.status === 'Entregado';
+          return invoice.status === 'ENTREGADO';
         });
         break;
       default:
@@ -438,7 +470,7 @@ export class InvoicesListComponent {
 
         break;
       case 3:
-        messagge = `*Nº* ${invoice?.id}\n*Trabajo:* ${invoice?.job}\n*Fecha de entrega:* ${formattedDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
+        messagge = `*Nº* ${invoice?.id}\n*Fecha de entrega:* ${formattedDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
         `;
         this.sendWhatsApp(invoice.phone, messagge);
         break;

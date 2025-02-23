@@ -20,4 +20,13 @@ export class AppService {
       withCredentials: true, // Debe ir aquí, no como cabecera
     });
   }
+
+  createAccount(user: any) {
+    const url = `${urlBack}/user/create`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(url, user, { headers });
+  }
+
 }

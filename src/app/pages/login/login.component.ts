@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../../app.service';
 import { Router } from '@angular/router';
 import { AlertsService } from '../dashboard/alerts.service';
+import { DashboardService } from '../dashboard/dashboard.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private service: AppService,
+    private dashboardService: DashboardService,
     private router: Router,
     private alertService: AlertsService
   ) { }
@@ -40,7 +42,9 @@ export class LoginComponent {
 
     this.service.login(user).subscribe({
       next: (r: any) => {
+        this.dashboardService.role = r.token.role;
         localStorage.setItem('AuthToken', r.token.token);
+        localStorage.setItem('role', r.token.role);
         this.router.navigate(['/dashboard']);
       },
 
@@ -48,5 +52,24 @@ export class LoginComponent {
         this.alertService.error('Error', 'Usuario o contraseña incorrectos');
       },
     });
+  }
+
+  createAccount() {
+    if (!this.loginForm.valid) return;
+    const user = {
+      username: this.loginForm?.value?.username,
+      password: this.loginForm?.value?.password,
+      role: 'user'
+    };
+
+    this.service.createAccount(user).subscribe({
+      next: (r: any) => {
+        this.alertService.success('Exito', 'Cuenta creada con exito');
+      },
+
+      error: (error: any) => {
+        this.alertService.error('Error', error.error.message);
+      },
+    })
   }
 }

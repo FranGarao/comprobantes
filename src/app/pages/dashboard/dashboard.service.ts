@@ -27,12 +27,19 @@ export class DashboardService {
   private token: string = localStorage.getItem('AuthToken') || '';
   private invoicesSource = new BehaviorSubject<any[]>([]);
   comprobantes$ = this.invoicesSource.asObservable();
+  public _role: string = '';
+  set role(role: string) {
+    this._role = role
+  }
+  get role() {
+    return this._role
+  }
+
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${this.token}`,
   });
   constructor(private http: HttpClient, private dialogRef: MatDialog) { }
-
   addInvoice(newComprobante: any) {
     const currentInvoices = this.invoicesSource.value;
     this.invoicesSource.next([...currentInvoices, newComprobante]);

@@ -32,27 +32,67 @@ export class SalesComponent {
   public productFilter: string = '';
   private paymentMethods: any[] = [];
   public paymentArray: any[] = [];
-
+  public jobsCount: number = 0;
+  public productsCount: number = 0;
   constructor(
     private alertService: AlertsService,
     private service: DashboardService
   ) { }
 
   ngOnInit() {
-    // Carga de registros: puedes combinar getSales y getPayments o asegurarte de que al finalizar ambos se actualicen los filtros.
     this.getPaymentMethods();
     this.getSales();
     this.getPayments();
-    setTimeout(() => {
-      this.setPaymentMethods();
-    }, 2000);
+    this.setPaymentMethods();
   }
+  setCounters() {
+    this.jobsCount = 0;
+    this.productsCount = 0;
+    this.filteredRecords.forEach(record => {
 
+      if (record.invoice) {
+
+        // Separamos los trabajos usando la coma como separador
+        const jobs = record?.job?.split(',');
+        let totalJobs = 0;
+
+        jobs?.forEach((job: any) => {
+          // Limpiar espacios en blanco
+          job = job?.trim();
+
+          // Buscamos un multiplicador del tipo "xN" (por ejemplo, "x2" o "x4")
+          const match = job.match(/x\s*(\d+)/i);
+
+          if (match) {
+            // Si se encuentra un multiplicador, sumamos ese número
+            totalJobs += parseInt(match[1], 10);
+          } else {
+            // Si no hay multiplicador, se cuenta como un único trabajo
+            totalJobs += 1;
+          }
+        });
+
+        // Asignamos el total de trabajos al registro (puedes usar el nombre de propiedad que prefieras)
+        // record.jobCount = totalJobs;
+        this.jobsCount += totalJobs;
+      } else {
+        this.productsCount += 1
+      }
+
+      // Por ejemplo, podrías imprimir el resultado para verificar
+    });
+
+  }
   setPaymentMethods() {
     const paymentTotals = this.filteredRecords.reduce((acc, record) => {
       // Asegurarse de que el total sea un número
       const total = parseFloat(record.total) || 0;
       const method = record.paymentMethod;
+
+      // Si no se encuentra un método de pago, se omite el registro
+      if (!method) {
+        return acc;
+      }
 
       if (!acc[method]) {
         acc[method] = total;
@@ -202,7 +242,7 @@ export class SalesComponent {
 
     // this.paymentsByMethod();
     this.setPaymentMethods();
-
+    this.setCounters()
   }
 
   paymentsByMethod() {
