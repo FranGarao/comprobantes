@@ -23,7 +23,6 @@ export class DashboardComponent {
     } else {
       this.role = localStorage.getItem('role') || '';
     }
-    console.log(this.role);
   }
 
   openInvoice(x: number) {

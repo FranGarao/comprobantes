@@ -34,13 +34,11 @@ export class NewInvoiceComponent {
     });
   }
   onSubmit() {
-    console.log("Subido", this.invoiceForm.value);
   }
 
   getJobs() {
     this.dashboardService.getGoogleSheets().subscribe({
       next: (jobs: any) => {
-        console.log(jobs);
         this.jobs = jobs.data;
       },
       error: (error: any) => {
@@ -62,8 +60,6 @@ export class NewInvoiceComponent {
 
   addJob(id: number) {
     this.selectedJobs.push(id);
-    console.log(this.selectedJobs);
-
   }
 
   addCustomJob() {

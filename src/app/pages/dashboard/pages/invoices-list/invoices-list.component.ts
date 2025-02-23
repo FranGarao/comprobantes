@@ -61,31 +61,10 @@ export class InvoicesListComponent {
     this.isLoading = true;
     this.service.getInvoices().subscribe({
       next: (res: Invoice[]) => {
-        console.log(res[50]);
 
         this.isLoading = false;
-        // res.map(i => {
-        //   i.balance = i.total - i.deposit;
-        //   i.name = "pepe";
-        //   i.job = "paseo";
-        // });
-
-
-        // res.forEach((i) => {
-        //   i.name = this.customers.find((c: any) => {
-        //     c.id === i.customer_id
-        //   });
-
-        // })
         this.invoices = res;
         this.filteredInvoices = res;
-        // this.filteredInvoices.forEach((invoice) => {
-        //   invoice.name = this.customers.find((c: any) => {
-        //     c.id === invoice.customer_id
-        //   })
-        //   console.log(invoice.name);
-        // })
-        console.log(this.filteredInvoices);
       },
       error: (err) => {
         Swal.fire({
@@ -217,7 +196,6 @@ export class InvoicesListComponent {
     //TODO: llamar a otro endpoint para crearr el nuevo pago
     this.service.createPayment(payment).subscribe({
       next: (resp) => {
-        console.log(resp);
       },
       error: (err: any) => {
         Swal.fire({
@@ -339,8 +317,6 @@ export class InvoicesListComponent {
 
         break;
       case 'entregado':
-        console.log(therm.value);
-
         this.filteredInvoices = this.invoices?.filter((invoice) => {
           return invoice.status === 'ENTREGADO';
         });
@@ -379,7 +355,6 @@ export class InvoicesListComponent {
     this.service.changeStatus(invoice?.id, "FINALIZADO").subscribe({
       next: () => {
         const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
-        console.log(invoice)
         const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
         window.open(whatsappUrl, '_blank');
 

@@ -108,8 +108,6 @@ export class SalesComponent {
       paymentMethod,
       total
     }));
-
-    console.log({ paymentArray: this.paymentArray });
   }
   // Ejemplo de método para obtener ventas
   getSales() {

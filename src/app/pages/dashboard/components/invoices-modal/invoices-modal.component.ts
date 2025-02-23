@@ -100,7 +100,6 @@ export class InvoicesModalComponent implements OnInit {
   setCustomer(id: number) {
     // this.invoicesForm.get('name')?.setValue(name + ' ' + lastName);
     this.customerId = id;
-    console.log(id)
   }
 
   onChangeSetCustomer(customer: any) {
@@ -141,7 +140,6 @@ export class InvoicesModalComponent implements OnInit {
       this.jobId = Number(this.invoicesForm.get('job')?.value);
     }
 
-    console.log({ JOBS: this.selectedJobs });
     this.form = {
       id: this.lastInvoice,
       total: this.invoicesForm.get('total')?.value,
@@ -158,7 +156,6 @@ export class InvoicesModalComponent implements OnInit {
 
     this.service.createInvoice(this.form, this.selectedOption).subscribe({
       next: (res: any) => {
-        console.log({ res });
         // this.service.addInvoice(this.form);
         this.closeModal();
         Swal.fire({
@@ -351,7 +348,6 @@ export class InvoicesModalComponent implements OnInit {
       this.newJobExist = true;
       return;
     }
-    console.log({ job });
 
     this.selectedJobs.push(job.name);
     this.invoicesForm

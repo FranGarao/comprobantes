@@ -8,10 +8,10 @@ import { AlertsService } from '../../alerts.service';
 import { Product } from '../../interfaces/Product';
 
 @Component({
-    selector: 'app-product-modal',
-    templateUrl: './product-modal.component.html',
-    styleUrl: './product-modal.component.css',
-    standalone: false
+  selector: 'app-product-modal',
+  templateUrl: './product-modal.component.html',
+  styleUrl: './product-modal.component.css',
+  standalone: false
 })
 export class ProductModalComponent {
   public productsForm: FormGroup = new FormGroup({});
@@ -73,7 +73,6 @@ export class ProductModalComponent {
       price: this.productsForm.value.price,
       //status: this.jobsForm.value.status,
     };
-    console.log(this.product);
 
     this.alertService.loading('Creando producto', 'Por favor espere...');
     this.service.createProduct(this.product).subscribe({

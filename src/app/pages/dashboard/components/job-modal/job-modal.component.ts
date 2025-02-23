@@ -36,7 +36,6 @@ export class JobModalComponent {
   getJobs() {
     this.service.getGoogleSheets().subscribe({
       next: (data) => {
-        console.log(data);
 
         // this.jobs = data;
       },
