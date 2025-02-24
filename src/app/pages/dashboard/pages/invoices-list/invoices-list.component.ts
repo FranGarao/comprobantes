@@ -174,7 +174,7 @@ export class InvoicesListComponent {
         // Manejar la respuesta
         if (result.value) {
           Swal.fire(`Seleccionaste: ${result.value}`);
-          const message = `Hola ${invoice?.name}, gracias por confiar en Pisadas Renovadas.Te invitamos a agendar nuestro número para cualquier consulta o futura reparación.`;
+          const message = `Hola ${invoice?.customer}, gracias por confiar en Pisadas Renovadas.Te invitamos a agendar nuestro número para cualquier consulta o futura reparación.`;
           const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
           window.open(whatsappUrl, '_blank');
           this.createLastPayment(invoice, result.value);
@@ -354,7 +354,7 @@ export class InvoicesListComponent {
 
     this.service.changeStatus(invoice?.id, "FINALIZADO").subscribe({
       next: () => {
-        const message = `Hola ${invoice?.name}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
+        const message = `Hola ${invoice?.customer}, tu trabajo ha sido finalizado, gracias por confiar en nosotros.`;
         const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
         window.open(whatsappUrl, '_blank');
 
@@ -450,7 +450,7 @@ export class InvoicesListComponent {
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 4:
-        messagge = `*Hola ${invoice?.name}. Tu trabajo está listo para ser retirado*\nHorarios: Lunes a Viernes. 9 a 13/15.40 a 18.50 hs\nSábados 9 a 13 hs`;
+        messagge = `*Hola ${invoice?.customer}. Tu trabajo está listo para ser retirado*\nHorarios: Lunes a Viernes. 9 a 13/15.40 a 18.50 hs\nSábados 9 a 13 hs`;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
       case 5:
