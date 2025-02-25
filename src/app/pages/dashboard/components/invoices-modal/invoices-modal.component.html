@@ -53,7 +53,7 @@
           {{ c?.lastName }}
         </option>
       </select> -->
-      <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" readonly>
+      <input type="text" *ngIf="invoice" [value]="invoice.customer" formControlName="name" readonly>
       <ng-select *ngIf="!invoice" class="custom-ng-select form-control" (change)="onChangeSetCustomer($event)"
         [items]="customers" bindLabel="name" bindValue="id" [searchable]="true" [(ngModel)]="selectedCustomer">
         <ng-template class="custom-option" ng-option-tmp let-item="item">
