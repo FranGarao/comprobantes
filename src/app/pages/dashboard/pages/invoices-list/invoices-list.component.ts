@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertsService } from '../../alerts.service';
 import { format } from 'date-fns';
+import moment from 'moment';
 
 @Component({
   selector: 'app-invoices-list',
@@ -383,8 +384,7 @@ export class InvoicesListComponent {
     this.qr = '';
     // Opcional: Especificar solo el contenido dentro de #printArea para imprimir
     let messagge = '';
-    const date = new Date(invoice?.deliveryDate);
-    const formattedDate = format(date, 'dd-MM-yyyy');
+    const momentDate = moment(invoice?.deliveryDate).format('DD-MM-YYYY');
     switch (type) {
       case 0:
         this.printContent = `
@@ -396,7 +396,7 @@ export class InvoicesListComponent {
           <hr>
           <p>Nº ${invoice?.id}</p>
           <p>Trabajo: ${invoice?.job}</p>
-          <p>Fecha de entrega: ${formattedDate}</p>
+          <p>Fecha de entrega: ${momentDate}</p>
           <p>Total $${invoice?.total}</p>
           <p>Seña $${invoice?.deposit}</p>
           <p>Saldo $${invoice?.balance}</p>
@@ -414,10 +414,10 @@ export class InvoicesListComponent {
 
       case 1:
         // this.getQr(invoice).then((qrCode) => {
-          this.printContent = `
+        this.printContent = `
             <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
               <p>Nº ${invoice.id}</p>
-              <p>Fecha de entrega: ${formattedDate}</p>
+              <p>Fecha de entrega: ${momentDate}</p>
               <p>Total $${invoice?.total}</p>
               <p>Seña $${invoice?.deposit}</p>
               <p>Saldo $${invoice?.balance}</p>
@@ -427,11 +427,11 @@ export class InvoicesListComponent {
               <p>TRABAJO: ${invoice?.job}</p>
             </div>
           `;
-          this.print(this.printContent);
+        this.print(this.printContent);
         // }).catch((err: any) => {
-          // this.alertService.error('Error', err?.error?.message);
+        // this.alertService.error('Error', err?.error?.message);
         // });
-              // <img src="${qrCode}" alt="QR Code">
+        // <img src="${qrCode}" alt="QR Code">
 
         break;
       case 2:
@@ -445,7 +445,7 @@ export class InvoicesListComponent {
 
         break;
       case 3:
-        messagge = `*Nº* ${invoice?.id}\n*Fecha de entrega:* ${formattedDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
+        messagge = `*Nº* ${invoice?.id}\n*Fecha de entrega:* ${momentDate}\n*Total:* $${invoice?.total}\n*Seña:* $${invoice?.deposit}\n*Saldo:* $${invoice?.balance}\n\n*Si la reparación no se retira dentro de los 15 días, puede sufrir ajuste de precios sin previo aviso.Los trabajos no retirados después de 30 días, pierden todo derecho a reclamo.*
         `;
         this.sendWhatsApp(invoice.phone, messagge);
         break;
