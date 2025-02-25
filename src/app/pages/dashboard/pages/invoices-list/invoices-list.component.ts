@@ -278,7 +278,7 @@ export class InvoicesListComponent {
     switch (type) {
       case 0:
         this.filteredInvoices = this.invoices.filter((invoice) =>
-          invoice.name.toLowerCase().includes(therm)
+          invoice?.customer?.toLowerCase().includes(therm)
         );
         break;
       case 1:

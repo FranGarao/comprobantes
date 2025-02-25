@@ -53,15 +53,16 @@
           {{ c?.lastName }}
         </option>
       </select> -->
-      <ng-select class="custom-ng-select form-control" (change)="onChangeSetCustomer($event)" [items]="customers"
-        bindLabel="name" bindValue="id" [searchable]="true" [(ngModel)]="selectedCustomer">
+      <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" readonly>
+      <ng-select *ngIf="!invoice" class="custom-ng-select form-control" (change)="onChangeSetCustomer($event)"
+        [items]="customers" bindLabel="name" bindValue="id" [searchable]="true" [(ngModel)]="selectedCustomer">
         <ng-template class="custom-option" ng-option-tmp let-item="item">
           <div class="custom-option">
             <span>{{ item.name }}</span>
           </div>
         </ng-template>
       </ng-select>
-      <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" />
+      <!-- <input type="text" *ngIf="invoice" [value]="invoice.name" formControlName="name" /> -->
       <button *ngIf="!invoice" (click)="openCustomer(0)" mat-button>
         Nuevo Cliente
       </button>
@@ -85,7 +86,7 @@
       <input placeholder="Sena" type="number" inputmode="numeric" formControlName="deposit" (change)="setBalance()" />
     </div>
     <!-- test -->
-    <div class="input-ctn row">
+    <div *ngIf="!invoice" class="input-ctn row">
       <label>Medio de pago</label>
       <ng-select class="custom-ng-select form-control" [items]="paymentMethods" bindLabel="name" bindValue="id"
         [formControlName]="selectedOption" (change)="onPaymentChange($event)">
