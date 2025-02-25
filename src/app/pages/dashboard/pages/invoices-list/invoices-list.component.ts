@@ -146,6 +146,8 @@ export class InvoicesListComponent {
   }
 
   deliverInvoice(invoice: Invoice) {
+    const message = `Hola ${invoice?.customer}, gracias por confiar en Pisadas Renovadas. Te invitamos a agendar nuestro número para cualquier consulta o futura reparación.`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
     Swal.fire({
       title: '¿Marcar como terminado?',
       text: 'Esta accion eliminara el comprobante de la lista.',
@@ -175,14 +177,13 @@ export class InvoicesListComponent {
         // Manejar la respuesta
         if (result.value) {
           Swal.fire(`Seleccionaste: ${result.value}`);
-          const message = `Hola ${invoice?.customer}, gracias por confiar en Pisadas Renovadas.Te invitamos a agendar nuestro número para cualquier consulta o futura reparación.`;
-          const whatsappUrl = `https://api.whatsapp.com/send?phone=549${invoice?.phone}&text=${message}`;
           window.open(whatsappUrl, '_blank');
           this.createLastPayment(invoice, result.value);
         } else {
           Swal.fire('No seleccionaste ninguna opción');
         }
       } else {
+        window.open(whatsappUrl, '_blank');
         this.changeStatus(invoice);
       }
     });
