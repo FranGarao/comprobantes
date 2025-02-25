@@ -33,8 +33,6 @@ export class ProductsListComponent {
     this.isLoading = true;
     this.service.getProducts().subscribe({
       next: (res: any) => {
-        console.log(res);
-
         this.isLoading = false;
         this.products = res;
       },

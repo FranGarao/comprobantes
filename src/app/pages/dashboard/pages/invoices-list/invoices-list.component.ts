@@ -413,7 +413,7 @@ export class InvoicesListComponent {
         break;
 
       case 1:
-        this.getQr(invoice).then((qrCode) => {
+        // this.getQr(invoice).then((qrCode) => {
           this.printContent = `
             <div style="font-family: Arial, sans-serif; padding: 20px; width: 300px; border: 1px solid #000;">
               <p>Nº ${invoice.id}</p>
@@ -422,16 +422,16 @@ export class InvoicesListComponent {
               <p>Seña $${invoice?.deposit}</p>
               <p>Saldo $${invoice?.balance}</p>
               <hr>
-              <p>NOMBRE: ${invoice?.name}</p>
+              <p>NOMBRE: ${invoice?.customer}</p>
               <p>TELÉFONO: ${invoice?.phone}</p>
               <p>TRABAJO: ${invoice?.job}</p>
-              <img src="${qrCode}" alt="QR Code">
             </div>
           `;
           this.print(this.printContent);
-        }).catch((err: any) => {
-          this.alertService.error('Error', err?.error?.message);
-        });
+        // }).catch((err: any) => {
+          // this.alertService.error('Error', err?.error?.message);
+        // });
+              // <img src="${qrCode}" alt="QR Code">
 
         break;
       case 2:
